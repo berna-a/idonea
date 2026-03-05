@@ -11,9 +11,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand */}
           <div className="flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <img src={logo} alt="Idônea" className="h-10 w-10 object-contain" />
-              <span className="font-display text-lg font-semibold text-foreground">IDÔNEA</span>
+            <div className="flex items-center">
+              <img src={logo} alt="Idônea" className="h-14 w-auto object-contain" />
             </div>
             <p className="text-sm text-muted-foreground font-body">
               {t('footer.company')}
