@@ -18,35 +18,35 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.investment': 'Investimento',
 
     // Hero
-    'hero.headline': 'Encontre o imóvel certo em Cabo Verde.',
-    'hero.subheadline': 'Mediação imobiliária com transparência. Sem surpresas. Sem promessas vazias.',
+    'hero.headline': 'O seu imóvel em Cabo Verde, com quem trata de tudo.',
+    'hero.subheadline': 'Mediação imobiliária com rigor, dedicação e acompanhamento completo do início ao fim.',
     'hero.cta': 'Ver Imóveis',
     'hero.contact': 'Fale Connosco',
 
     // Pain Points
-    'pain.title': 'Sabemos o que o preocupa.',
-    'pain.1.title': 'Falta de transparência',
-    'pain.1.desc': 'Muitas imobiliárias escondem informações. Nós mostramos tudo desde o início. Preços reais, condições claras.',
-    'pain.2.title': 'Processos complicados',
-    'pain.2.desc': 'Burocracia e papelada podem atrasar semanas. Tratamos de toda a documentação por si.',
-    'pain.3.title': 'Desconfiança no mercado',
-    'pain.3.desc': 'Ouvir histórias de negócios que correram mal é comum. Trabalhamos com contratos claros e acompanhamento completo.',
+    'pain.title': 'O que nos distingue.',
+    'pain.1.title': 'Clareza total',
+    'pain.1.desc': 'Preços reais, condições claras e toda a informação disponível desde o primeiro contacto.',
+    'pain.2.title': 'Processo simples',
+    'pain.2.desc': 'Tratamos de toda a documentação e burocracia. O seu único trabalho é escolher o imóvel certo.',
+    'pain.3.title': 'Acompanhamento dedicado',
+    'pain.3.desc': 'Cada cliente tem atenção personalizada. Estamos consigo em cada passo, até à escritura.',
 
     // How it works
     'how.title': 'Como funciona.',
     'how.1.title': 'Diga-nos o que procura',
     'how.1.desc': 'Partilhe as suas preferências: localização, tipo de imóvel, orçamento.',
-    'how.2.title': 'Apresentamos opções reais',
-    'how.2.desc': 'Selecionamos imóveis que correspondem ao que precisa. Sem perder o seu tempo.',
+    'how.2.title': 'Apresentamos as opções certas',
+    'how.2.desc': 'Selecionamos imóveis que correspondem genuinamente ao que precisa.',
     'how.3.title': 'Visitamos juntos',
-    'how.3.desc': 'Acompanhamos cada visita. Esclarecemos todas as suas dúvidas no local.',
+    'how.3.desc': 'Acompanhamos cada visita e esclarecemos todas as suas dúvidas no local.',
     'how.4.title': 'Fechamos o negócio',
-    'how.4.desc': 'Tratamos de toda a documentação legal até à escritura. Acompanhamento do início ao fim.',
+    'how.4.desc': 'Tratamos de toda a documentação legal até à escritura. Acompanhamento completo, do início ao fim.',
 
     // Investment
     'invest.title': 'Invista no seu país.',
     'invest.subtitle': 'Para emigrantes cabo-verdianos e investidores internacionais.',
-    'invest.desc': 'Está na diáspora e quer investir em Cabo Verde? Ajudamos a encontrar o imóvel certo, tratamos de tudo à distância. Também apoiamos investidores estrangeiros que procuram oportunidades no mercado imobiliário cabo-verdiano.',
+    'invest.desc': 'Está na diáspora e quer construir algo em Cabo Verde? Encontramos o imóvel certo e tratamos de tudo à distância, com o mesmo cuidado que teria se estivesse cá. Apoiamos também investidores internacionais que procuram oportunidades no mercado cabo-verdiano.',
     'invest.cta': 'Saber Mais',
 
     // Featured
@@ -108,35 +108,35 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.investment': 'Investment',
 
     // Hero
-    'hero.headline': 'Find the right property in Cape Verde.',
-    'hero.subheadline': 'Real estate mediation with transparency. No surprises. No empty promises.',
+    'hero.headline': 'Your property in Cape Verde, handled with care.',
+    'hero.subheadline': 'Real estate mediation with rigour, dedication and full support from start to finish.',
     'hero.cta': 'View Properties',
     'hero.contact': 'Contact Us',
 
     // Pain Points
-    'pain.title': 'We understand your concerns.',
-    'pain.1.title': 'Lack of transparency',
-    'pain.1.desc': 'Many agencies hide information. We show everything upfront. Real prices, clear conditions.',
-    'pain.2.title': 'Complicated processes',
-    'pain.2.desc': 'Bureaucracy and paperwork can delay things for weeks. We handle all documentation for you.',
-    'pain.3.title': 'Market distrust',
-    'pain.3.desc': 'Stories of deals gone wrong are common. We work with clear contracts and full support throughout.',
+    'pain.title': 'What sets us apart.',
+    'pain.1.title': 'Complete clarity',
+    'pain.1.desc': 'Real prices, clear conditions and all the information you need from the very first contact.',
+    'pain.2.title': 'Simple process',
+    'pain.2.desc': 'We handle all documentation and paperwork. Your only job is to choose the right property.',
+    'pain.3.title': 'Dedicated support',
+    'pain.3.desc': 'Every client receives personalised attention. We are with you at every step, through to completion.',
 
     // How it works
     'how.title': 'How it works.',
     'how.1.title': 'Tell us what you need',
     'how.1.desc': 'Share your preferences: location, property type, budget.',
-    'how.2.title': 'We present real options',
-    'how.2.desc': 'We select properties that match your needs. No time wasted.',
+    'how.2.title': 'We present the right options',
+    'how.2.desc': 'We select properties that genuinely match what you are looking for.',
     'how.3.title': 'We visit together',
-    'how.3.desc': 'We accompany every visit. We answer all your questions on site.',
+    'how.3.desc': 'We accompany every visit and answer all your questions on site.',
     'how.4.title': 'We close the deal',
-    'how.4.desc': 'We handle all legal documentation through to completion. Support from start to finish.',
+    'how.4.desc': 'We handle all legal documentation through to completion. Full support, start to finish.',
 
     // Investment
     'invest.title': 'Invest in Cape Verde.',
-    'invest.subtitle': 'For international investors seeking opportunity.',
-    'invest.desc': 'Cape Verde offers a stable economy, growing tourism, and a favourable investment climate. We help international buyers navigate the local market, find the right property, and handle everything remotely.',
+    'invest.subtitle': 'A growing market with real opportunity.',
+    'invest.desc': 'Cape Verde offers a stable economy, growing tourism and a favourable investment climate. We help international buyers navigate the local market, find the right property and handle everything remotely.',
     'invest.cta': 'Learn More',
 
     // Featured
