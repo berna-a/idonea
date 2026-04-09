@@ -36,12 +36,12 @@ const translations: Record<Language, Record<string, string>> = {
     'how.title': 'Como funciona.',
     'how.1.title': 'Diga-nos o que procura',
     'how.1.desc': 'Partilhe as suas preferências: localização, tipo de imóvel, orçamento.',
-    'how.2.title': 'Apresentamos opções reais',
-    'how.2.desc': 'Selecionamos imóveis que correspondem ao que precisa. Sem perder o seu tempo.',
+    'how.2.title': 'Apresentamos as opções certas',
+    'how.2.desc': 'Selecionamos imóveis que correspondem genuinamente ao que precisa.',
     'how.3.title': 'Visitamos juntos',
-    'how.3.desc': 'Acompanhamos cada visita. Esclarecemos todas as suas dúvidas no local.',
+    'how.3.desc': 'Acompanhamos cada visita e esclarecemos todas as suas dúvidas no local.',
     'how.4.title': 'Fechamos o negócio',
-    'how.4.desc': 'Tratamos de toda a documentação legal até à escritura. Acompanhamento do início ao fim.',
+    'how.4.desc': 'Tratamos de toda a documentação legal até à escritura. Acompanhamento completo, do início ao fim.',
 
     // Investment
     'invest.title': 'Invista no seu país.',
