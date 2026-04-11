@@ -13,9 +13,12 @@ const translations: Record<Language, Record<string, string>> = {
     // Nav
     'nav.home': 'Início',
     'nav.properties': 'Imóveis',
-    'nav.about': 'Sobre',
-    'nav.contact': 'Contacto',
     'nav.investment': 'Investimento',
+    'nav.diaspora': 'Para a Diáspora',
+    'nav.sell': 'Vender o seu Imóvel',
+    'nav.about': 'Sobre a IDÓNEA',
+    'nav.contact': 'Contacto',
+    'nav.cta': 'Agendar Consultoria',
 
     // Hero
     'hero.headline': 'O seu imóvel em Cabo Verde, com quem trata de tudo.',
@@ -103,9 +106,12 @@ const translations: Record<Language, Record<string, string>> = {
     // Nav
     'nav.home': 'Home',
     'nav.properties': 'Properties',
-    'nav.about': 'About',
-    'nav.contact': 'Contact',
     'nav.investment': 'Investment',
+    'nav.diaspora': 'For the Diaspora',
+    'nav.sell': 'Sell Your Property',
+    'nav.about': 'About IDÓNEA',
+    'nav.contact': 'Contact',
+    'nav.cta': 'Book a Consultation',
 
     // Hero
     'hero.headline': 'Your property in Cape Verde, handled with care.',
