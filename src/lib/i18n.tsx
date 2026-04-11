@@ -101,6 +101,13 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.whatsapp': 'Falar por WhatsApp',
     'contact.or': 'ou',
 
+    // Closing CTA
+    'closing.title': 'Pronto para dar o próximo passo?',
+    'closing.subtitle': 'Comprar, vender ou investir em Cabo Verde com mais clareza, critério e confiança. Estamos disponíveis para o acompanhar.',
+    'closing.cta.consultation': 'Agendar Consultoria',
+    'closing.cta.whatsapp': 'Falar no WhatsApp',
+    'closing.cta.properties': 'Ver Imóveis',
+
     // Footer
     'footer.rights': 'Todos os direitos reservados.',
     'footer.company': 'Idônea Mediação Imobiliária',
@@ -216,6 +223,12 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.send': 'Send Message',
     'contact.whatsapp': 'Chat on WhatsApp',
     'contact.or': 'or',
+    // Closing CTA
+    'closing.title': 'Ready to take the next step?',
+    'closing.subtitle': 'Buy, sell or invest in Cape Verde with more clarity, care and confidence. We are here to support you.',
+    'closing.cta.consultation': 'Book a Consultation',
+    'closing.cta.whatsapp': 'Chat on WhatsApp',
+    'closing.cta.properties': 'View Properties',
 
     // Footer
     'footer.rights': 'All rights reserved.',
