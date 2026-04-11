@@ -265,12 +265,18 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Properties page
     'props.title': 'Available Properties',
+    'props.hero.title': 'Selected Portfolio',
+    'props.hero.subtitle': 'Every property in our portfolio is chosen with care. We present only opportunities that deserve your attention.',
     'props.filter.all': 'All',
     'props.filter.sale': 'For Sale',
     'props.filter.rent': 'For Rent',
     'props.filter.island': 'Island',
     'props.filter.type': 'Type',
     'props.filter.price': 'Price',
+    'props.filter.business': 'Business',
+    'props.filter.goal': 'Goal',
+    'props.filter.clear': 'Clear filters',
+    'props.filter.results': 'properties',
     'props.type.apartment': 'Apartment',
     'props.type.house': 'House',
     'props.type.land': 'Land',
@@ -282,7 +288,9 @@ const translations: Record<Language, Record<string, string>> = {
     'props.location': 'Location',
     'props.description': 'Description',
     'props.price.month': '/month',
-    'props.noResults': 'No properties found.',
+    'props.noResults': 'No properties found with the selected filters.',
+    'props.cta.title': 'Haven\'t found the right property?',
+    'props.cta.subtitle': 'Tell us what you\'re looking for. We identify opportunities aligned with your profile, even before they reach our portfolio.',
 
     // Property detail
     'detail.area': 'Area',
