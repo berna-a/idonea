@@ -275,6 +275,27 @@ const translations: Record<Language, Record<string, string>> = {
     'props.description': 'Description',
     'props.price.month': '/month',
     'props.noResults': 'No properties found.',
+
+    // Property detail
+    'detail.area': 'Area',
+    'detail.idealFor': 'Ideal for',
+    'detail.highlights': 'Why this property stands out',
+    'detail.similar': 'Similar Properties',
+    'detail.tag.selection': 'IDÓNEA Selection',
+    'detail.tag.investment': 'Investment',
+    'detail.tag.personal': 'Personal Use',
+    'detail.tag.second-home': 'Second Home',
+    'detail.tag.rental': 'Rental',
+    'detail.cta.visit': 'Book a Viewing',
+    'detail.cta.info': 'Request Information',
+    'detail.cta.response': 'Response within 24 hours.',
+    'detail.process.title': 'IDÓNEA Support',
+    'detail.process.subtitle': 'From first contact to completion, we are with you.',
+    'detail.process.1': 'Initial consultation',
+    'detail.process.2': 'Viewing or video tour',
+    'detail.process.3': 'Documentation support',
+    'detail.process.4': 'Negotiation',
+    'detail.process.5': 'Secure closing',
   },
 };
 
