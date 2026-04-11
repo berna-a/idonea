@@ -114,12 +114,18 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Properties page
     'props.title': 'Imóveis Disponíveis',
+    'props.hero.title': 'Portefólio Selecionado',
+    'props.hero.subtitle': 'Cada imóvel no nosso portefólio é escolhido com critério. Apresentamos apenas oportunidades que merecem a sua atenção.',
     'props.filter.all': 'Todos',
     'props.filter.sale': 'Venda',
     'props.filter.rent': 'Arrendamento',
     'props.filter.island': 'Ilha',
-    'props.filter.type': 'Tipo',
+    'props.filter.type': 'Tipologia',
     'props.filter.price': 'Preço',
+    'props.filter.business': 'Negócio',
+    'props.filter.goal': 'Objetivo',
+    'props.filter.clear': 'Limpar filtros',
+    'props.filter.results': 'imóveis',
     'props.type.apartment': 'Apartamento',
     'props.type.house': 'Moradia',
     'props.type.land': 'Terreno',
@@ -131,7 +137,9 @@ const translations: Record<Language, Record<string, string>> = {
     'props.location': 'Localização',
     'props.description': 'Descrição',
     'props.price.month': '/mês',
-    'props.noResults': 'Nenhum imóvel encontrado.',
+    'props.noResults': 'Nenhum imóvel encontrado com os filtros selecionados.',
+    'props.cta.title': 'Não encontrou o imóvel ideal?',
+    'props.cta.subtitle': 'Conte-nos o que procura. Identificamos oportunidades alinhadas com o seu perfil, mesmo antes de chegarem ao portefólio.',
 
     // Property detail
     'detail.area': 'Área',
@@ -257,12 +265,18 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Properties page
     'props.title': 'Available Properties',
+    'props.hero.title': 'Selected Portfolio',
+    'props.hero.subtitle': 'Every property in our portfolio is chosen with care. We present only opportunities that deserve your attention.',
     'props.filter.all': 'All',
     'props.filter.sale': 'For Sale',
     'props.filter.rent': 'For Rent',
     'props.filter.island': 'Island',
     'props.filter.type': 'Type',
     'props.filter.price': 'Price',
+    'props.filter.business': 'Business',
+    'props.filter.goal': 'Goal',
+    'props.filter.clear': 'Clear filters',
+    'props.filter.results': 'properties',
     'props.type.apartment': 'Apartment',
     'props.type.house': 'House',
     'props.type.land': 'Land',
@@ -274,7 +288,9 @@ const translations: Record<Language, Record<string, string>> = {
     'props.location': 'Location',
     'props.description': 'Description',
     'props.price.month': '/month',
-    'props.noResults': 'No properties found.',
+    'props.noResults': 'No properties found with the selected filters.',
+    'props.cta.title': 'Haven\'t found the right property?',
+    'props.cta.subtitle': 'Tell us what you\'re looking for. We identify opportunities aligned with your profile, even before they reach our portfolio.',
 
     // Property detail
     'detail.area': 'Area',
