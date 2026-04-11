@@ -28,14 +28,17 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.cta.consultation': 'Agendar Consultoria',
     'hero.cta.sell': 'Quero Vender',
 
-    // Pain Points
-    'pain.title': 'O que nos distingue.',
-    'pain.1.title': 'Clareza total',
-    'pain.1.desc': 'Preços reais, condições claras e toda a informação disponível desde o primeiro contacto.',
-    'pain.2.title': 'Processo simples',
-    'pain.2.desc': 'Tratamos de toda a documentação e burocracia. O seu único trabalho é escolher o imóvel certo.',
-    'pain.3.title': 'Acompanhamento dedicado',
-    'pain.3.desc': 'Cada cliente tem atenção personalizada. Estamos consigo em cada passo, até à escritura.',
+    // Differentiation
+    'diff.title': 'Porque a IDÓNEA.',
+    'diff.subtitle': 'Uma abordagem diferente à mediação imobiliária em Cabo Verde. Seletiva, transparente e dedicada.',
+    'diff.1.title': 'Confiança',
+    'diff.1.desc': 'Relações construídas com rigor, transparência e compromisso real com cada cliente.',
+    'diff.2.title': 'Curadoria',
+    'diff.2.desc': 'Selecionamos cada imóvel com critério. Apresentamos apenas o que genuinamente corresponde.',
+    'diff.3.title': 'Processo Claro',
+    'diff.3.desc': 'Cada etapa é definida, comunicada e conduzida com método. Do início à escritura.',
+    'diff.4.title': 'Acompanhamento Completo',
+    'diff.4.desc': 'Estamos presentes em cada momento. Documentação, visitas, negociação e fecho.',
 
     // How it works
     'how.title': 'Como funciona.',
@@ -123,14 +126,17 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.cta.consultation': 'Book a Consultation',
     'hero.cta.sell': 'Sell My Property',
 
-    // Pain Points
-    'pain.title': 'What sets us apart.',
-    'pain.1.title': 'Complete clarity',
-    'pain.1.desc': 'Real prices, clear conditions and all the information you need from the very first contact.',
-    'pain.2.title': 'Simple process',
-    'pain.2.desc': 'We handle all documentation and paperwork. Your only job is to choose the right property.',
-    'pain.3.title': 'Dedicated support',
-    'pain.3.desc': 'Every client receives personalised attention. We are with you at every step, through to completion.',
+    // Differentiation
+    'diff.title': 'Why IDÓNEA.',
+    'diff.subtitle': 'A different approach to real estate advisory in Cape Verde. Selective, transparent and dedicated.',
+    'diff.1.title': 'Trust',
+    'diff.1.desc': 'Relationships built on rigour, transparency and a genuine commitment to every client.',
+    'diff.2.title': 'Curation',
+    'diff.2.desc': 'We select each property with care. We only present what truly fits your needs.',
+    'diff.3.title': 'Clear Process',
+    'diff.3.desc': 'Every step is defined, communicated and managed with method. From start to completion.',
+    'diff.4.title': 'Complete Support',
+    'diff.4.desc': 'We are present at every stage. Documentation, viewings, negotiation and closing.',
 
     // How it works
     'how.title': 'How it works.',
