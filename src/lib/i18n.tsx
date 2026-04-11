@@ -21,10 +21,12 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.cta': 'Agendar Consultoria',
 
     // Hero
-    'hero.headline': 'O seu imóvel em Cabo Verde, com quem trata de tudo.',
-    'hero.subheadline': 'Mediação imobiliária com rigor, dedicação e acompanhamento completo do início ao fim.',
-    'hero.cta': 'Ver Imóveis',
-    'hero.contact': 'Fale Connosco',
+    'hero.eyebrow': 'Advisory Imobiliário em Cabo Verde',
+    'hero.headline': 'Comprar, vender ou investir com total confiança.',
+    'hero.subheadline': 'Curadoria imobiliária com acompanhamento dedicado em cada passo. Do primeiro contacto à escritura.',
+    'hero.cta.properties': 'Ver Imóveis',
+    'hero.cta.consultation': 'Agendar Consultoria',
+    'hero.cta.sell': 'Quero Vender',
 
     // Pain Points
     'pain.title': 'O que nos distingue.',
@@ -114,10 +116,12 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.cta': 'Book a Consultation',
 
     // Hero
-    'hero.headline': 'Your property in Cape Verde, handled with care.',
-    'hero.subheadline': 'Real estate mediation with rigour, dedication and full support from start to finish.',
-    'hero.cta': 'View Properties',
-    'hero.contact': 'Contact Us',
+    'hero.eyebrow': 'Real Estate Advisory in Cape Verde',
+    'hero.headline': 'Buy, sell or invest with complete confidence.',
+    'hero.subheadline': 'Curated real estate with dedicated support at every step. From first contact to completion.',
+    'hero.cta.properties': 'View Properties',
+    'hero.cta.consultation': 'Book a Consultation',
+    'hero.cta.sell': 'Sell My Property',
 
     // Pain Points
     'pain.title': 'What sets us apart.',
