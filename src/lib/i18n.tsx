@@ -61,8 +61,9 @@ const translations: Record<Language, Record<string, string>> = {
     'invest.cta': 'Saber Mais',
 
     // Featured
-    'featured.title': 'Imóveis em Destaque',
-    'featured.viewAll': 'Ver Todos',
+    'featured.title': 'Portefólio Selecionado',
+    'featured.subtitle': 'Cada imóvel no nosso portefólio é escolhido com critério. Apresentamos apenas oportunidades que merecem a sua atenção.',
+    'featured.viewAll': 'Ver Todos os Imóveis',
     'featured.bedrooms': 'quartos',
     'featured.bathrooms': 'casas de banho',
 
@@ -162,8 +163,9 @@ const translations: Record<Language, Record<string, string>> = {
     'invest.cta': 'Learn More',
 
     // Featured
-    'featured.title': 'Featured Properties',
-    'featured.viewAll': 'View All',
+    'featured.title': 'Selected Portfolio',
+    'featured.subtitle': 'Every property in our portfolio is chosen with care. We present only opportunities that deserve your attention.',
+    'featured.viewAll': 'View All Properties',
     'featured.bedrooms': 'bedrooms',
     'featured.bathrooms': 'bathrooms',
 
