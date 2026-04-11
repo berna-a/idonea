@@ -132,6 +132,27 @@ const translations: Record<Language, Record<string, string>> = {
     'props.description': 'Descrição',
     'props.price.month': '/mês',
     'props.noResults': 'Nenhum imóvel encontrado.',
+
+    // Property detail
+    'detail.area': 'Área',
+    'detail.idealFor': 'Ideal para',
+    'detail.highlights': 'Porque este imóvel se destaca',
+    'detail.similar': 'Imóveis Semelhantes',
+    'detail.tag.selection': 'Seleção IDÓNEA',
+    'detail.tag.investment': 'Investimento',
+    'detail.tag.personal': 'Uso Próprio',
+    'detail.tag.second-home': 'Segunda Residência',
+    'detail.tag.rental': 'Arrendamento',
+    'detail.cta.visit': 'Agendar Visita',
+    'detail.cta.info': 'Pedir Informação',
+    'detail.cta.response': 'Resposta em menos de 24 horas.',
+    'detail.process.title': 'Acompanhamento IDÓNEA',
+    'detail.process.subtitle': 'Do primeiro contacto à escritura, estamos consigo.',
+    'detail.process.1': 'Esclarecimento inicial',
+    'detail.process.2': 'Visita ou video-tour',
+    'detail.process.3': 'Apoio documental',
+    'detail.process.4': 'Negociação',
+    'detail.process.5': 'Fecho seguro',
   },
   en: {
     // Nav
