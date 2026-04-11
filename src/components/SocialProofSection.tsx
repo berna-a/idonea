@@ -1,25 +1,28 @@
 import { useLanguage } from '@/lib/i18n';
-import { Star } from 'lucide-react';
+import { Quote } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const testimonials = [
   {
     name: 'Ana M.',
-    location: 'Lisboa, Portugal',
-    text_pt: 'Comprei o meu apartamento em Praia sem precisar de viajar. A equipa tratou de tudo com profissionalismo.',
-    text_en: 'I bought my apartment in Praia without needing to travel. The team handled everything professionally.',
+    context_pt: 'Compradora na diáspora',
+    context_en: 'Diaspora buyer',
+    text_pt: 'Vivo em Lisboa e comprei um apartamento na Praia sem precisar de viajar. A equipa tratou da documentação, organizou video-tours e manteve-me informada em cada passo. Senti que tinha alguém de confiança no terreno.',
+    text_en: 'I live in Lisbon and bought an apartment in Praia without travelling. The team handled documentation, organised video tours and kept me informed at every step. I felt I had someone trustworthy on the ground.',
   },
   {
     name: 'Carlos S.',
-    location: 'Praia, Santiago',
-    text_pt: 'Processo rápido e transparente. Recomendo a quem procura um serviço sério.',
-    text_en: 'Fast and transparent process. I recommend it to anyone looking for serious service.',
+    context_pt: 'Comprador local',
+    context_en: 'Local buyer',
+    text_pt: 'O que mais me impressionou foi a clareza do processo. Desde o primeiro contacto à escritura, soube sempre o que esperar. Sem pressões, sem surpresas.',
+    text_en: 'What impressed me most was the clarity of the process. From first contact to completion, I always knew what to expect. No pressure, no surprises.',
   },
   {
     name: 'Marie D.',
-    location: 'Paris, France',
-    text_pt: 'Investir em Cabo Verde parecia complicado. A Idônea tornou tudo simples.',
-    text_en: 'Investing in Cape Verde seemed complicated. Idônea made everything simple.',
+    context_pt: 'Investidora internacional',
+    context_en: 'International investor',
+    text_pt: 'Investir em Cabo Verde parecia complexo à distância. A Idônea apresentou-me uma seleção criteriosa, acompanhou a negociação e geriu toda a parte legal com rigor. Um serviço discreto e muito profissional.',
+    text_en: 'Investing in Cape Verde seemed complex from abroad. Idônea presented a carefully curated selection, managed the negotiation and handled all legal aspects with rigour. A discreet and highly professional service.',
   },
 ];
 
@@ -27,32 +30,49 @@ const SocialProofSection = () => {
   const { lang, t } = useLanguage();
 
   return (
-    <section className="py-20 bg-secondary">
-      <div className="container mx-auto px-4">
-        <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground text-center mb-12">
-          {t('social.title')}
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <section className="py-24 bg-secondary">
+      <div className="container mx-auto px-4 max-w-5xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-16"
+        >
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+            {t('social.title')}
+          </h2>
+          <p className="text-muted-foreground font-body max-w-xl mx-auto">
+            {t('social.subtitle')}
+          </p>
+        </motion.div>
+
+        <div className="space-y-10">
           {testimonials.map((item, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="bg-card border border-border rounded-lg p-6"
+              transition={{ delay: i * 0.12, duration: 0.5 }}
+              className="relative bg-card/50 border border-border/60 rounded-xl p-8 md:p-10"
             >
-              <div className="flex gap-1 mb-4">
-                {[...Array(5)].map((_, j) => (
-                  <Star key={j} className="h-4 w-4 fill-primary text-primary" />
-                ))}
-              </div>
-              <p className="text-sm text-muted-foreground font-body leading-relaxed mb-4 italic">
+              <Quote className="absolute top-6 right-8 w-8 h-8 text-primary/15" />
+              <p className="text-muted-foreground font-body leading-relaxed text-[15px] mb-6">
                 "{lang === 'pt' ? item.text_pt : item.text_en}"
               </p>
-              <div>
-                <p className="text-sm font-semibold text-foreground font-body">{item.name}</p>
-                <p className="text-xs text-muted-foreground font-body">{item.location}</p>
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
+                  <span className="text-primary font-display text-sm font-bold">
+                    {item.name.charAt(0)}
+                  </span>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-foreground font-display">{item.name}</p>
+                  <p className="text-xs text-muted-foreground font-body">
+                    {lang === 'pt' ? item.context_pt : item.context_en}
+                  </p>
+                </div>
               </div>
             </motion.div>
           ))}

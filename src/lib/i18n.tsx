@@ -82,8 +82,8 @@ const translations: Record<Language, Record<string, string>> = {
     'diaspora.cta': 'Comprar à Distância',
     'diaspora.image.caption': 'O seu investimento em Cabo Verde, com acompanhamento real.',
 
-    // Social Proof
     'social.title': 'O que dizem os nossos clientes.',
+    'social.subtitle': 'Experiências reais de quem confiou na IDÓNEA para comprar, vender ou investir em Cabo Verde.',
 
     // Contact
     'contact.title': 'Entre em contacto.',
