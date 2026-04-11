@@ -67,6 +67,21 @@ const translations: Record<Language, Record<string, string>> = {
     'featured.bedrooms': 'quartos',
     'featured.bathrooms': 'casas de banho',
 
+    // Diaspora
+    'diaspora.eyebrow': 'Para a Diáspora',
+    'diaspora.title': 'Comprar em Cabo Verde, mesmo à distância.',
+    'diaspora.subtitle': 'Investir no seu país a partir do estrangeiro exige mais do que encontrar um bom imóvel. Exige processo, clareza e alguém local em quem confiar. Estamos cá por si.',
+    'diaspora.point.1.title': 'Acompanhamento à distância',
+    'diaspora.point.1.desc': 'Gerimos cada etapa no terreno, com comunicação regular e transparente.',
+    'diaspora.point.2.title': 'Video-tours e shortlist personalizada',
+    'diaspora.point.2.desc': 'Enviamos visitas em vídeo e uma seleção criteriosa, alinhada com o seu perfil.',
+    'diaspora.point.3.title': 'Apoio documental completo',
+    'diaspora.point.3.desc': 'Tratamos da documentação e articulamos com parceiros locais de confiança.',
+    'diaspora.point.4.title': 'Comunicação clara até ao fecho',
+    'diaspora.point.4.desc': 'Informamos em cada momento. Sem surpresas, sem dúvidas pendentes.',
+    'diaspora.cta': 'Comprar à Distância',
+    'diaspora.image.caption': 'O seu investimento em Cabo Verde, com acompanhamento real.',
+
     // Social Proof
     'social.title': 'O que dizem os nossos clientes.',
 
@@ -168,6 +183,21 @@ const translations: Record<Language, Record<string, string>> = {
     'featured.viewAll': 'View All Properties',
     'featured.bedrooms': 'bedrooms',
     'featured.bathrooms': 'bathrooms',
+
+    // Diaspora
+    'diaspora.eyebrow': 'For the Diaspora',
+    'diaspora.title': 'Buy in Cape Verde, from anywhere.',
+    'diaspora.subtitle': 'Investing in your country from abroad requires more than finding the right property. It requires process, clarity and someone local you can trust. We are here for you.',
+    'diaspora.point.1.title': 'Remote support',
+    'diaspora.point.1.desc': 'We manage every step on the ground, with regular and transparent communication.',
+    'diaspora.point.2.title': 'Video tours and curated shortlist',
+    'diaspora.point.2.desc': 'We send video viewings and a carefully selected shortlist, aligned with your profile.',
+    'diaspora.point.3.title': 'Full documentation support',
+    'diaspora.point.3.desc': 'We handle paperwork and coordinate with trusted local partners.',
+    'diaspora.point.4.title': 'Clear communication to completion',
+    'diaspora.point.4.desc': 'We keep you informed at every stage. No surprises, no loose ends.',
+    'diaspora.cta': 'Buy Remotely',
+    'diaspora.image.caption': 'Your investment in Cape Verde, with real support.',
 
     // Social Proof
     'social.title': 'What our clients say.',
