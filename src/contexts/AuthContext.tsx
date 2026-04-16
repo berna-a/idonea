@@ -13,6 +13,21 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const withTimeout = async <T,>(promise: Promise<T>, timeoutMs: number, message: string): Promise<T> => {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+  try {
+    return await Promise.race([
+      promise,
+      new Promise<T>((_, reject) => {
+        timeoutId = setTimeout(() => reject(new Error(message)), timeoutMs);
+      }),
+    ]);
+  } finally {
+    if (timeoutId) clearTimeout(timeoutId);
+  }
+};
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
@@ -21,8 +36,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const checkAdminRole = async (userId: string) => {
     try {
-      const { data, error } = await supabase
-        .rpc('has_role', { _user_id: userId, _role: 'admin' });
+      const { data, error } = await withTimeout(
+        supabase.rpc('has_role', { _user_id: userId, _role: 'admin' }),
+        5000,
+        'Admin role check timed out'
+      );
 
       if (error) {
         console.error('Failed to check admin role:', error.message);
@@ -38,17 +56,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const syncAuthState = async (nextSession: Session | null) => {
-    setSession(nextSession);
-    setUser(nextSession?.user ?? null);
+    try {
+      setSession(nextSession);
+      setUser(nextSession?.user ?? null);
 
-    if (!nextSession?.user) {
-      setIsAdmin(false);
+      if (!nextSession?.user) {
+        setIsAdmin(false);
+        return;
+      }
+
+      await checkAdminRole(nextSession.user.id);
+    } finally {
       setLoading(false);
-      return;
     }
-
-    await checkAdminRole(nextSession.user.id);
-    setLoading(false);
   };
 
   useEffect(() => {
