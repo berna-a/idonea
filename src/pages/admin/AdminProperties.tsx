@@ -124,8 +124,20 @@ const AdminProperties = () => {
         </div>
 
         {/* Content */}
-        {isLoading ? (
+        {(authLoading || isLoading) ? (
           <div className="text-center py-20 text-muted-foreground text-sm">A carregar imóveis…</div>
+        ) : error ? (
+          <div className="border border-destructive/30 rounded-lg py-16 flex flex-col items-center justify-center text-center">
+            <AlertCircle className="h-8 w-8 text-destructive mb-4" />
+            <h3 className="text-foreground font-medium mb-2">Erro ao carregar imóveis</h3>
+            <p className="text-sm text-muted-foreground mb-6 max-w-sm">
+              {(error as Error).message || 'Ocorreu um erro inesperado. Verifique as permissões ou tente novamente.'}
+            </p>
+            <Button variant="outline" onClick={() => refetch()} className="gap-2">
+              <RefreshCw className="h-4 w-4" />
+              Tentar novamente
+            </Button>
+          </div>
         ) : !properties || properties.length === 0 ? (
           <EmptyState onAdd={() => navigate('/admin/properties/new')} />
         ) : (
