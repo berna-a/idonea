@@ -13,12 +13,12 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const withTimeout = async <T,>(promise: Promise<T>, timeoutMs: number, message: string): Promise<T> => {
+const withTimeout = async <T,>(operation: () => Promise<T>, timeoutMs: number, message: string): Promise<T> => {
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
   try {
     return await Promise.race([
-      promise,
+      operation(),
       new Promise<T>((_, reject) => {
         timeoutId = setTimeout(() => reject(new Error(message)), timeoutMs);
       }),
@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const checkAdminRole = async (userId: string) => {
     try {
       const { data, error } = await withTimeout(
-        supabase.rpc('has_role', { _user_id: userId, _role: 'admin' }),
+        async () => await supabase.rpc('has_role', { _user_id: userId, _role: 'admin' }),
         5000,
         'Admin role check timed out'
       );
