@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import logo from '@/assets/logo.png';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -35,8 +36,8 @@ const AdminLogin = () => {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <div className="w-full max-w-sm space-y-8">
-        <div className="text-center space-y-2">
-          <h1 className="text-2xl font-light tracking-wide text-foreground">IDÓNEA</h1>
+        <div className="text-center space-y-3 flex flex-col items-center">
+          <img src={logo} alt="Idónea" className="h-16 w-auto object-contain" />
           <p className="text-sm text-muted-foreground tracking-wider uppercase">Backoffice</p>
         </div>
 
