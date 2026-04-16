@@ -181,13 +181,13 @@ const AdminProperties = () => {
                       <TableCell>
                         <div className="flex gap-1">
                           {property.is_featured && (
-                            <Star className="h-3.5 w-3.5 text-primary" title="Destaque" />
+                            <span title="Destaque"><Star className="h-3.5 w-3.5 text-primary" /></span>
                           )}
                           {property.is_idonea_selection && (
-                            <Award className="h-3.5 w-3.5 text-primary" title="Seleção IDÓNEA" />
+                            <span title="Seleção IDÓNEA"><Award className="h-3.5 w-3.5 text-primary" /></span>
                           )}
                           {property.is_investment && (
-                            <TrendingUp className="h-3.5 w-3.5 text-primary" title="Investimento" />
+                            <span title="Investimento"><TrendingUp className="h-3.5 w-3.5 text-primary" /></span>
                           )}
                         </div>
                       </TableCell>
