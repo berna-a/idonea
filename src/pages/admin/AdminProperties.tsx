@@ -67,8 +67,10 @@ const AdminProperties = () => {
   const formatPrice = (price: number) =>
     new Intl.NumberFormat('pt-CV', { style: 'currency', currency: 'CVE', maximumFractionDigits: 0 }).format(price);
 
-  const formatDate = (date: string) =>
-    new Date(date).toLocaleDateString('pt-PT', { day: '2-digit', month: 'short', year: 'numeric' });
+  const formatDate = (date?: string | null) => {
+    if (!date) return '—';
+    return new Date(date).toLocaleDateString('pt-PT', { day: '2-digit', month: 'short', year: 'numeric' });
+  };
 
   return (
     <AdminLayout>
