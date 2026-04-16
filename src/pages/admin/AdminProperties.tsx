@@ -10,6 +10,18 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Plus, Pencil, Building2, Star, Award, TrendingUp, AlertCircle, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+type AdminProperty = {
+  id: string;
+  ref: string | null;
+  title_pt: string | null;
+  island: string | null;
+  city_or_zone: string | null;
+  transaction_type: string | null;
+  price: number | string | null;
+  status: string | null;
+  updated_at: string;
+};
+
 const statusConfig: Record<string, { label: string; className: string }> = {
   draft: { label: 'Rascunho', className: 'bg-muted text-muted-foreground border-muted' },
   active: { label: 'Publicado', className: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' },
@@ -37,11 +49,7 @@ const AdminProperties = () => {
     queryFn: async () => {
       let query = supabase
         .from('properties')
-        .select(`
-          id, ref, title_pt, island, city_or_zone, transaction_type, property_type,
-          price, status, is_featured, is_idonea_selection, is_investment, updated_at,
-          property_images(url, is_main)
-        `)
+        .select('id, ref, title_pt, island, city_or_zone, transaction_type, price, status, updated_at')
         .order('updated_at', { ascending: false });
 
       if (statusFilter !== 'all') query = query.eq('status', statusFilter);
@@ -50,10 +58,10 @@ const AdminProperties = () => {
 
       const { data, error } = await query;
       if (error) throw error;
-      return data ?? [];
+      return (data ?? []) as AdminProperty[];
     },
     enabled: !authLoading && !!user,
-    retry: 1,
+    retry: false,
   });
 
   const formatPrice = (price: number) =>
@@ -61,11 +69,6 @@ const AdminProperties = () => {
 
   const formatDate = (date: string) =>
     new Date(date).toLocaleDateString('pt-PT', { day: '2-digit', month: 'short', year: 'numeric' });
-
-  const getMainImage = (images: { url: string; is_main: boolean }[] | null) => {
-    if (!images || images.length === 0) return null;
-    return images.find((img) => img.is_main)?.url || images[0]?.url;
-  };
 
   return (
     <AdminLayout>
@@ -159,35 +162,26 @@ const AdminProperties = () => {
               </TableHeader>
               <TableBody>
                 {properties.map((property) => {
-                  const mainImage = getMainImage(property.property_images as any);
-                  const status = statusConfig[property.status] || statusConfig.draft;
+                  const status = statusConfig[property.status || 'draft'] || statusConfig.draft;
                   return (
                     <TableRow key={property.id} className="group">
                       <TableCell className="py-2">
-                        {mainImage ? (
-                          <img
-                            src={mainImage}
-                            alt=""
-                            className="w-10 h-10 rounded object-cover bg-muted"
-                          />
-                        ) : (
-                          <div className="w-10 h-10 rounded bg-muted flex items-center justify-center">
-                            <Building2 className="h-4 w-4 text-muted-foreground" />
-                          </div>
-                        )}
+                        <div className="w-10 h-10 rounded bg-muted flex items-center justify-center">
+                          <Building2 className="h-4 w-4 text-muted-foreground" />
+                        </div>
                       </TableCell>
-                      <TableCell className="font-mono text-xs text-muted-foreground">{property.ref}</TableCell>
+                      <TableCell className="font-mono text-xs text-muted-foreground">{property.ref || '—'}</TableCell>
                       <TableCell className="font-medium text-foreground max-w-[200px] truncate">
-                        {property.title_pt}
+                        {property.title_pt || 'Sem título'}
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground">
-                        {property.island} · {property.city_or_zone}
+                        {[property.island, property.city_or_zone].filter(Boolean).join(' · ') || 'Localização não definida'}
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground">
-                        {transactionLabels[property.transaction_type] || property.transaction_type}
+                        {transactionLabels[property.transaction_type || ''] || property.transaction_type || '—'}
                       </TableCell>
                       <TableCell className="text-right font-medium text-foreground">
-                        {formatPrice(Number(property.price))}
+                        {property.price ? formatPrice(Number(property.price)) : 'Sob consulta'}
                       </TableCell>
                       <TableCell>
                         <Badge variant="outline" className={`text-[11px] ${status.className}`}>
@@ -195,16 +189,10 @@ const AdminProperties = () => {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <div className="flex gap-1">
-                          {property.is_featured && (
-                            <span title="Destaque"><Star className="h-3.5 w-3.5 text-primary" /></span>
-                          )}
-                          {property.is_idonea_selection && (
-                            <span title="Seleção IDÓNEA"><Award className="h-3.5 w-3.5 text-primary" /></span>
-                          )}
-                          {property.is_investment && (
-                            <span title="Investimento"><TrendingUp className="h-3.5 w-3.5 text-primary" /></span>
-                          )}
+                        <div className="flex gap-1 text-muted-foreground">
+                          <span title="Destaques serão reativados na próxima fase"><Star className="h-3.5 w-3.5 opacity-30" /></span>
+                          <span title="Seleção IDÓNEA será reativada na próxima fase"><Award className="h-3.5 w-3.5 opacity-30" /></span>
+                          <span title="Investimento será reativado na próxima fase"><TrendingUp className="h-3.5 w-3.5 opacity-30" /></span>
                         </div>
                       </TableCell>
                       <TableCell className="text-xs text-muted-foreground">
