@@ -44,6 +44,11 @@ const App = () => (
                   <AdminDashboard />
                 </ProtectedRoute>
               } />
+              <Route path="/admin/properties" element={
+                <ProtectedRoute>
+                  <AdminProperties />
+                </ProtectedRoute>
+              } />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
