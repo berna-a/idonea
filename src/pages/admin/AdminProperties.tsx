@@ -27,12 +27,13 @@ const ISLANDS = ['Santiago', 'Santo Antão', 'São Vicente', 'Sal', 'Boa Vista',
 
 const AdminProperties = () => {
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [transactionFilter, setTransactionFilter] = useState<string>('all');
   const [islandFilter, setIslandFilter] = useState<string>('all');
 
-  const { data: properties, isLoading } = useQuery({
-    queryKey: ['admin-properties', statusFilter, transactionFilter, islandFilter],
+  const { data: properties, isLoading, error, refetch } = useQuery({
+    queryKey: ['admin-properties', statusFilter, transactionFilter, islandFilter, user?.id],
     queryFn: async () => {
       let query = supabase
         .from('properties')
@@ -49,8 +50,10 @@ const AdminProperties = () => {
 
       const { data, error } = await query;
       if (error) throw error;
-      return data;
+      return data ?? [];
     },
+    enabled: !authLoading && !!user,
+    retry: 1,
   });
 
   const formatPrice = (price: number) =>
