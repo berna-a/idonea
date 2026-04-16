@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Plus, Pencil, Building2, Star, Award, TrendingUp } from 'lucide-react';
+import { Plus, Pencil, Building2, Star, Award, TrendingUp, AlertCircle, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const statusConfig: Record<string, { label: string; className: string }> = {
@@ -26,12 +27,13 @@ const ISLANDS = ['Santiago', 'Santo Antão', 'São Vicente', 'Sal', 'Boa Vista',
 
 const AdminProperties = () => {
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [transactionFilter, setTransactionFilter] = useState<string>('all');
   const [islandFilter, setIslandFilter] = useState<string>('all');
 
-  const { data: properties, isLoading } = useQuery({
-    queryKey: ['admin-properties', statusFilter, transactionFilter, islandFilter],
+  const { data: properties, isLoading, error, refetch } = useQuery({
+    queryKey: ['admin-properties', statusFilter, transactionFilter, islandFilter, user?.id],
     queryFn: async () => {
       let query = supabase
         .from('properties')
@@ -48,8 +50,10 @@ const AdminProperties = () => {
 
       const { data, error } = await query;
       if (error) throw error;
-      return data;
+      return data ?? [];
     },
+    enabled: !authLoading && !!user,
+    retry: 1,
   });
 
   const formatPrice = (price: number) =>
@@ -120,8 +124,20 @@ const AdminProperties = () => {
         </div>
 
         {/* Content */}
-        {isLoading ? (
+        {(authLoading || isLoading) ? (
           <div className="text-center py-20 text-muted-foreground text-sm">A carregar imóveis…</div>
+        ) : error ? (
+          <div className="border border-destructive/30 rounded-lg py-16 flex flex-col items-center justify-center text-center">
+            <AlertCircle className="h-8 w-8 text-destructive mb-4" />
+            <h3 className="text-foreground font-medium mb-2">Erro ao carregar imóveis</h3>
+            <p className="text-sm text-muted-foreground mb-6 max-w-sm">
+              {(error as Error).message || 'Ocorreu um erro inesperado. Verifique as permissões ou tente novamente.'}
+            </p>
+            <Button variant="outline" onClick={() => refetch()} className="gap-2">
+              <RefreshCw className="h-4 w-4" />
+              Tentar novamente
+            </Button>
+          </div>
         ) : !properties || properties.length === 0 ? (
           <EmptyState onAdd={() => navigate('/admin/properties/new')} />
         ) : (
