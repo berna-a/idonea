@@ -225,14 +225,28 @@ const AdminPropertyNew = () => {
         }
       }
 
-      if (failedUploads.length > 0) {
+      // Safety: if publishing and ALL image uploads failed, downgrade to draft
+      let finalStatus: 'draft' | 'active' = publishStatus;
+      if (publishStatus === 'active' && images.length > 0 && uploadedRows.length === 0) {
+        stage = 'reverter para rascunho';
+        const { error: downgradeErr } = await supabase
+          .from('properties')
+          .update({ status: 'draft' })
+          .eq('id', propertyId);
+        if (!downgradeErr) finalStatus = 'draft';
+        toast({
+          title: 'Publicação revertida para rascunho',
+          description: 'Nenhuma imagem foi carregada com sucesso. O imóvel foi guardado como rascunho para evitar publicação sem imagens.',
+          variant: 'destructive',
+        });
+      } else if (failedUploads.length > 0) {
         toast({
           title: 'Imóvel criado com avisos',
           description: `${uploadedRows.length}/${images.length} imagens carregadas. Falharam: ${failedUploads.map((f) => `#${f.index}`).join(', ')}.`,
         });
       } else {
         toast({
-          title: publishStatus === 'active' ? 'Imóvel publicado' : 'Rascunho guardado',
+          title: finalStatus === 'active' ? 'Imóvel publicado' : 'Rascunho guardado',
           description: `${titleClean} (${autoRef}) foi guardado com sucesso.`,
         });
       }
