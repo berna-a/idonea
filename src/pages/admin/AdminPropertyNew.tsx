@@ -19,15 +19,18 @@ type FeatureRow = { key: string; value_pt: string; value_en: string; sort_order:
 type HighlightRow = { title_pt: string; title_en: string; description_pt: string; description_en: string; sort_order: number };
 type ImageRow = { file: File; preview: string; alt_pt: string; alt_en: string; is_main: boolean };
 
-const Section = ({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) => (
-  <Card className="p-6 bg-card border-border">
-    <div className="mb-5">
-      <h3 className="text-base font-medium text-foreground">{title}</h3>
-      {description && <p className="text-xs text-muted-foreground mt-1">{description}</p>}
-    </div>
-    <div className="space-y-4">{children}</div>
-  </Card>
+const Section = forwardRef<HTMLDivElement, { title: string; description?: string; children: React.ReactNode }>(
+  ({ title, description, children }, ref) => (
+    <Card ref={ref} className="p-6 bg-card border-border">
+      <div className="mb-5">
+        <h3 className="text-base font-medium text-foreground">{title}</h3>
+        {description && <p className="text-xs text-muted-foreground mt-1">{description}</p>}
+      </div>
+      <div className="space-y-4">{children}</div>
+    </Card>
+  )
 );
+Section.displayName = 'Section';
 
 const Field = ({ label, children, hint }: { label: string; children: React.ReactNode; hint?: string }) => (
   <div className="space-y-1.5">
@@ -36,6 +39,15 @@ const Field = ({ label, children, hint }: { label: string; children: React.React
     {hint && <p className="text-[11px] text-muted-foreground">{hint}</p>}
   </div>
 );
+
+const uploadWithTimeout = async (path: string, file: File, timeoutMs = 30000) => {
+  return await Promise.race([
+    supabase.storage.from('property-images').upload(path, file, { cacheControl: '3600', upsert: false }),
+    new Promise<{ error: Error }>((resolve) =>
+      setTimeout(() => resolve({ error: new Error(`Upload demorou mais de ${timeoutMs / 1000}s`) }), timeoutMs)
+    ),
+  ]);
+};
 
 const AdminPropertyNew = () => {
   const navigate = useNavigate();
