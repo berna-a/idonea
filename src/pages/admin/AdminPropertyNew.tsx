@@ -406,24 +406,13 @@ const AdminPropertyNew = () => {
             </div>
           </Section>
 
-          {/* 4. Estado */}
-          <Section title="Estado do imóvel">
-            <Field label="Estado">
-              <Select value={status} onValueChange={(v) => setStatus(v as any)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="draft">Rascunho</SelectItem>
-                  <SelectItem value="active">Ativo</SelectItem>
-                  <SelectItem value="reserved">Reservado</SelectItem>
-                  <SelectItem value="sold">Vendido</SelectItem>
-                  <SelectItem value="archived">Arquivado</SelectItem>
-                </SelectContent>
-              </Select>
-            </Field>
-            <p className="text-[11px] text-muted-foreground">
-              Nota: os botões "Guardar rascunho" e "Publicar" definem o estado automaticamente. Use este campo apenas para outros estados.
+          {/* 4. Aviso publicação */}
+          <Card className="p-4 bg-muted/20 border-border flex gap-3">
+            <AlertTriangle className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              O estado é definido pelos botões abaixo: <span className="text-foreground">Guardar rascunho</span> cria como rascunho, <span className="text-foreground">Publicar</span> torna o imóvel ativo. Outros estados (reservado, vendido, arquivado) serão geridos mais tarde na edição do imóvel.
             </p>
-          </Section>
+          </Card>
 
           {/* 5. Imagens */}
           <Section title="Imagens" description="Carregue a imagem principal e galeria. Pode definir qual é a principal.">
