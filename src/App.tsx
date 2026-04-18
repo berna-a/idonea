@@ -18,6 +18,7 @@ import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminProperties from "./pages/admin/AdminProperties";
+import AdminPropertyNew from "./pages/admin/AdminPropertyNew";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,11 @@ const App = () => (
               <Route path="/admin/properties" element={
                 <ProtectedRoute>
                   <AdminProperties />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/properties/new" element={
+                <ProtectedRoute>
+                  <AdminPropertyNew />
                 </ProtectedRoute>
               } />
               <Route path="*" element={<NotFound />} />
