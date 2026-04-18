@@ -168,8 +168,12 @@ const AdminPropertyNew = () => {
     }
 
     setSubmitting(true);
+    let propertyId: string | null = null;
+    let stage = 'iniciar';
+
     try {
-      // 1. Insert property
+      stage = 'criar imóvel';
+      console.log('[submit] 1/4 inserting property…');
       const { data: property, error: propError } = await supabase
         .from('properties')
         .insert({
@@ -203,11 +207,13 @@ const AdminPropertyNew = () => {
         .single();
 
       if (propError) throw propError;
-      const propertyId = property.id;
+      propertyId = property.id;
+      console.log('[submit] property created:', propertyId);
 
-      // 2. Insert features
       const validFeatures = features.filter((f) => f.key.trim() && f.value_pt.trim() && f.value_en.trim());
       if (validFeatures.length) {
+        stage = 'gravar características';
+        console.log('[submit] 2/4 inserting features:', validFeatures.length);
         const { error } = await supabase.from('property_features').insert(
           validFeatures.map((f, idx) => ({
             property_id: propertyId,
@@ -220,11 +226,12 @@ const AdminPropertyNew = () => {
         if (error) throw error;
       }
 
-      // 3. Insert highlights
       const validHighlights = highlights.filter(
         (h) => h.title_pt.trim() && h.title_en.trim() && h.description_pt.trim() && h.description_en.trim()
       );
       if (validHighlights.length) {
+        stage = 'gravar destaques';
+        console.log('[submit] 3/4 inserting highlights:', validHighlights.length);
         const { error } = await supabase.from('property_highlights').insert(
           validHighlights.map((h, idx) => ({
             property_id: propertyId,
@@ -238,18 +245,24 @@ const AdminPropertyNew = () => {
         if (error) throw error;
       }
 
-      // 4. Upload images
+      // 4. Upload images — RESILIENT: continue on per-file failure
+      const failedUploads: { index: number; reason: string }[] = [];
+      const uploadedRows: { url: string; alt_pt: string | null; alt_en: string | null; is_main: boolean; sort_order: number }[] = [];
+
       if (images.length) {
-        const uploadedRows: { url: string; alt_pt: string | null; alt_en: string | null; is_main: boolean; sort_order: number }[] = [];
+        stage = 'carregar imagens';
+        console.log('[submit] 4/4 uploading images:', images.length);
         for (let i = 0; i < images.length; i++) {
           const img = images[i];
-          const ext = img.file.name.split('.').pop() || 'jpg';
+          const ext = (img.file.name.split('.').pop() || 'jpg').toLowerCase();
           const path = `${propertyId}/${Date.now()}-${i}.${ext}`;
-          const { error: upErr } = await supabase.storage.from('property-images').upload(path, img.file, {
-            cacheControl: '3600',
-            upsert: false,
-          });
-          if (upErr) throw upErr;
+          console.log(`[submit] uploading image ${i + 1}/${images.length}…`);
+          const { error: upErr } = await uploadWithTimeout(path, img.file);
+          if (upErr) {
+            console.error(`[submit] image ${i + 1} failed:`, upErr.message);
+            failedUploads.push({ index: i + 1, reason: upErr.message });
+            continue;
+          }
           const { data: pub } = supabase.storage.from('property-images').getPublicUrl(path);
           uploadedRows.push({
             url: pub.publicUrl,
@@ -259,20 +272,51 @@ const AdminPropertyNew = () => {
             sort_order: i,
           });
         }
-        const { error: imgErr } = await supabase
-          .from('property_images')
-          .insert(uploadedRows.map((r) => ({ property_id: propertyId, ...r })));
-        if (imgErr) throw imgErr;
+
+        if (uploadedRows.length && !uploadedRows.some((r) => r.is_main)) {
+          uploadedRows[0].is_main = true;
+        }
+
+        if (uploadedRows.length) {
+          stage = 'gravar registos de imagens';
+          console.log('[submit] inserting property_images rows:', uploadedRows.length);
+          const { error: imgErr } = await supabase
+            .from('property_images')
+            .insert(uploadedRows.map((r) => ({ property_id: propertyId, ...r })));
+          if (imgErr) {
+            console.error('[submit] property_images insert failed:', imgErr.message);
+            toast({
+              title: 'Imóvel criado, mas registos de imagens falharam',
+              description: imgErr.message,
+              variant: 'destructive',
+            });
+          }
+        }
       }
 
-      toast({
-        title: status === 'active' ? 'Imóvel publicado' : 'Rascunho guardado',
-        description: `${titlePt} foi guardado com sucesso.`,
-      });
+      if (failedUploads.length > 0) {
+        toast({
+          title: 'Imóvel criado com avisos',
+          description: `${uploadedRows.length}/${images.length} imagens carregadas. Falharam: ${failedUploads.map((f) => `#${f.index}`).join(', ')}.`,
+        });
+      } else {
+        toast({
+          title: status === 'active' ? 'Imóvel publicado' : 'Rascunho guardado',
+          description: `${titlePt} foi guardado com sucesso.`,
+        });
+      }
+
       navigate('/admin/properties');
     } catch (e) {
-      const message = e instanceof Error ? e.message : 'Erro desconhecido ao guardar imóvel.';
-      toast({ title: 'Erro ao guardar', description: message, variant: 'destructive' });
+      const message = e instanceof Error ? e.message : 'Erro desconhecido.';
+      console.error(`[submit] failed at stage "${stage}":`, e);
+      toast({
+        title: `Erro ao ${stage}`,
+        description: propertyId
+          ? `Imóvel criado (id ${propertyId.slice(0, 8)}…), mas falhou: ${message}`
+          : message,
+        variant: 'destructive',
+      });
     } finally {
       setSubmitting(false);
     }
