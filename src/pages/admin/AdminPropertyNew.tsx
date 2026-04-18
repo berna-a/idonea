@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card } from '@/components/ui/card';
-import { ArrowLeft, X, Save, Send, Upload, Loader2, ChevronUp, ChevronDown, Star } from 'lucide-react';
+import { ArrowLeft, X, Save, Send, Upload, Loader2, ChevronUp, ChevronDown, Star, AlertTriangle } from 'lucide-react';
 
 const ISLANDS = ['Santiago', 'Santo Antão', 'São Vicente', 'Sal', 'Boa Vista', 'Fogo', 'Brava', 'Maio', 'São Nicolau'];
 
@@ -86,9 +86,6 @@ const AdminPropertyNew = () => {
   const [isInvestment, setIsInvestment] = useState(false);
   const [isOwnUse, setIsOwnUse] = useState(false);
   const [isSecondHome, setIsSecondHome] = useState(false);
-
-  // Status
-  const [status, setStatus] = useState<'draft' | 'active' | 'reserved' | 'sold' | 'archived'>('draft');
 
   // Images
   const [images, setImages] = useState<ImageRow[]>([]);
