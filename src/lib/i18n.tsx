@@ -296,9 +296,11 @@ const translations: Record<Language, Record<string, string>> = {
     'props.location': 'Location',
     'props.description': 'Description',
     'props.price.month': '/month',
-    'props.noResults': 'No properties found with the selected filters.',
-    'props.cta.title': 'Haven\'t found the right property?',
-    'props.cta.subtitle': 'Tell us what you\'re looking for. We identify opportunities aligned with your profile, even before they reach our portfolio.',
+    'props.noResults.title': 'No matches for this selection.',
+    'props.noResults': 'Adjust the filters, or talk to us — we often identify opportunities before they reach the portfolio.',
+    'props.noResults.cta': 'Talk to IDÓNEA',
+    'props.cta.title': 'Looking for something specific?',
+    'props.cta.subtitle': 'Tell us your goal. We present only opportunities aligned with your profile — including properties not yet listed.',
 
     // Property detail
     'detail.area': 'Area',
