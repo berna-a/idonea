@@ -278,6 +278,7 @@ const PropertyForm = ({ mode, initial }: PropertyFormProps) => {
           is_second_home: isSecondHome,
           ideal_for_pt: [],
           ideal_for_en: [],
+          ...locationPayload(),
         })
         .select('id')
         .single();
