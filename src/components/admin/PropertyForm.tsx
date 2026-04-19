@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card } from '@/components/ui/card';
 import {
   ArrowLeft, X, Save, Send, Upload, Loader2, ChevronUp, ChevronDown, Star, AlertTriangle,
+  MapPin, ExternalLink, Lock,
 } from 'lucide-react';
 
 const ISLANDS = ['Santiago', 'Santo Antão', 'São Vicente', 'Sal', 'Boa Vista', 'Fogo', 'Brava', 'Maio', 'São Nicolau'];
@@ -38,6 +39,11 @@ export type PropertyInitialData = {
   bedrooms?: string;
   bathrooms?: string;
   parking?: string;
+  neighborhood?: string;
+  address_full?: string;
+  map_url?: string;
+  latitude?: string;
+  longitude?: string;
   description?: string;
   editorial?: string;
   is_featured?: boolean;
@@ -114,6 +120,12 @@ const PropertyForm = ({ mode, initial }: PropertyFormProps) => {
   const [bedrooms, setBedrooms] = useState(initial?.bedrooms ?? '0');
   const [bathrooms, setBathrooms] = useState(initial?.bathrooms ?? '0');
   const [parking, setParking] = useState(initial?.parking ?? '');
+
+  const [neighborhood, setNeighborhood] = useState(initial?.neighborhood ?? '');
+  const [addressFull, setAddressFull] = useState(initial?.address_full ?? '');
+  const [mapUrl, setMapUrl] = useState(initial?.map_url ?? '');
+  const [latitude, setLatitude] = useState(initial?.latitude ?? '');
+  const [longitude, setLongitude] = useState(initial?.longitude ?? '');
 
   const [description, setDescription] = useState(initial?.description ?? '');
   const [editorial, setEditorial] = useState(initial?.editorial ?? '');
@@ -203,9 +215,22 @@ const PropertyForm = ({ mode, initial }: PropertyFormProps) => {
     if (!island.trim()) return 'A ilha é obrigatória.';
     if (!cityOrZone.trim()) return 'A zona/cidade é obrigatória.';
     if (!price || isNaN(Number(price))) return 'O preço deve ser um número válido.';
+    if (mapUrl.trim() && !/^https?:\/\//i.test(mapUrl.trim())) {
+      return 'O link de mapa deve começar por http:// ou https://';
+    }
+    if (latitude.trim() && isNaN(Number(latitude))) return 'Latitude inválida.';
+    if (longitude.trim() && isNaN(Number(longitude))) return 'Longitude inválida.';
     if (asActive && totalImageCount === 0) return 'Para publicar, adicione pelo menos uma imagem.';
     return null;
   };
+
+  const locationPayload = () => ({
+    neighborhood: neighborhood.trim() || null,
+    address_full: addressFull.trim() || null,
+    map_url: mapUrl.trim() || null,
+    latitude: latitude.trim() ? Number(latitude) : null,
+    longitude: longitude.trim() ? Number(longitude) : null,
+  });
 
   const submitCreate = async (publishStatus: 'draft' | 'active') => {
     const err = validate(publishStatus === 'active');
@@ -253,6 +278,7 @@ const PropertyForm = ({ mode, initial }: PropertyFormProps) => {
           is_second_home: isSecondHome,
           ideal_for_pt: [],
           ideal_for_en: [],
+          ...locationPayload(),
         })
         .select('id')
         .single();
@@ -369,6 +395,7 @@ const PropertyForm = ({ mode, initial }: PropertyFormProps) => {
           is_investment: isInvestment,
           is_own_use: isOwnUse,
           is_second_home: isSecondHome,
+          ...locationPayload(),
         })
         .eq('id', initial.id);
 
@@ -547,6 +574,78 @@ const PropertyForm = ({ mode, initial }: PropertyFormProps) => {
           <Field label="Editorial" hint="Texto narrativo, mais cuidado, para a página do imóvel.">
             <Textarea value={editorial} onChange={(e) => setEditorial(e.target.value)} rows={5} placeholder="Texto editorial…" />
           </Field>
+        </Section>
+
+        <Section
+          title="Localização operacional"
+          description="Bairro pode ser usado publicamente. Morada, link de mapa e coordenadas são internos e não aparecem no website."
+        >
+          <Field label="Bairro / zona" hint="Ex: Achada Santo António, Palmarejo Baixo. Pode aparecer no público.">
+            <Input
+              value={neighborhood}
+              onChange={(e) => setNeighborhood(e.target.value)}
+              placeholder="Achada Santo António"
+            />
+          </Field>
+
+          <div className="rounded-md border border-border bg-muted/20 p-4 space-y-4">
+            <div className="flex items-center gap-2 text-[11px] uppercase tracking-wider text-muted-foreground">
+              <Lock className="h-3 w-3" />
+              Apenas para uso interno — não aparece no website
+            </div>
+
+            <Field label="Morada completa" hint="Visível apenas no admin. Útil para visitas e operação.">
+              <Textarea
+                value={addressFull}
+                onChange={(e) => setAddressFull(e.target.value)}
+                rows={2}
+                placeholder="Rua, número, andar, ponto de referência…"
+              />
+            </Field>
+
+            <Field label="Link de mapa" hint="Cole um link do Google Maps ou Apple Maps.">
+              <div className="flex gap-2">
+                <Input
+                  value={mapUrl}
+                  onChange={(e) => setMapUrl(e.target.value)}
+                  placeholder="https://maps.google.com/?q=..."
+                  className="flex-1"
+                />
+                {mapUrl.trim() && /^https?:\/\//i.test(mapUrl.trim()) && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => window.open(mapUrl.trim(), '_blank', 'noopener,noreferrer')}
+                    className="gap-1.5 shrink-0"
+                  >
+                    <MapPin className="h-3.5 w-3.5" />
+                    Abrir
+                    <ExternalLink className="h-3 w-3 opacity-60" />
+                  </Button>
+                )}
+              </div>
+            </Field>
+
+            <div className="grid grid-cols-2 gap-4">
+              <Field label="Latitude" hint="Opcional. Ex: 14.9177">
+                <Input
+                  value={latitude}
+                  onChange={(e) => setLatitude(e.target.value)}
+                  placeholder="14.9177"
+                  inputMode="decimal"
+                />
+              </Field>
+              <Field label="Longitude" hint="Opcional. Ex: -23.5092">
+                <Input
+                  value={longitude}
+                  onChange={(e) => setLongitude(e.target.value)}
+                  placeholder="-23.5092"
+                  inputMode="decimal"
+                />
+              </Field>
+            </div>
+          </div>
         </Section>
 
         <Section title="Destaques editoriais" description="Marcações manuais que controlam onde o imóvel aparece.">

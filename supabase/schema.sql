@@ -42,9 +42,21 @@ CREATE TABLE public.properties (
   is_second_home BOOLEAN NOT NULL DEFAULT false,
   ideal_for_pt TEXT[] DEFAULT '{}',
   ideal_for_en TEXT[] DEFAULT '{}',
+  -- Localização operacional
+  neighborhood TEXT,                 -- bairro/zona (pode ser usado publicamente)
+  address_full TEXT,                 -- morada completa (PRIVADO)
+  map_url TEXT,                      -- link Google/Apple Maps (PRIVADO)
+  latitude NUMERIC,                  -- (PRIVADO, opcional)
+  longitude NUMERIC,                 -- (PRIVADO, opcional)
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- Reforço de privacidade: revogar SELECT das colunas privadas ao role anon.
+REVOKE SELECT (address_full, map_url, latitude, longitude)
+  ON public.properties FROM anon;
+GRANT SELECT (address_full, map_url, latitude, longitude)
+  ON public.properties TO authenticated;
 
 -- Auto-update updated_at
 CREATE OR REPLACE FUNCTION public.handle_updated_at()
