@@ -19,6 +19,7 @@ import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminProperties from "./pages/admin/AdminProperties";
 import AdminPropertyNew from "./pages/admin/AdminPropertyNew";
+import AdminPropertyEdit from "./pages/admin/AdminPropertyEdit";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,11 @@ const App = () => (
               <Route path="/admin/properties/new" element={
                 <ProtectedRoute>
                   <AdminPropertyNew />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/properties/:id/edit" element={
+                <ProtectedRoute>
+                  <AdminPropertyEdit />
                 </ProtectedRoute>
               } />
               <Route path="*" element={<NotFound />} />
