@@ -395,6 +395,7 @@ const PropertyForm = ({ mode, initial }: PropertyFormProps) => {
           is_investment: isInvestment,
           is_own_use: isOwnUse,
           is_second_home: isSecondHome,
+          ...locationPayload(),
         })
         .eq('id', initial.id);
 
