@@ -174,10 +174,10 @@ const AddressAutocomplete = ({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
         />
-        <div className="flex items-start gap-2 text-[11px] text-amber-600 dark:text-amber-500">
+        <div className="flex items-start gap-2 text-[11px] text-muted-foreground">
           <AlertCircle className="h-3.5 w-3.5 mt-0.5 shrink-0" />
           <span>
-            Autocomplete inativo — falta configurar <code className="font-mono">VITE_MAPBOX_TOKEN</code> nas
+            Autocomplete inativo — falta configurar <code className="font-mono text-foreground">VITE_MAPBOX_TOKEN</code> nas
             variáveis de ambiente. A morada pode ser introduzida manualmente.
           </span>
         </div>
