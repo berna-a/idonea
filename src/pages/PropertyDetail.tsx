@@ -1,31 +1,72 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { useLanguage } from '@/lib/i18n';
-import { sampleProperties, PropertyTag } from '@/lib/sampleProperties';
+import { PropertyTag } from '@/lib/sampleProperties';
+import { fetchPropertyById, fetchSimilarProperties } from '@/lib/propertyAdapter';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 import {
   ArrowLeft, Bed, Bath, Maximize, MapPin, MessageCircle,
-  ChevronLeft, ChevronRight, Star, Users, Shield, FileCheck, Handshake, CheckCircle2,
-  CalendarCheck, Phone,
+  ChevronLeft, ChevronRight, Users, Shield, FileCheck, Handshake, CheckCircle2,
+  CalendarCheck, Phone, ImageOff,
 } from 'lucide-react';
 
 const PropertyDetail = () => {
   const { id } = useParams();
-  const { lang, t } = useLanguage();
-  const property = sampleProperties.find(p => p.id === id);
+  const { t } = useLanguage();
   const [activeImage, setActiveImage] = useState(0);
 
-  if (!property) {
+  const { data: property, isLoading, isError } = useQuery({
+    queryKey: ['public-property', id],
+    queryFn: () => fetchPropertyById(id!),
+    enabled: !!id,
+  });
+
+  const { data: similar = [] } = useQuery({
+    queryKey: ['public-property-similar', property?.id],
+    queryFn: () => fetchSimilarProperties(property!.id, property!.island, property!.type, 3),
+    enabled: !!property,
+  });
+
+  // Loading state
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
-        <div className="pt-24 container mx-auto px-4 text-center">
-          <p className="text-muted-foreground font-body">Property not found.</p>
-          <Button asChild variant="outline" className="mt-4 font-body">
+        <main className="pt-20 pb-20">
+          <div className="container mx-auto px-4">
+            <Skeleton className="h-4 w-24 mb-6" />
+            <Skeleton className="aspect-[16/9] max-h-[560px] w-full rounded-xl mb-10" />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+              <div className="lg:col-span-2 space-y-6">
+                <Skeleton className="h-10 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
+                <Skeleton className="h-32 w-full" />
+              </div>
+              <Skeleton className="h-64 w-full rounded-xl" />
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Not found / error
+  if (isError || !property) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="pt-24 container mx-auto px-4 text-center min-h-[40vh] flex flex-col items-center justify-center">
+          <p className="text-muted-foreground font-body mb-4">
+            {isError ? 'Não foi possível carregar este imóvel.' : 'Imóvel não encontrado.'}
+          </p>
+          <Button asChild variant="outline" className="font-body">
             <Link to="/properties">{t('props.back')}</Link>
           </Button>
         </div>
@@ -34,9 +75,9 @@ const PropertyDetail = () => {
     );
   }
 
-  const title = lang === 'pt' ? property.title_pt : property.title_en;
-  const editorial = lang === 'pt' ? property.editorial_pt : property.editorial_en;
-  const idealFor = lang === 'pt' ? property.idealFor_pt : property.idealFor_en;
+  const title = property.title_pt;
+  const editorial = property.editorial_pt;
+  const idealFor = property.idealFor_pt;
 
   const formatPrice = (price: number, type: 'sale' | 'rent') => {
     const formatted = new Intl.NumberFormat('pt-CV', { style: 'currency', currency: 'CVE', minimumFractionDigits: 0 }).format(price);
@@ -45,19 +86,14 @@ const PropertyDetail = () => {
 
   const tagLabel = (tag: PropertyTag) => t(`detail.tag.${tag}`);
 
-  const whatsappMsg = encodeURIComponent(lang === 'pt'
-    ? `Olá, tenho interesse no imóvel ${property.ref}: ${title}`
-    : `Hello, I'm interested in property ${property.ref}: ${title}`);
+  const whatsappMsg = encodeURIComponent(`Olá, tenho interesse no imóvel ${property.ref}: ${title}`);
   const whatsappUrl = `https://wa.me/2389808947?text=${whatsappMsg}`;
 
   const images = property.images.length > 0 ? property.images : [property.image];
+  const hasImages = images.some(Boolean);
 
   const prevImage = () => setActiveImage(i => (i === 0 ? images.length - 1 : i - 1));
   const nextImage = () => setActiveImage(i => (i === images.length - 1 ? 0 : i + 1));
-
-  const similar = sampleProperties
-    .filter(p => p.id !== property.id && (p.island === property.island || p.type === property.type))
-    .slice(0, 3);
 
   const processSteps = [
     { icon: Phone, key: 'detail.process.1' },
@@ -84,11 +120,17 @@ const PropertyDetail = () => {
             transition={{ duration: 0.5 }}
             className="relative rounded-xl overflow-hidden mb-10 aspect-[16/9] max-h-[560px] bg-card"
           >
-            <img
-              src={images[activeImage]}
-              alt={title}
-              className="w-full h-full object-cover transition-opacity duration-300"
-            />
+            {hasImages ? (
+              <img
+                src={images[activeImage]}
+                alt={title}
+                className="w-full h-full object-cover transition-opacity duration-300"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                <ImageOff className="h-12 w-12" strokeWidth={1.5} />
+              </div>
+            )}
             {images.length > 1 && (
               <>
                 <button
@@ -112,21 +154,18 @@ const PropertyDetail = () => {
                     />
                   ))}
                 </div>
+                <div className="absolute bottom-4 right-4 hidden md:flex gap-2">
+                  {images.map((img, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setActiveImage(i)}
+                      className={`w-16 h-12 rounded-md overflow-hidden border-2 transition-colors ${i === activeImage ? 'border-primary' : 'border-transparent opacity-70 hover:opacity-100'}`}
+                    >
+                      <img src={img} alt="" className="w-full h-full object-cover" />
+                    </button>
+                  ))}
+                </div>
               </>
-            )}
-            {/* Thumbnails */}
-            {images.length > 1 && (
-              <div className="absolute bottom-4 right-4 hidden md:flex gap-2">
-                {images.map((img, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActiveImage(i)}
-                    className={`w-16 h-12 rounded-md overflow-hidden border-2 transition-colors ${i === activeImage ? 'border-primary' : 'border-transparent opacity-70 hover:opacity-100'}`}
-                  >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
-                  </button>
-                ))}
-              </div>
             )}
           </motion.div>
 
@@ -154,7 +193,6 @@ const PropertyDetail = () => {
                 <p className="text-2xl font-bold text-primary font-display lg:hidden mb-4">
                   {formatPrice(property.price, property.type)}
                 </p>
-                {/* Tags */}
                 {property.tags.length > 0 && (
                   <div className="flex flex-wrap gap-2">
                     {property.tags.map(tag => (
@@ -166,14 +204,16 @@ const PropertyDetail = () => {
                 )}
               </motion.div>
 
-              {/* Editorial Description */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-              >
-                <p className="text-muted-foreground font-body leading-relaxed text-[15px]">{editorial}</p>
-              </motion.div>
+              {/* Editorial */}
+              {editorial && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                >
+                  <p className="text-muted-foreground font-body leading-relaxed text-[15px] whitespace-pre-line">{editorial}</p>
+                </motion.div>
+              )}
 
               {/* Ideal For */}
               {idealFor.length > 0 && (
@@ -218,53 +258,28 @@ const PropertyDetail = () => {
                       <p className="text-xs text-muted-foreground font-body">{t('featured.bathrooms')}</p>
                     </div>
                   )}
-                  <div className="bg-card border border-border rounded-lg p-4 text-center">
-                    <Maximize className="h-5 w-5 text-primary mx-auto mb-2" />
-                    <p className="text-lg font-semibold text-foreground font-body">{property.area}m²</p>
-                    <p className="text-xs text-muted-foreground font-body">{t('detail.area')}</p>
-                  </div>
+                  {property.area > 0 && (
+                    <div className="bg-card border border-border rounded-lg p-4 text-center">
+                      <Maximize className="h-5 w-5 text-primary mx-auto mb-2" />
+                      <p className="text-lg font-semibold text-foreground font-body">{property.area}m²</p>
+                      <p className="text-xs text-muted-foreground font-body">{t('detail.area')}</p>
+                    </div>
+                  )}
                 </div>
 
-                {/* Extra features */}
                 {property.features.length > 0 && (
                   <div className="mt-4 grid grid-cols-2 gap-2">
                     {property.features.map((f, i) => (
                       <div key={i} className="flex items-center gap-2 text-sm text-muted-foreground font-body">
                         <CheckCircle2 className="h-4 w-4 text-primary/70 flex-shrink-0" />
-                        {lang === 'pt' ? f.value_pt : f.value_en}
+                        {f.value_pt}
                       </div>
                     ))}
                   </div>
                 )}
               </motion.div>
 
-              {/* Highlights */}
-              {property.highlights.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.35 }}
-                >
-                  <h2 className="font-display text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-                    <Star className="h-5 w-5 text-primary" />
-                    {t('detail.highlights')}
-                  </h2>
-                  <div className="space-y-4">
-                    {property.highlights.map((h, i) => (
-                      <div key={i} className="bg-card/50 border border-border/60 rounded-lg p-5">
-                        <h3 className="font-display text-sm font-semibold text-foreground mb-1">
-                          {lang === 'pt' ? h.title_pt : h.title_en}
-                        </h3>
-                        <p className="text-sm text-muted-foreground font-body">
-                          {lang === 'pt' ? h.desc_pt : h.desc_en}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Process / Trust */}
+              {/* Process */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -320,7 +335,7 @@ const PropertyDetail = () => {
             </div>
           </div>
 
-          {/* Similar Properties */}
+          {/* Similar */}
           {similar.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -331,28 +346,31 @@ const PropertyDetail = () => {
             >
               <h2 className="font-display text-2xl font-bold text-foreground mb-8">{t('detail.similar')}</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {similar.map(p => {
-                  const pTitle = lang === 'pt' ? p.title_pt : p.title_en;
-                  return (
-                    <Link key={p.id} to={`/properties/${p.id}`} className="group">
-                      <div className="bg-card border border-border rounded-xl overflow-hidden hover:border-primary/30 transition-colors">
-                        <div className="aspect-[4/3] overflow-hidden">
-                          <img src={p.image} alt={pTitle} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                        </div>
-                        <div className="p-5">
-                          <p className="text-xs text-primary/70 font-body uppercase tracking-wider mb-1">
-                            {p.type === 'sale' ? t('props.filter.sale') : t('props.filter.rent')}
-                          </p>
-                          <h3 className="font-display text-sm font-semibold text-foreground mb-1 line-clamp-1">{pTitle}</h3>
-                          <p className="text-xs text-muted-foreground font-body mb-2">{p.location}, {p.island}</p>
-                          <p className="text-sm font-bold text-primary font-display">
-                            {formatPrice(p.price, p.type)}
-                          </p>
-                        </div>
+                {similar.map(p => (
+                  <Link key={p.id} to={`/properties/${p.id}`} className="group">
+                    <div className="bg-card border border-border rounded-xl overflow-hidden hover:border-primary/30 transition-colors">
+                      <div className="aspect-[4/3] overflow-hidden bg-muted">
+                        {p.image ? (
+                          <img src={p.image} alt={p.title_pt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                            <ImageOff className="h-8 w-8" strokeWidth={1.5} />
+                          </div>
+                        )}
                       </div>
-                    </Link>
-                  );
-                })}
+                      <div className="p-5">
+                        <p className="text-xs text-primary/70 font-body uppercase tracking-wider mb-1">
+                          {p.type === 'sale' ? t('props.filter.sale') : t('props.filter.rent')}
+                        </p>
+                        <h3 className="font-display text-sm font-semibold text-foreground mb-1 line-clamp-1">{p.title_pt}</h3>
+                        <p className="text-xs text-muted-foreground font-body mb-2">{p.location}, {p.island}</p>
+                        <p className="text-sm font-bold text-primary font-display">
+                          {formatPrice(p.price, p.type)}
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
               </div>
             </motion.div>
           )}
