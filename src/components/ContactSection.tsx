@@ -99,6 +99,31 @@ const ContactSection = () => {
             </h2>
             <p className="text-muted-foreground font-body mb-8">{t('contact.subtitle')}</p>
 
+            {propertyCtx && (
+              <div className="mb-6 rounded-xl border border-primary/25 bg-primary/[0.04] p-4 flex items-start gap-3">
+                <div className="w-9 h-9 rounded-full bg-primary/10 ring-1 ring-primary/20 flex items-center justify-center flex-shrink-0">
+                  <Home className="h-4 w-4 text-primary" strokeWidth={1.75} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[11px] font-body uppercase tracking-[0.2em] text-primary/80 mb-1">
+                    {propertyCtx.intent === 'visit' ? 'Pedido de visita' : 'Pedido de informação'} · {propertyCtx.ref}
+                  </p>
+                  <p className="font-display text-foreground font-semibold truncate">{propertyCtx.title}</p>
+                  {propertyCtx.location && (
+                    <p className="text-xs text-muted-foreground font-body mt-0.5">{propertyCtx.location}</p>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={clearPropertyCtx}
+                  aria-label="Remover contexto do imóvel"
+                  className="text-muted-foreground hover:text-foreground transition-colors flex-shrink-0"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input
                 placeholder={t('contact.name')}
