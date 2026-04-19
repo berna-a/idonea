@@ -576,6 +576,78 @@ const PropertyForm = ({ mode, initial }: PropertyFormProps) => {
           </Field>
         </Section>
 
+        <Section
+          title="Localização operacional"
+          description="Bairro pode ser usado publicamente. Morada, link de mapa e coordenadas são internos e não aparecem no website."
+        >
+          <Field label="Bairro / zona" hint="Ex: Achada Santo António, Palmarejo Baixo. Pode aparecer no público.">
+            <Input
+              value={neighborhood}
+              onChange={(e) => setNeighborhood(e.target.value)}
+              placeholder="Achada Santo António"
+            />
+          </Field>
+
+          <div className="rounded-md border border-border bg-muted/20 p-4 space-y-4">
+            <div className="flex items-center gap-2 text-[11px] uppercase tracking-wider text-muted-foreground">
+              <Lock className="h-3 w-3" />
+              Apenas para uso interno — não aparece no website
+            </div>
+
+            <Field label="Morada completa" hint="Visível apenas no admin. Útil para visitas e operação.">
+              <Textarea
+                value={addressFull}
+                onChange={(e) => setAddressFull(e.target.value)}
+                rows={2}
+                placeholder="Rua, número, andar, ponto de referência…"
+              />
+            </Field>
+
+            <Field label="Link de mapa" hint="Cole um link do Google Maps ou Apple Maps.">
+              <div className="flex gap-2">
+                <Input
+                  value={mapUrl}
+                  onChange={(e) => setMapUrl(e.target.value)}
+                  placeholder="https://maps.google.com/?q=..."
+                  className="flex-1"
+                />
+                {mapUrl.trim() && /^https?:\/\//i.test(mapUrl.trim()) && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => window.open(mapUrl.trim(), '_blank', 'noopener,noreferrer')}
+                    className="gap-1.5 shrink-0"
+                  >
+                    <MapPin className="h-3.5 w-3.5" />
+                    Abrir
+                    <ExternalLink className="h-3 w-3 opacity-60" />
+                  </Button>
+                )}
+              </div>
+            </Field>
+
+            <div className="grid grid-cols-2 gap-4">
+              <Field label="Latitude" hint="Opcional. Ex: 14.9177">
+                <Input
+                  value={latitude}
+                  onChange={(e) => setLatitude(e.target.value)}
+                  placeholder="14.9177"
+                  inputMode="decimal"
+                />
+              </Field>
+              <Field label="Longitude" hint="Opcional. Ex: -23.5092">
+                <Input
+                  value={longitude}
+                  onChange={(e) => setLongitude(e.target.value)}
+                  placeholder="-23.5092"
+                  inputMode="decimal"
+                />
+              </Field>
+            </div>
+          </div>
+        </Section>
+
         <Section title="Destaques editoriais" description="Marcações manuais que controlam onde o imóvel aparece.">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {[
