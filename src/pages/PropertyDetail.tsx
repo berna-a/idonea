@@ -84,8 +84,35 @@ const PropertyDetail = () => {
 
   const tagLabel = (tag: PropertyTag) => t(`detail.tag.${tag}`);
 
-  const whatsappMsg = encodeURIComponent(`Olá, tenho interesse no imóvel ${property.ref}: ${title}`);
-  const whatsappUrl = `https://wa.me/2389808947?text=${whatsappMsg}`;
+  // ---- Contextual CTAs ----
+  const propertyUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const transactionLabel = property.type === 'sale' ? 'venda' : 'arrendamento';
+
+  const buildWhatsappUrl = (intent: 'visit' | 'info' | 'generic') => {
+    const lines: string[] = ['Olá IDÓNEA,'];
+    if (intent === 'visit') {
+      lines.push(`gostaria de agendar uma visita ao imóvel ${property.ref} — ${title}`);
+    } else if (intent === 'info') {
+      lines.push(`gostaria de receber mais informação sobre o imóvel ${property.ref} — ${title}`);
+    } else {
+      lines.push(`tenho interesse no imóvel ${property.ref} — ${title}`);
+    }
+    lines.push(`(${property.location}, ${property.island} · ${transactionLabel})`);
+    if (propertyUrl) lines.push(propertyUrl);
+    return `https://wa.me/2389808947?text=${encodeURIComponent(lines.join('\n'))}`;
+  };
+
+  const buildContactUrl = (intent: 'visit' | 'info') => {
+    const params = new URLSearchParams({
+      ref: property.ref,
+      title,
+      location: `${property.location}, ${property.island}`,
+      type: property.type,
+      intent,
+      url: propertyUrl,
+    });
+    return `/contact?${params.toString()}`;
+  };
 
   const images = property.images.length > 0 ? property.images : [property.image];
   const hasImages = images.some(Boolean);
@@ -377,10 +404,10 @@ const PropertyDetail = () => {
 
                 <div className="space-y-2.5">
                   <Button asChild size="lg" className="w-full font-body h-12">
-                    <Link to="/contact">{t('detail.cta.visit')}</Link>
+                    <Link to={buildContactUrl('visit')}>{t('detail.cta.visit')}</Link>
                   </Button>
                   <Button asChild size="lg" variant="outline" className="w-full font-body h-12">
-                    <Link to="/contact">{t('detail.cta.info')}</Link>
+                    <Link to={buildContactUrl('info')}>{t('detail.cta.info')}</Link>
                   </Button>
                   <Button
                     asChild
@@ -388,7 +415,7 @@ const PropertyDetail = () => {
                     variant="outline"
                     className="w-full border-[hsl(142,70%,45%)]/60 text-[hsl(142,70%,45%)] hover:bg-[hsl(142,70%,45%)] hover:text-white hover:border-[hsl(142,70%,45%)] font-body h-12"
                   >
-                    <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                    <a href={buildWhatsappUrl('info')} target="_blank" rel="noopener noreferrer">
                       <MessageCircle className="h-[18px] w-[18px] mr-2" strokeWidth={1.75} />
                       WhatsApp
                     </a>

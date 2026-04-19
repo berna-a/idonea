@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useLanguage } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { MessageCircle, Mail, Phone } from 'lucide-react';
+import { MessageCircle, Mail, Phone, Home, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -19,7 +20,43 @@ const contactSchema = z.object({
 
 const ContactSection = () => {
   const { t } = useLanguage();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const propertyCtx = useMemo(() => {
+    const ref = searchParams.get('ref');
+    if (!ref) return null;
+    return {
+      ref,
+      title: searchParams.get('title') ?? '',
+      location: searchParams.get('location') ?? '',
+      type: searchParams.get('type') as 'sale' | 'rent' | null,
+      intent: (searchParams.get('intent') as 'visit' | 'info') ?? 'info',
+      url: searchParams.get('url') ?? '',
+    };
+  }, [searchParams]);
+
   const [form, setForm] = useState({ name: '', email: '', phone: '', interest: '', message: '' });
+
+  useEffect(() => {
+    if (!propertyCtx) return;
+    const intentText = propertyCtx.intent === 'visit'
+      ? `Gostaria de agendar uma visita ao imóvel ${propertyCtx.ref} — ${propertyCtx.title}.`
+      : `Gostaria de receber mais informação sobre o imóvel ${propertyCtx.ref} — ${propertyCtx.title}.`;
+    const locationLine = propertyCtx.location ? `\nLocalização: ${propertyCtx.location}` : '';
+    setForm(f => ({
+      ...f,
+      message: f.message || `${intentText}${locationLine}\n\n`,
+      interest: f.interest || (propertyCtx.type === 'rent' ? 'rent' : 'buy'),
+    }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [propertyCtx?.ref, propertyCtx?.intent]);
+
+  const clearPropertyCtx = () => {
+    const next = new URLSearchParams(searchParams);
+    ['ref', 'title', 'location', 'type', 'intent', 'url'].forEach(k => next.delete(k));
+    setSearchParams(next, { replace: true });
+    setForm(f => ({ ...f, message: '', interest: '' }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,7 +69,19 @@ const ContactSection = () => {
     setForm({ name: '', email: '', phone: '', interest: '', message: '' });
   };
 
-  const whatsappUrl = `https://wa.me/${encodeURIComponent('2389808947')}`;
+  const whatsappUrl = useMemo(() => {
+    const base = 'https://wa.me/2389808947';
+    if (!propertyCtx) return base;
+    const lines = [
+      'Olá IDÓNEA,',
+      propertyCtx.intent === 'visit'
+        ? `gostaria de agendar uma visita ao imóvel ${propertyCtx.ref} — ${propertyCtx.title}`
+        : `gostaria de receber mais informação sobre o imóvel ${propertyCtx.ref} — ${propertyCtx.title}`,
+      propertyCtx.location ? `(${propertyCtx.location})` : '',
+      propertyCtx.url,
+    ].filter(Boolean);
+    return `${base}?text=${encodeURIComponent(lines.join('\n'))}`;
+  }, [propertyCtx]);
 
   return (
     <section id="contacto" className="py-20">
@@ -49,6 +98,31 @@ const ContactSection = () => {
               {t('contact.title')}
             </h2>
             <p className="text-muted-foreground font-body mb-8">{t('contact.subtitle')}</p>
+
+            {propertyCtx && (
+              <div className="mb-6 rounded-xl border border-primary/25 bg-primary/[0.04] p-4 flex items-start gap-3">
+                <div className="w-9 h-9 rounded-full bg-primary/10 ring-1 ring-primary/20 flex items-center justify-center flex-shrink-0">
+                  <Home className="h-4 w-4 text-primary" strokeWidth={1.75} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[11px] font-body uppercase tracking-[0.2em] text-primary/80 mb-1">
+                    {propertyCtx.intent === 'visit' ? 'Pedido de visita' : 'Pedido de informação'} · {propertyCtx.ref}
+                  </p>
+                  <p className="font-display text-foreground font-semibold truncate">{propertyCtx.title}</p>
+                  {propertyCtx.location && (
+                    <p className="text-xs text-muted-foreground font-body mt-0.5">{propertyCtx.location}</p>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={clearPropertyCtx}
+                  aria-label="Remover contexto do imóvel"
+                  className="text-muted-foreground hover:text-foreground transition-colors flex-shrink-0"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input
