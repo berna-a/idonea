@@ -143,7 +143,7 @@ const AddressAutocomplete = ({
       address_full: s.place_name,
       latitude: s.latitude,
       longitude: s.longitude,
-      map_url: buildMapUrl(s.latitude, s.longitude, s.place_name),
+      map_url: buildMapUrl(s.latitude, s.longitude),
       neighborhood: s.neighborhood,
     });
     setOpen(false);
