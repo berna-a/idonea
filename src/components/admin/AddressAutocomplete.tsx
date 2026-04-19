@@ -32,12 +32,12 @@ interface AddressAutocompleteProps {
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN as string | undefined;
 
 /**
- * Build a Google Maps URL from coordinates + label.
- * Works on web, iOS and Android (Apple Maps falls back to Google).
+ * Build a Google Maps URL from coordinates.
+ * Coordinates are more reliable than free-text labels for opening the
+ * exact location on web, iOS and Android.
  */
-const buildMapUrl = (lat: number, lng: number, label?: string) => {
-  const q = label ? encodeURIComponent(label) : `${lat},${lng}`;
-  return `https://www.google.com/maps/search/?api=1&query=${q}&query_place_id=&center=${lat},${lng}`;
+const buildMapUrl = (lat: number, lng: number) => {
+  return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
 };
 
 const extractNeighborhood = (feature: any): string | null => {
