@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useLanguage } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { MessageCircle, Mail, Phone } from 'lucide-react';
+import { MessageCircle, Mail, Phone, Home, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -19,7 +20,43 @@ const contactSchema = z.object({
 
 const ContactSection = () => {
   const { t } = useLanguage();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const propertyCtx = useMemo(() => {
+    const ref = searchParams.get('ref');
+    if (!ref) return null;
+    return {
+      ref,
+      title: searchParams.get('title') ?? '',
+      location: searchParams.get('location') ?? '',
+      type: searchParams.get('type') as 'sale' | 'rent' | null,
+      intent: (searchParams.get('intent') as 'visit' | 'info') ?? 'info',
+      url: searchParams.get('url') ?? '',
+    };
+  }, [searchParams]);
+
   const [form, setForm] = useState({ name: '', email: '', phone: '', interest: '', message: '' });
+
+  useEffect(() => {
+    if (!propertyCtx) return;
+    const intentText = propertyCtx.intent === 'visit'
+      ? `Gostaria de agendar uma visita ao imóvel ${propertyCtx.ref} — ${propertyCtx.title}.`
+      : `Gostaria de receber mais informação sobre o imóvel ${propertyCtx.ref} — ${propertyCtx.title}.`;
+    const locationLine = propertyCtx.location ? `\nLocalização: ${propertyCtx.location}` : '';
+    setForm(f => ({
+      ...f,
+      message: f.message || `${intentText}${locationLine}\n\n`,
+      interest: f.interest || (propertyCtx.type === 'rent' ? 'rent' : 'buy'),
+    }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [propertyCtx?.ref, propertyCtx?.intent]);
+
+  const clearPropertyCtx = () => {
+    const next = new URLSearchParams(searchParams);
+    ['ref', 'title', 'location', 'type', 'intent', 'url'].forEach(k => next.delete(k));
+    setSearchParams(next, { replace: true });
+    setForm(f => ({ ...f, message: '', interest: '' }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,7 +69,19 @@ const ContactSection = () => {
     setForm({ name: '', email: '', phone: '', interest: '', message: '' });
   };
 
-  const whatsappUrl = `https://wa.me/${encodeURIComponent('2389808947')}`;
+  const whatsappUrl = useMemo(() => {
+    const base = 'https://wa.me/2389808947';
+    if (!propertyCtx) return base;
+    const lines = [
+      'Olá IDÓNEA,',
+      propertyCtx.intent === 'visit'
+        ? `gostaria de agendar uma visita ao imóvel ${propertyCtx.ref} — ${propertyCtx.title}`
+        : `gostaria de receber mais informação sobre o imóvel ${propertyCtx.ref} — ${propertyCtx.title}`,
+      propertyCtx.location ? `(${propertyCtx.location})` : '',
+      propertyCtx.url,
+    ].filter(Boolean);
+    return `${base}?text=${encodeURIComponent(lines.join('\n'))}`;
+  }, [propertyCtx]);
 
   return (
     <section id="contacto" className="py-20">
