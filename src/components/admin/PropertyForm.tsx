@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card } from '@/components/ui/card';
 import {
   ArrowLeft, X, Save, Send, Upload, Loader2, ChevronUp, ChevronDown, Star, AlertTriangle,
+  MapPin, ExternalLink, Lock,
 } from 'lucide-react';
 
 const ISLANDS = ['Santiago', 'Santo Antão', 'São Vicente', 'Sal', 'Boa Vista', 'Fogo', 'Brava', 'Maio', 'São Nicolau'];
@@ -38,6 +39,11 @@ export type PropertyInitialData = {
   bedrooms?: string;
   bathrooms?: string;
   parking?: string;
+  neighborhood?: string;
+  address_full?: string;
+  map_url?: string;
+  latitude?: string;
+  longitude?: string;
   description?: string;
   editorial?: string;
   is_featured?: boolean;
@@ -114,6 +120,12 @@ const PropertyForm = ({ mode, initial }: PropertyFormProps) => {
   const [bedrooms, setBedrooms] = useState(initial?.bedrooms ?? '0');
   const [bathrooms, setBathrooms] = useState(initial?.bathrooms ?? '0');
   const [parking, setParking] = useState(initial?.parking ?? '');
+
+  const [neighborhood, setNeighborhood] = useState(initial?.neighborhood ?? '');
+  const [addressFull, setAddressFull] = useState(initial?.address_full ?? '');
+  const [mapUrl, setMapUrl] = useState(initial?.map_url ?? '');
+  const [latitude, setLatitude] = useState(initial?.latitude ?? '');
+  const [longitude, setLongitude] = useState(initial?.longitude ?? '');
 
   const [description, setDescription] = useState(initial?.description ?? '');
   const [editorial, setEditorial] = useState(initial?.editorial ?? '');
