@@ -140,9 +140,11 @@ const translations: Record<Language, Record<string, string>> = {
     'props.location': 'Localização',
     'props.description': 'Descrição',
     'props.price.month': '/mês',
-    'props.noResults': 'Nenhum imóvel encontrado com os filtros selecionados.',
-    'props.cta.title': 'Não encontrou o imóvel ideal?',
-    'props.cta.subtitle': 'Conte-nos o que procura. Identificamos oportunidades alinhadas com o seu perfil, mesmo antes de chegarem ao portefólio.',
+    'props.noResults.title': 'Sem correspondências para esta seleção.',
+    'props.noResults': 'Ajuste os filtros, ou fale connosco — frequentemente identificamos oportunidades antes de chegarem ao portefólio.',
+    'props.noResults.cta': 'Falar com a IDÓNEA',
+    'props.cta.title': 'Procura algo específico?',
+    'props.cta.subtitle': 'Conte-nos o seu objetivo. Apresentamos apenas oportunidades alinhadas com o seu perfil — incluindo imóveis ainda não publicados.',
 
     // Property detail
     'detail.area': 'Área',
