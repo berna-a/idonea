@@ -1,23 +1,31 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { useLanguage } from '@/lib/i18n';
-import { sampleProperties, islands, PropertyTag } from '@/lib/sampleProperties';
+import { islands, PropertyTag } from '@/lib/sampleProperties';
+import { fetchActiveProperties } from '@/lib/propertyAdapter';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Bed, Bath, Maximize, MapPin, MessageCircle, ArrowRight } from 'lucide-react';
+import { Bed, Bath, Maximize, MapPin, MessageCircle, ArrowRight, ImageOff } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Properties = () => {
-  const { lang, t } = useLanguage();
+  const { t } = useLanguage();
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [islandFilter, setIslandFilter] = useState<string>('all');
   const [propTypeFilter, setPropTypeFilter] = useState<string>('all');
   const [goalFilter, setGoalFilter] = useState<string>('all');
 
-  const filtered = sampleProperties.filter(p => {
+  const { data: properties = [], isLoading, isError } = useQuery({
+    queryKey: ['public-properties'],
+    queryFn: fetchActiveProperties,
+  });
+
+  const filtered = properties.filter(p => {
     if (typeFilter !== 'all' && p.type !== typeFilter) return false;
     if (islandFilter !== 'all' && p.island !== islandFilter) return false;
     if (propTypeFilter !== 'all' && p.property_type !== propTypeFilter) return false;
@@ -134,76 +142,110 @@ const Properties = () => {
             </span>
           </motion.div>
 
-          {/* Grid */}
-          {filtered.length === 0 ? (
-            <div className="text-center py-20">
-              <p className="text-muted-foreground font-body mb-6">{t('props.noResults')}</p>
-              <Button asChild variant="outline" className="font-body">
-                <Link to="/contact">{t('nav.cta')}</Link>
-              </Button>
-            </div>
-          ) : (
+          {/* Loading */}
+          {isLoading && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {filtered.map((prop, i) => {
-                const title = lang === 'pt' ? prop.title_pt : prop.title_en;
-                const mainTag = prop.tags[0];
-                return (
-                  <motion.div
-                    key={prop.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.06, duration: 0.4 }}
-                  >
-                    <Link
-                      to={`/properties/${prop.id}`}
-                      className="group block bg-card border border-border rounded-xl overflow-hidden hover:border-primary/30 transition-colors"
+              {[0, 1, 2, 3].map(i => (
+                <div key={i} className="bg-card border border-border rounded-xl overflow-hidden">
+                  <Skeleton className="aspect-[16/10] w-full" />
+                  <div className="p-6 space-y-3">
+                    <Skeleton className="h-3 w-32" />
+                    <Skeleton className="h-5 w-2/3" />
+                    <Skeleton className="h-6 w-28" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Error */}
+          {!isLoading && isError && (
+            <div className="text-center py-20">
+              <p className="text-muted-foreground font-body mb-6">
+                Não foi possível carregar os imóveis. Por favor, tente novamente.
+              </p>
+            </div>
+          )}
+
+          {/* Empty / Grid */}
+          {!isLoading && !isError && (
+            filtered.length === 0 ? (
+              <div className="text-center py-20">
+                <p className="text-muted-foreground font-body mb-6">{t('props.noResults')}</p>
+                <Button asChild variant="outline" className="font-body">
+                  <Link to="/contact">{t('nav.cta')}</Link>
+                </Button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {filtered.map((prop, i) => {
+                  const mainTag = prop.tags[0];
+                  return (
+                    <motion.div
+                      key={prop.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.06, duration: 0.4 }}
                     >
-                      <div className="aspect-[16/10] overflow-hidden relative">
-                        <img
-                          src={prop.image}
-                          alt={title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          loading="lazy"
-                        />
-                        {mainTag && (
-                          <span className="absolute top-4 left-4 text-[11px] font-body px-3 py-1 rounded-full bg-background/80 backdrop-blur-sm text-primary border border-primary/20">
-                            {tagLabel(mainTag)}
-                          </span>
-                        )}
-                      </div>
-                      <div className="p-6">
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground font-body mb-2">
-                          <MapPin className="h-3.5 w-3.5 text-primary/70" />
-                          {prop.location}, {prop.island}
-                          <span className="text-border">·</span>
-                          <span className="uppercase tracking-wider text-primary/70">
-                            {prop.type === 'sale' ? t('props.filter.sale') : t('props.filter.rent')}
-                          </span>
+                      <Link
+                        to={`/properties/${prop.id}`}
+                        className="group block bg-card border border-border rounded-xl overflow-hidden hover:border-primary/30 transition-colors"
+                      >
+                        <div className="aspect-[16/10] overflow-hidden relative bg-muted">
+                          {prop.image ? (
+                            <img
+                              src={prop.image}
+                              alt={prop.title_pt}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              loading="lazy"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                              <ImageOff className="h-10 w-10" strokeWidth={1.5} />
+                            </div>
+                          )}
+                          {mainTag && (
+                            <span className="absolute top-4 left-4 text-[11px] font-body px-3 py-1 rounded-full bg-background/80 backdrop-blur-sm text-primary border border-primary/20">
+                              {tagLabel(mainTag)}
+                            </span>
+                          )}
                         </div>
-                        <h3 className="font-display text-lg font-semibold text-foreground mb-1 line-clamp-1 group-hover:text-primary transition-colors">
-                          {title}
-                        </h3>
-                        <p className="text-xs text-muted-foreground/60 font-body mb-3">{prop.ref}</p>
-                        <div className="flex items-end justify-between">
-                          <p className="text-xl font-bold text-primary font-display">
-                            {formatPrice(prop.price, prop.type)}
-                          </p>
-                          <div className="flex gap-3 text-xs text-muted-foreground font-body">
-                            {prop.bedrooms > 0 && (
-                              <span className="flex items-center gap-1"><Bed className="h-3.5 w-3.5" />{prop.bedrooms}</span>
-                            )}
-                            {prop.bathrooms > 0 && (
-                              <span className="flex items-center gap-1"><Bath className="h-3.5 w-3.5" />{prop.bathrooms}</span>
-                            )}
-                            <span className="flex items-center gap-1"><Maximize className="h-3.5 w-3.5" />{prop.area}m²</span>
+                        <div className="p-6">
+                          <div className="flex items-center gap-2 text-xs text-muted-foreground font-body mb-2">
+                            <MapPin className="h-3.5 w-3.5 text-primary/70" />
+                            {prop.location}, {prop.island}
+                            <span className="text-border">·</span>
+                            <span className="uppercase tracking-wider text-primary/70">
+                              {prop.type === 'sale' ? t('props.filter.sale') : t('props.filter.rent')}
+                            </span>
+                          </div>
+                          <h3 className="font-display text-lg font-semibold text-foreground mb-1 line-clamp-1 group-hover:text-primary transition-colors">
+                            {prop.title_pt}
+                          </h3>
+                          <p className="text-xs text-muted-foreground/60 font-body mb-3">{prop.ref}</p>
+                          <div className="flex items-end justify-between">
+                            <p className="text-xl font-bold text-primary font-display">
+                              {formatPrice(prop.price, prop.type)}
+                            </p>
+                            <div className="flex gap-3 text-xs text-muted-foreground font-body">
+                              {prop.bedrooms > 0 && (
+                                <span className="flex items-center gap-1"><Bed className="h-3.5 w-3.5" />{prop.bedrooms}</span>
+                              )}
+                              {prop.bathrooms > 0 && (
+                                <span className="flex items-center gap-1"><Bath className="h-3.5 w-3.5" />{prop.bathrooms}</span>
+                              )}
+                              {prop.area > 0 && (
+                                <span className="flex items-center gap-1"><Maximize className="h-3.5 w-3.5" />{prop.area}m²</span>
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </div>
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            )
           )}
 
           {/* Bottom CTA */}
