@@ -11,8 +11,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card } from '@/components/ui/card';
 import {
   ArrowLeft, X, Save, Send, Upload, Loader2, ChevronUp, ChevronDown, Star, AlertTriangle,
-  MapPin, ExternalLink, Lock,
+  MapPin, ExternalLink, Lock, Sparkles,
 } from 'lucide-react';
+import AddressAutocomplete, { AddressSelection } from './AddressAutocomplete';
 
 const ISLANDS = ['Santiago', 'Santo Antão', 'São Vicente', 'Sal', 'Boa Vista', 'Fogo', 'Brava', 'Maio', 'São Nicolau'];
 
