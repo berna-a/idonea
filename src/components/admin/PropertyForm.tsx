@@ -215,9 +215,22 @@ const PropertyForm = ({ mode, initial }: PropertyFormProps) => {
     if (!island.trim()) return 'A ilha é obrigatória.';
     if (!cityOrZone.trim()) return 'A zona/cidade é obrigatória.';
     if (!price || isNaN(Number(price))) return 'O preço deve ser um número válido.';
+    if (mapUrl.trim() && !/^https?:\/\//i.test(mapUrl.trim())) {
+      return 'O link de mapa deve começar por http:// ou https://';
+    }
+    if (latitude.trim() && isNaN(Number(latitude))) return 'Latitude inválida.';
+    if (longitude.trim() && isNaN(Number(longitude))) return 'Longitude inválida.';
     if (asActive && totalImageCount === 0) return 'Para publicar, adicione pelo menos uma imagem.';
     return null;
   };
+
+  const locationPayload = () => ({
+    neighborhood: neighborhood.trim() || null,
+    address_full: addressFull.trim() || null,
+    map_url: mapUrl.trim() || null,
+    latitude: latitude.trim() ? Number(latitude) : null,
+    longitude: longitude.trim() ? Number(longitude) : null,
+  });
 
   const submitCreate = async (publishStatus: 'draft' | 'active') => {
     const err = validate(publishStatus === 'active');
