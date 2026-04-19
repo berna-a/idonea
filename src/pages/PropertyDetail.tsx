@@ -404,10 +404,10 @@ const PropertyDetail = () => {
 
                 <div className="space-y-2.5">
                   <Button asChild size="lg" className="w-full font-body h-12">
-                    <Link to="/contact">{t('detail.cta.visit')}</Link>
+                    <Link to={buildContactUrl('visit')}>{t('detail.cta.visit')}</Link>
                   </Button>
                   <Button asChild size="lg" variant="outline" className="w-full font-body h-12">
-                    <Link to="/contact">{t('detail.cta.info')}</Link>
+                    <Link to={buildContactUrl('info')}>{t('detail.cta.info')}</Link>
                   </Button>
                   <Button
                     asChild
@@ -415,7 +415,7 @@ const PropertyDetail = () => {
                     variant="outline"
                     className="w-full border-[hsl(142,70%,45%)]/60 text-[hsl(142,70%,45%)] hover:bg-[hsl(142,70%,45%)] hover:text-white hover:border-[hsl(142,70%,45%)] font-body h-12"
                   >
-                    <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                    <a href={buildWhatsappUrl('info')} target="_blank" rel="noopener noreferrer">
                       <MessageCircle className="h-[18px] w-[18px] mr-2" strokeWidth={1.75} />
                       WhatsApp
                     </a>
