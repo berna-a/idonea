@@ -595,22 +595,34 @@ const PropertyForm = ({ mode, initial }: PropertyFormProps) => {
               Apenas para uso interno — não aparece no website
             </div>
 
-            <Field label="Morada completa" hint="Visível apenas no admin. Útil para visitas e operação.">
-              <Textarea
+            <Field
+              label="Morada completa"
+              hint="Pesquise a morada e escolha uma sugestão. As coordenadas e o link de mapa preenchem-se automaticamente."
+            >
+              <AddressAutocomplete
                 value={addressFull}
-                onChange={(e) => setAddressFull(e.target.value)}
-                rows={2}
-                placeholder="Rua, número, andar, ponto de referência…"
+                onChange={setAddressFull}
+                onSelect={(sel: AddressSelection) => {
+                  setAddressFull(sel.address_full);
+                  setLatitude(String(sel.latitude));
+                  setLongitude(String(sel.longitude));
+                  setMapUrl(sel.map_url);
+                  if (sel.neighborhood && !neighborhood.trim()) {
+                    setNeighborhood(sel.neighborhood);
+                  }
+                }}
+                placeholder="Ex: Rua 5 de Julho, Praia"
               />
             </Field>
 
-            <Field label="Link de mapa" hint="Cole um link do Google Maps ou Apple Maps.">
+            <Field label="Link de mapa" hint="Gerado automaticamente a partir da morada selecionada.">
               <div className="flex gap-2">
                 <Input
                   value={mapUrl}
                   onChange={(e) => setMapUrl(e.target.value)}
-                  placeholder="https://maps.google.com/?q=..."
-                  className="flex-1"
+                  placeholder="Será gerado automaticamente"
+                  className="flex-1 font-mono text-xs"
+                  readOnly={!!mapUrl && /google\.com\/maps/.test(mapUrl)}
                 />
                 {mapUrl.trim() && /^https?:\/\//i.test(mapUrl.trim()) && (
                   <Button
@@ -628,24 +640,15 @@ const PropertyForm = ({ mode, initial }: PropertyFormProps) => {
               </div>
             </Field>
 
-            <div className="grid grid-cols-2 gap-4">
-              <Field label="Latitude" hint="Opcional. Ex: 14.9177">
-                <Input
-                  value={latitude}
-                  onChange={(e) => setLatitude(e.target.value)}
-                  placeholder="14.9177"
-                  inputMode="decimal"
-                />
-              </Field>
-              <Field label="Longitude" hint="Opcional. Ex: -23.5092">
-                <Input
-                  value={longitude}
-                  onChange={(e) => setLongitude(e.target.value)}
-                  placeholder="-23.5092"
-                  inputMode="decimal"
-                />
-              </Field>
-            </div>
+            {(latitude || longitude) && (
+              <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                <Sparkles className="h-3 w-3" />
+                Coordenadas:
+                <span className="font-mono text-foreground">
+                  {latitude || '—'}, {longitude || '—'}
+                </span>
+              </div>
+            )}
           </div>
         </Section>
 
