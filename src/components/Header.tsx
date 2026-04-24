@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, Globe } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n';
@@ -10,6 +10,14 @@ const Header = () => {
   const { lang, setLang, t } = useLanguage();
   const location = useLocation();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const navLinks = [
     { label: t('nav.properties'), href: '/properties' },
@@ -28,10 +36,16 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+        scrolled
+          ? 'bg-background/90 backdrop-blur-md border-b border-border'
+          : 'bg-transparent border-b border-transparent'
+      }`}
+    >
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center">
-          <img src={logo} alt="Idônea" className="h-14 w-auto object-contain" />
+          <img src={logo} alt="Idónea" className="h-10 w-auto object-contain" />
         </Link>
 
         {/* Desktop Nav */}
@@ -43,18 +57,15 @@ const Header = () => {
               className={`text-sm font-body transition-colors ${
                 isActive(link.href)
                   ? 'text-primary'
-                  : 'text-muted-foreground hover:text-primary'
+                  : 'text-foreground/90 hover:text-primary'
               }`}
             >
               {link.label}
             </Link>
           ))}
-          <Button asChild size="sm" className="font-body text-sm ml-1">
-            <Link to="/contact">{t('nav.cta')}</Link>
-          </Button>
           <button
             onClick={() => setLang(lang === 'pt' ? 'en' : 'pt')}
-            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors border border-border rounded-md px-2.5 py-1.5"
+            className="flex items-center gap-1.5 text-sm text-foreground/90 hover:text-primary transition-colors border border-border/60 rounded-md px-2.5 py-1.5"
           >
             <Globe className="h-3.5 w-3.5" />
             {lang === 'pt' ? 'EN' : 'PT'}
@@ -65,7 +76,7 @@ const Header = () => {
         <div className="flex lg:hidden items-center gap-3">
           <button
             onClick={() => setLang(lang === 'pt' ? 'en' : 'pt')}
-            className="flex items-center gap-1 text-sm text-muted-foreground border border-border rounded-md px-2 py-1"
+            className="flex items-center gap-1 text-sm text-foreground/90 border border-border/60 rounded-md px-2 py-1"
           >
             <Globe className="h-3.5 w-3.5" />
             {lang === 'pt' ? 'EN' : 'PT'}
@@ -87,7 +98,7 @@ const Header = () => {
                     className={`text-base font-body transition-colors ${
                       isActive(link.href)
                         ? 'text-primary'
-                        : 'text-muted-foreground hover:text-primary'
+                        : 'text-foreground/90 hover:text-primary'
                     }`}
                   >
                     {link.label}

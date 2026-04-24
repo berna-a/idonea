@@ -102,7 +102,7 @@ const Properties = () => {
               <p className="text-[11px] tracking-[0.25em] uppercase text-primary/80 font-body mb-6">
                 {t('props.hero.eyebrow')}
               </p>
-              <h1 className="font-display text-4xl md:text-6xl font-bold text-foreground mb-6 leading-[1.05] tracking-tight">
+              <h1 className="font-display text-4xl md:text-6xl text-foreground mb-6 leading-[1.05] tracking-tight">
                 {t('props.hero.title')}
               </h1>
               <div className="mx-auto h-px w-16 bg-primary/40 mb-6" />
@@ -318,7 +318,7 @@ const Properties = () => {
                           </p>
 
                           <div className="flex items-end justify-between pt-5 border-t border-border/40">
-                            <p className="text-xl md:text-2xl font-bold text-primary font-display tabular-nums">
+                            <p className="text-xl md:text-2xl text-primary font-display tabular-nums">
                               {formatPrice(prop.price, prop.type)}
                             </p>
                             <div className="flex gap-4 text-xs text-muted-foreground font-body pb-1">
@@ -359,7 +359,7 @@ const Properties = () => {
             className="mt-24 md:mt-32 text-center bg-secondary/60 border border-border/50 rounded-2xl p-10 md:p-14"
           >
             <div className="mx-auto h-px w-12 bg-primary/40 mb-6" />
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
+            <h2 className="font-display text-2xl md:text-3xl text-foreground mb-4">
               {t('props.cta.title')}
             </h2>
             <p className="text-muted-foreground font-body text-sm md:text-base mb-10 max-w-lg mx-auto leading-relaxed">

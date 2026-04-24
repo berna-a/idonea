@@ -15,7 +15,7 @@
     --popover: 0 0% 10%;
     --popover-foreground: 0 0% 95%;
 
-    --primary: 43 74% 49%;
+    --primary: 38 55% 47%;
     --primary-foreground: 0 0% 5%;
 
     --secondary: 0 0% 15%;
@@ -24,7 +24,7 @@
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 60%;
 
-    --accent: 43 74% 49%;
+    --accent: 38 55% 47%;
     --accent-foreground: 0 0% 5%;
 
     --destructive: 0 84.2% 60.2%;
@@ -32,13 +32,13 @@
 
     --border: 0 0% 18%;
     --input: 0 0% 18%;
-    --ring: 43 74% 49%;
+    --ring: 38 55% 47%;
 
     --radius: 0.5rem;
 
-    --gold: 43 74% 49%;
-    --gold-light: 43 74% 65%;
-    --gold-dark: 43 74% 35%;
+    --gold: 38 55% 47%;
+    --gold-light: 38 55% 62%;
+    --gold-dark: 38 55% 32%;
   }
 }
 
@@ -54,6 +54,7 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Playfair Display', serif;
+    font-weight: 400;
   }
 }
 

@@ -18,7 +18,7 @@ const ClosingCTA = () => {
           transition={{ duration: 0.6 }}
           className="max-w-2xl mx-auto text-center"
         >
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-5 leading-tight">
+          <h2 className="font-display text-3xl md:text-4xl text-foreground mb-5 leading-tight">
             {t('closing.title')}
           </h2>
           <p className="text-muted-foreground font-body leading-relaxed mb-10 max-w-lg mx-auto">

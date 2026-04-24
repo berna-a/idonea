@@ -28,7 +28,7 @@ const DiasporaSection = () => {
             <span className="text-primary/70 font-body text-sm tracking-widest uppercase mb-4 block">
               {t('diaspora.eyebrow')}
             </span>
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-5 leading-tight">
+            <h2 className="font-display text-3xl md:text-4xl text-foreground mb-5 leading-tight">
               {t('diaspora.title')}
             </h2>
             <p className="text-muted-foreground font-body leading-relaxed mb-10">

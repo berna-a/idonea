@@ -39,7 +39,7 @@ const SocialProofSection = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+          <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4">
             {t('social.title')}
           </h2>
           <p className="text-muted-foreground font-body max-w-xl mx-auto">
@@ -63,7 +63,7 @@ const SocialProofSection = () => {
               </p>
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
-                  <span className="text-primary font-display text-sm font-bold">
+                  <span className="text-primary font-display text-sm">
                     {item.name.charAt(0)}
                   </span>
                 </div>

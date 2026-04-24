@@ -17,7 +17,7 @@ const InvestmentSection = () => {
           className="max-w-3xl mx-auto text-center"
         >
           <TrendingUp className="h-12 w-12 text-primary mx-auto mb-6" />
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+          <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4">
             {t('invest.title')}
           </h2>
           <p className="font-display text-lg text-primary mb-6">
