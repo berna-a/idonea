@@ -38,7 +38,6 @@ const AdminLogin = () => {
       <div className="w-full max-w-sm space-y-8">
         <div className="text-center space-y-3 flex flex-col items-center">
           <img src={logo} alt="Idónea" className="h-16 w-auto object-contain" />
-          <p className="text-sm text-muted-foreground tracking-wider uppercase">Backoffice</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
