@@ -94,7 +94,7 @@ const ContactSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-2">
+            <h2 className="font-display text-3xl md:text-4xl text-foreground mb-2">
               {t('contact.title')}
             </h2>
             <p className="text-muted-foreground font-body mb-8">{t('contact.subtitle')}</p>

@@ -235,7 +235,7 @@ const PropertyDetail = () => {
                   </span>
                 </div>
 
-                <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground leading-[1.1] mb-5 tracking-tight">
+                <h1 className="font-display text-4xl md:text-5xl text-foreground leading-[1.1] mb-5 tracking-tight">
                   {title}
                 </h1>
 
@@ -245,7 +245,7 @@ const PropertyDetail = () => {
                 </div>
 
                 {/* Mobile price */}
-                <p className="text-3xl font-bold text-primary font-display lg:hidden mb-6 tabular-nums">
+                <p className="text-3xl text-primary font-display lg:hidden mb-6 tabular-nums">
                   {formatPrice(property.price, property.type)}
                 </p>
 
@@ -395,7 +395,7 @@ const PropertyDetail = () => {
                   <p className="text-[11px] text-muted-foreground font-body uppercase tracking-[0.2em] mb-2">
                     {property.type === 'sale' ? t('props.filter.sale') : t('props.filter.rent')}
                   </p>
-                  <p className="text-3xl font-bold text-primary font-display tabular-nums leading-tight">
+                  <p className="text-3xl text-primary font-display tabular-nums leading-tight">
                     {formatPrice(property.price, property.type)}
                   </p>
                 </div>
@@ -452,7 +452,7 @@ const PropertyDetail = () => {
                       {t('detail.similar')}
                     </span>
                   </div>
-                  <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground tracking-tight">
+                  <h2 className="font-display text-3xl md:text-4xl text-foreground tracking-tight">
                     {t('detail.similar')}
                   </h2>
                   <p className="text-muted-foreground font-body text-sm mt-2 max-w-md">
@@ -489,7 +489,7 @@ const PropertyDetail = () => {
                         <p className="text-xs text-muted-foreground font-body mb-3">
                           {p.location}, {p.island}
                         </p>
-                        <p className="text-base font-bold text-primary font-display tabular-nums">
+                        <p className="text-base text-primary font-display tabular-nums">
                           {formatPrice(p.price, p.type)}
                         </p>
                       </div>

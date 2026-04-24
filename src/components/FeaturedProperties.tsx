@@ -39,7 +39,7 @@ const FeaturedProperties = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16 md:mb-20"
         >
-          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-5">
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground mb-5">
             {t('featured.title')}
           </h2>
           <p className="text-muted-foreground font-body text-base md:text-lg max-w-2xl mx-auto leading-relaxed">

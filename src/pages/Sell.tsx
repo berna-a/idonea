@@ -32,7 +32,7 @@ const Sell = () => {
               transition={{ duration: 0.6 }}
             >
               <Home className="h-12 w-12 text-primary mx-auto mb-6" />
-              <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-6">
+              <h1 className="font-display text-4xl md:text-5xl text-foreground mb-6">
                 {headline}
               </h1>
               <p className="font-display text-lg text-primary mb-6">
