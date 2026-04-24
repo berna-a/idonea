@@ -54,10 +54,10 @@ const Header = () => {
             <Link
               key={link.href}
               to={link.href}
-              className={`text-base font-body transition-colors ${
+              className={`relative text-base font-body text-foreground/90 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-px after:bg-primary after:transition-all after:duration-300 ${
                 isActive(link.href)
-                  ? 'text-primary'
-                  : 'text-foreground/90 hover:text-primary'
+                  ? 'after:w-full'
+                  : 'after:w-0 hover:after:w-full'
               }`}
             >
               {link.label}
@@ -65,7 +65,7 @@ const Header = () => {
           ))}
           <button
             onClick={() => setLang(lang === 'pt' ? 'en' : 'pt')}
-            className="flex items-center gap-1.5 text-base text-foreground/90 hover:text-primary transition-colors border border-border/60 rounded-md px-3 py-2"
+            className="flex items-center gap-1.5 text-base text-foreground/90 hover:bg-primary/10 hover:text-foreground transition-colors border border-border/60 rounded-md px-3 py-2"
           >
             <Globe className="h-4 w-4" />
             {lang === 'pt' ? 'EN' : 'PT'}
