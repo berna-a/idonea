@@ -40,7 +40,7 @@ const Header = () => {
       className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
         scrolled
           ? 'bg-background/90 backdrop-blur-md border-b border-border'
-          : 'bg-transparent border-b border-transparent'
+          : 'bg-transparent border-b-0'
       }`}
     >
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -49,7 +49,7 @@ const Header = () => {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-6">
+        <nav className="hidden lg:flex items-center gap-10">
           {navLinks.map((link) => (
             <Link
               key={link.href}
