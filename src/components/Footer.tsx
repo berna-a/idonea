@@ -12,7 +12,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="flex flex-col gap-4">
             <div className="flex items-center">
-              <img src={logo} alt="Idônea" className="h-14 w-auto object-contain" />
+              <img src={logo} alt="Idónea" className="h-10 w-auto object-contain" />
             </div>
             <p className="text-sm text-muted-foreground font-body">
               {t('footer.company')}
