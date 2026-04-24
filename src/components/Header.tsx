@@ -12,10 +12,8 @@ const Header = () => {
   const [open, setOpen] = useState(false);
 
   const navLinks = [
-    { label: t('nav.home'), href: '/' },
     { label: t('nav.properties'), href: '/properties' },
     { label: t('nav.investment'), href: '/investment' },
-    { label: t('nav.diaspora'), href: '/diaspora' },
     { label: t('nav.sell'), href: '/sell' },
     { label: t('nav.about'), href: '/about' },
   ];
@@ -51,6 +49,9 @@ const Header = () => {
               {link.label}
             </Link>
           ))}
+          <Button asChild size="sm" className="font-body text-sm ml-1">
+            <Link to="/contact">{t('nav.cta')}</Link>
+          </Button>
           <button
             onClick={() => setLang(lang === 'pt' ? 'en' : 'pt')}
             className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors border border-border rounded-md px-2.5 py-1.5"
@@ -58,9 +59,6 @@ const Header = () => {
             <Globe className="h-3.5 w-3.5" />
             {lang === 'pt' ? 'EN' : 'PT'}
           </button>
-          <Button asChild size="sm" className="font-body text-sm ml-1">
-            <Link to="/contact">{t('nav.cta')}</Link>
-          </Button>
         </nav>
 
         {/* Mobile Nav */}
