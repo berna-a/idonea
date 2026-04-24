@@ -65,7 +65,7 @@ const Header = () => {
           ))}
           <button
             onClick={() => setLang(lang === 'pt' ? 'en' : 'pt')}
-            className="flex items-center gap-1.5 text-base text-foreground/90 hover:bg-primary/10 hover:text-foreground transition-colors border border-border/60 rounded-md px-3 py-2"
+            className="flex items-center gap-1.5 text-base text-foreground/90 hover:bg-primary/90 hover:text-foreground transition-colors border border-border/60 rounded-md px-3 py-2"
           >
             <Globe className="h-4 w-4" />
             {lang === 'pt' ? 'EN' : 'PT'}
@@ -76,7 +76,7 @@ const Header = () => {
         <div className="flex lg:hidden items-center gap-3">
           <button
             onClick={() => setLang(lang === 'pt' ? 'en' : 'pt')}
-            className="flex items-center gap-1 text-sm text-foreground/90 hover:bg-primary/10 transition-colors border border-border/60 rounded-md px-2 py-1"
+            className="flex items-center gap-1 text-sm text-foreground/90 hover:bg-primary/90 transition-colors border border-border/60 rounded-md px-2 py-1"
           >
             <Globe className="h-3.5 w-3.5" />
             {lang === 'pt' ? 'EN' : 'PT'}
