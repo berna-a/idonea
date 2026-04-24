@@ -13,10 +13,10 @@ const translations: Record<Language, Record<string, string>> = {
     // Nav
     'nav.home': 'Início',
     'nav.properties': 'Imóveis',
-    'nav.investment': 'Investimento',
+    'nav.investment': 'Investir',
     'nav.diaspora': 'Para a Diáspora',
-    'nav.sell': 'Vender o seu Imóvel',
-    'nav.about': 'Sobre a IDÓNEA',
+    'nav.sell': 'Venda o seu Imóvel',
+    'nav.about': 'Sobre',
     'nav.contact': 'Contacto',
     'nav.cta': 'Agendar Consultoria',
 
@@ -176,10 +176,10 @@ const translations: Record<Language, Record<string, string>> = {
     // Nav
     'nav.home': 'Home',
     'nav.properties': 'Properties',
-    'nav.investment': 'Investment',
+    'nav.investment': 'Invest',
     'nav.diaspora': 'For the Diaspora',
     'nav.sell': 'Sell Your Property',
-    'nav.about': 'About IDÓNEA',
+    'nav.about': 'About',
     'nav.contact': 'Contact',
     'nav.cta': 'Book a Consultation',
 
