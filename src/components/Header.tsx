@@ -43,18 +43,18 @@ const Header = () => {
           : 'bg-transparent border-b-0'
       }`}
     >
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+      <div className="container mx-auto px-4 h-[74px] flex items-center justify-between">
         <Link to="/" className="flex items-center">
-          <img src={logo} alt="Idónea" className="h-10 w-auto object-contain" />
+          <img src={logo} alt="Idónea" className="h-[46px] w-auto object-contain" />
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-10">
+        <nav className="hidden lg:flex items-center gap-12">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               to={link.href}
-              className={`text-sm font-body transition-colors ${
+              className={`text-base font-body transition-colors ${
                 isActive(link.href)
                   ? 'text-primary'
                   : 'text-foreground/90 hover:text-primary'
@@ -65,9 +65,9 @@ const Header = () => {
           ))}
           <button
             onClick={() => setLang(lang === 'pt' ? 'en' : 'pt')}
-            className="flex items-center gap-1.5 text-sm text-foreground/90 hover:text-primary transition-colors border border-border/60 rounded-md px-2.5 py-1.5"
+            className="flex items-center gap-1.5 text-base text-foreground/90 hover:text-primary transition-colors border border-border/60 rounded-md px-3 py-2"
           >
-            <Globe className="h-3.5 w-3.5" />
+            <Globe className="h-4 w-4" />
             {lang === 'pt' ? 'EN' : 'PT'}
           </button>
         </nav>
