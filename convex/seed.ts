@@ -24,6 +24,20 @@ export const setPropertyImage = internalMutation({
   },
 });
 
+/** Appends an image to a property's gallery by ref — used to build out multi-photo galleries during development. */
+export const appendPropertyImage = internalMutation({
+  args: { ref: v.string(), storageId: v.id('_storage') },
+  handler: async (ctx, { ref, storageId }) => {
+    const doc = await ctx.db
+      .query('properties')
+      .filter((q) => q.eq(q.field('ref'), ref))
+      .unique();
+    if (!doc) throw new Error(`No property with ref ${ref}`);
+    const nextSortOrder = doc.images.length;
+    await ctx.db.patch(doc._id, { images: [...doc.images, { storageId, sortOrder: nextSortOrder }] });
+  },
+});
+
 /**
  * One-off seed for demoing the public site against Convex.
  * Run via: npx convex run seed:seedLuxuryProperties '{"imageStorageId":"<id>"}'
