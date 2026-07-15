@@ -17,10 +17,10 @@ const PainPointsSection = () => {
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.85 }}
           className="text-center mb-16 md:mb-20"
         >
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground mb-5">
@@ -36,10 +36,10 @@ const PainPointsSection = () => {
           {pillars.map((pillar, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
+              transition={{ delay: i * 0.1, duration: 0.75 }}
               className="group relative bg-card border border-border/50 rounded-xl p-8 md:p-10 text-center hover:border-primary/30 transition-colors duration-300"
             >
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-6">

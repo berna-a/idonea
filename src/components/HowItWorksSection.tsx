@@ -17,10 +17,10 @@ const HowItWorksSection = () => {
       <div className="container mx-auto px-4 max-w-5xl">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.85 }}
           className="text-center mb-16 md:mb-20"
         >
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground mb-5">
@@ -43,7 +43,7 @@ const HowItWorksSection = () => {
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
+                transition={{ delay: i * 0.1, duration: 0.75 }}
                 className="relative flex items-start gap-6 md:gap-8"
               >
                 {/* Number circle */}

@@ -71,4 +71,14 @@
   .text-gold-light {
     color: hsl(var(--gold-light));
   }
+
+  /* Quiet-luxury section eyebrow — the one recurring "micro-label" motif of the site. */
+  .text-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: hsl(var(--primary) / 0.8);
+  }
 }

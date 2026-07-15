@@ -1,4 +1,5 @@
 import Header from '@/components/Header';
+import Seo from '@/components/Seo';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import { useLanguage } from '@/lib/i18n';
@@ -22,14 +23,15 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo title={t('seo.about.title')} description={t('seo.about.description')} />
       <Header />
       <main className="pt-16">
         <section className="py-24">
           <div className="container mx-auto px-4 max-w-3xl text-center">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.85 }}
             >
               <Shield className="h-12 w-12 text-primary mx-auto mb-6" />
               <h1 className="font-display text-4xl md:text-5xl text-foreground mb-6">

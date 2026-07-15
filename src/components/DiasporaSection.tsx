@@ -20,12 +20,12 @@ const DiasporaSection = () => {
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
           {/* Left — Content */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -12 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.85 }}
           >
-            <span className="text-primary/70 font-body text-sm tracking-widest uppercase mb-4 block">
+            <span className="text-eyebrow mb-4 block">
               {t('diaspora.eyebrow')}
             </span>
             <h2 className="font-display text-3xl md:text-4xl text-foreground mb-5 leading-tight">
@@ -42,7 +42,7 @@ const DiasporaSection = () => {
                   initial={{ opacity: 0, y: 15 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.15 * i }}
+                  transition={{ duration: 0.6, delay: 0.15 * i }}
                   className="flex items-start gap-4"
                 >
                   <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mt-0.5">
@@ -67,10 +67,10 @@ const DiasporaSection = () => {
 
           {/* Right — Visual */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 12 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.85, delay: 0.2 }}
             className="hidden md:block"
           >
             <div className="relative aspect-[4/5] rounded-2xl overflow-hidden">

@@ -1,37 +1,43 @@
-import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from 'convex/react';
+import { api } from '../../convex/_generated/api';
+import { Id } from '../../convex/_generated/dataModel';
 import { useLanguage } from '@/lib/i18n';
-import { PropertyTag } from '@/lib/sampleProperties';
-import { fetchPropertyById, fetchSimilarProperties } from '@/lib/propertyAdapter';
+import { useCurrency } from '@/lib/currency';
+import { PropertyTag, Property } from '@/lib/sampleProperties';
 import Header from '@/components/Header';
+import Seo from '@/components/Seo';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
+import PropertyGallery from '@/components/properties/PropertyGallery';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 import {
   ArrowLeft, Bed, Bath, Maximize, MapPin, MessageCircle,
-  ChevronLeft, ChevronRight, Users, Shield, FileCheck, Handshake, CheckCircle2,
+  Shield, FileCheck, Handshake, CheckCircle2,
   CalendarCheck, Phone, ImageOff,
 } from 'lucide-react';
 
 const PropertyDetail = () => {
   const { id } = useParams();
   const { t } = useLanguage();
-  const [activeImage, setActiveImage] = useState(0);
+  const { formatPrice: formatCurrency } = useCurrency();
 
-  const { data: property, isLoading, isError } = useQuery({
-    queryKey: ['public-property', id],
-    queryFn: () => fetchPropertyById(id!),
-    enabled: !!id,
-  });
+  const propertyResult = useQuery(
+    api.properties.getById,
+    id ? { id: id as Id<'properties'> } : 'skip'
+  );
+  const isLoading = propertyResult === undefined;
+  const property = propertyResult as Property | null | undefined;
 
-  const { data: similar = [] } = useQuery({
-    queryKey: ['public-property-similar', property?.id],
-    queryFn: () => fetchSimilarProperties(property!.id, property!.island, property!.type, 3),
-    enabled: !!property,
-  });
+  const similarResult = useQuery(
+    api.properties.listSimilar,
+    property
+      ? { excludeId: property.id as Id<'properties'>, island: property.island, transactionType: property.type, limit: 3 }
+      : 'skip'
+  );
+  const similar = (similarResult ?? []) as Property[];
 
   if (isLoading) {
     return (
@@ -56,13 +62,13 @@ const PropertyDetail = () => {
     );
   }
 
-  if (isError || !property) {
+  if (!property) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
         <div className="pt-32 container mx-auto px-4 text-center min-h-[50vh] flex flex-col items-center justify-center">
           <p className="text-muted-foreground font-body mb-6">
-            {isError ? 'Não foi possível carregar este imóvel.' : 'Imóvel não encontrado.'}
+            Imóvel não encontrado.
           </p>
           <Button asChild variant="outline" className="font-body">
             <Link to="/properties">{t('props.back')}</Link>
@@ -77,10 +83,8 @@ const PropertyDetail = () => {
   const editorial = property.editorial_pt;
   const idealFor = property.idealFor_pt;
 
-  const formatPrice = (price: number, type: 'sale' | 'rent') => {
-    const formatted = new Intl.NumberFormat('pt-CV', { style: 'currency', currency: 'CVE', minimumFractionDigits: 0 }).format(price);
-    return type === 'rent' ? `${formatted}${t('props.price.month')}` : formatted;
-  };
+  const formatPrice = (price: number, type: 'sale' | 'rent') =>
+    formatCurrency(price, type === 'rent' ? t('props.price.month') : '');
 
   const tagLabel = (tag: PropertyTag) => t(`detail.tag.${tag}`);
 
@@ -88,10 +92,12 @@ const PropertyDetail = () => {
   const propertyUrl = typeof window !== 'undefined' ? window.location.href : '';
   const transactionLabel = property.type === 'sale' ? 'venda' : 'arrendamento';
 
-  const buildWhatsappUrl = (intent: 'visit' | 'info' | 'generic') => {
+  const buildWhatsappUrl = (intent: 'visit' | 'info' | 'dossier' | 'generic') => {
     const lines: string[] = ['Olá IDÓNEA,'];
     if (intent === 'visit') {
       lines.push(`gostaria de agendar uma visita ao imóvel ${property.ref} — ${title}`);
+    } else if (intent === 'dossier') {
+      lines.push(`gostaria de receber o dossier completo do imóvel ${property.ref} — ${title}`);
     } else if (intent === 'info') {
       lines.push(`gostaria de receber mais informação sobre o imóvel ${property.ref} — ${title}`);
     } else {
@@ -102,7 +108,7 @@ const PropertyDetail = () => {
     return `https://wa.me/2389808947?text=${encodeURIComponent(lines.join('\n'))}`;
   };
 
-  const buildContactUrl = (intent: 'visit' | 'info') => {
+  const buildContactUrl = (intent: 'visit' | 'info' | 'dossier') => {
     const params = new URLSearchParams({
       ref: property.ref,
       title,
@@ -115,10 +121,6 @@ const PropertyDetail = () => {
   };
 
   const images = property.images.length > 0 ? property.images : [property.image];
-  const hasImages = images.some(Boolean);
-
-  const prevImage = () => setActiveImage(i => (i === 0 ? images.length - 1 : i - 1));
-  const nextImage = () => setActiveImage(i => (i === images.length - 1 ? 0 : i + 1));
 
   const processSteps = [
     { icon: Phone, key: 'detail.process.1' },
@@ -134,10 +136,35 @@ const PropertyDetail = () => {
     property.area > 0 && { icon: Maximize, value: `${property.area}m²`, label: t('detail.area') },
   ].filter(Boolean) as { icon: typeof Bed; value: string | number; label: string }[];
 
+  const seoDescription = (editorial || property.description_pt || '').slice(0, 160);
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'RealEstateListing',
+    name: title,
+    description: seoDescription,
+    url: propertyUrl,
+    image: images.filter(Boolean),
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: property.location,
+      addressRegion: property.island,
+      addressCountry: 'CV',
+    },
+    offers: {
+      '@type': 'Offer',
+      price: property.price,
+      priceCurrency: 'CVE',
+      availability: 'https://schema.org/InStock',
+    },
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <Seo title={`${title} · ${property.location}`} description={seoDescription} />
+      <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       <Header />
-      <main className="pt-24 pb-24">
+      <main className="pt-24 pb-28 lg:pb-24">
         <div className="container mx-auto px-4 max-w-7xl">
           {/* Back */}
           <Link
@@ -147,86 +174,19 @@ const PropertyDetail = () => {
             <ArrowLeft className="h-4 w-4" /> {t('props.back')}
           </Link>
 
-          {/* Gallery */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="relative rounded-2xl overflow-hidden mb-4 aspect-[16/9] max-h-[640px] bg-card ring-1 ring-border/40 shadow-2xl shadow-black/40"
-          >
-            {hasImages ? (
-              <img
-                src={images[activeImage]}
-                alt={title}
-                className="w-full h-full object-cover transition-opacity duration-500"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                <ImageOff className="h-12 w-12" strokeWidth={1.5} />
-              </div>
-            )}
-
-            {/* Subtle gradient at bottom for legibility */}
-            {hasImages && (
-              <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background/60 to-transparent pointer-events-none" />
-            )}
-
-            {images.length > 1 && (
-              <>
-                <button
-                  onClick={prevImage}
-                  aria-label="Previous image"
-                  className="absolute left-5 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-background/60 backdrop-blur-md ring-1 ring-border/40 flex items-center justify-center hover:bg-background/90 hover:ring-primary/40 transition-all"
-                >
-                  <ChevronLeft className="h-5 w-5 text-foreground" />
-                </button>
-                <button
-                  onClick={nextImage}
-                  aria-label="Next image"
-                  className="absolute right-5 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-background/60 backdrop-blur-md ring-1 ring-border/40 flex items-center justify-center hover:bg-background/90 hover:ring-primary/40 transition-all"
-                >
-                  <ChevronRight className="h-5 w-5 text-foreground" />
-                </button>
-                {/* Counter */}
-                <div className="absolute top-5 right-5 px-3 py-1.5 rounded-full bg-background/60 backdrop-blur-md ring-1 ring-border/40 text-xs font-body text-foreground/90 tabular-nums">
-                  {activeImage + 1} {t('detail.gallery.counter')} {images.length}
-                </div>
-              </>
-            )}
-          </motion.div>
-
-          {/* Thumbnail strip */}
-          {images.length > 1 && (
-            <div className="flex gap-2 mb-12 overflow-x-auto pb-1 scrollbar-thin">
-              {images.map((img, i) => (
-                <button
-                  key={i}
-                  onClick={() => setActiveImage(i)}
-                  className={`relative flex-shrink-0 w-20 h-16 md:w-24 md:h-20 rounded-lg overflow-hidden ring-1 transition-all ${
-                    i === activeImage
-                      ? 'ring-2 ring-primary opacity-100'
-                      : 'ring-border/40 opacity-60 hover:opacity-100'
-                  }`}
-                >
-                  <img src={img} alt="" className="w-full h-full object-cover" />
-                </button>
-              ))}
-            </div>
-          )}
-
-          {!images.length || images.length <= 1 ? <div className="mb-12" /> : null}
+          <PropertyGallery images={images} title={title} />
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-16">
               {/* Header */}
               <motion.header
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
+                transition={{ duration: 0.75, delay: 0.1 }}
               >
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="text-[11px] text-primary font-body uppercase tracking-[0.2em]">
+                  <span className="text-eyebrow">
                     {property.type === 'sale' ? t('props.filter.sale') : t('props.filter.rent')}
                   </span>
                   <span className="h-px w-8 bg-border" />
@@ -266,9 +226,9 @@ const PropertyDetail = () => {
               {/* Specs strip */}
               {specs.length > 0 && (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.15 }}
+                  transition={{ duration: 0.75, delay: 0.15 }}
                   className="flex items-stretch gap-0 border-y border-border/50 divide-x divide-border/50"
                 >
                   {specs.map((spec, i) => (
@@ -288,13 +248,13 @@ const PropertyDetail = () => {
               {/* Editorial */}
               {editorial && (
                 <motion.section
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
+                  transition={{ duration: 0.75, delay: 0.2 }}
                 >
                   <div className="flex items-center gap-3 mb-6">
                     <span className="h-px w-10 bg-primary/40" />
-                    <h2 className="font-body text-[11px] uppercase tracking-[0.25em] text-primary/80">
+                    <h2 className="text-eyebrow">
                       {t('detail.editorial.title')}
                     </h2>
                   </div>
@@ -307,13 +267,13 @@ const PropertyDetail = () => {
               {/* Ideal For */}
               {idealFor.length > 0 && (
                 <motion.section
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.25 }}
+                  transition={{ duration: 0.75, delay: 0.25 }}
                 >
                   <div className="flex items-center gap-3 mb-6">
                     <span className="h-px w-10 bg-primary/40" />
-                    <h2 className="font-body text-[11px] uppercase tracking-[0.25em] text-primary/80">
+                    <h2 className="text-eyebrow">
                       {t('detail.idealFor')}
                     </h2>
                   </div>
@@ -333,13 +293,13 @@ const PropertyDetail = () => {
               {/* Features */}
               {property.features.length > 0 && (
                 <motion.section
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
+                  transition={{ duration: 0.75, delay: 0.3 }}
                 >
                   <div className="flex items-center gap-3 mb-6">
                     <span className="h-px w-10 bg-primary/40" />
-                    <h2 className="font-body text-[11px] uppercase tracking-[0.25em] text-primary/80">
+                    <h2 className="text-eyebrow">
                       {t('detail.specs.title')}
                     </h2>
                   </div>
@@ -356,9 +316,9 @@ const PropertyDetail = () => {
 
               {/* Process */}
               <motion.section
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.35 }}
+                transition={{ duration: 0.75, delay: 0.35 }}
                 className="relative bg-secondary/60 border border-border/40 rounded-2xl p-8 md:p-10 overflow-hidden"
               >
                 <div className="absolute top-0 left-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
@@ -406,6 +366,12 @@ const PropertyDetail = () => {
                   <Button asChild size="lg" className="w-full font-body h-12">
                     <Link to={buildContactUrl('visit')}>{t('detail.cta.visit')}</Link>
                   </Button>
+                  <Button asChild size="lg" variant="outline" className="w-full font-body h-12 border-primary/40 text-primary hover:bg-primary hover:text-primary-foreground">
+                    <Link to={buildContactUrl('dossier')}>
+                      <FileCheck className="h-[18px] w-[18px] mr-2" strokeWidth={1.75} />
+                      {t('detail.cta.dossier')}
+                    </Link>
+                  </Button>
                   <Button asChild size="lg" variant="outline" className="w-full font-body h-12">
                     <Link to={buildContactUrl('info')}>{t('detail.cta.info')}</Link>
                   </Button>
@@ -438,17 +404,17 @@ const PropertyDetail = () => {
           {/* Similar */}
           {similar.length > 0 && (
             <motion.section
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.85 }}
               className="mt-28 pt-16 border-t border-border/40"
             >
               <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
                 <div>
                   <div className="flex items-center gap-3 mb-3">
                     <span className="h-px w-10 bg-primary/40" />
-                    <span className="font-body text-[11px] uppercase tracking-[0.25em] text-primary/80">
+                    <span className="text-eyebrow">
                       {t('detail.similar')}
                     </span>
                   </div>
@@ -472,6 +438,7 @@ const PropertyDetail = () => {
                             alt={p.title_pt}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[900ms] ease-out"
                             loading="lazy"
+                            decoding="async"
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-muted-foreground">
@@ -479,8 +446,8 @@ const PropertyDetail = () => {
                           </div>
                         )}
                       </div>
-                      <div className="p-5">
-                        <p className="text-[10px] text-primary/80 font-body uppercase tracking-[0.2em] mb-2">
+                      <div className="p-5 transition-transform duration-700 ease-out group-hover:-translate-y-0.5">
+                        <p className="text-eyebrow mb-2">
                           {p.type === 'sale' ? t('props.filter.sale') : t('props.filter.rent')}
                         </p>
                         <h3 className="font-display text-base font-semibold text-foreground mb-1 line-clamp-1 group-hover:text-primary transition-colors">
@@ -502,7 +469,34 @@ const PropertyDetail = () => {
         </div>
       </main>
       <Footer />
-      <WhatsAppButton />
+
+      {/* Mobile sticky CTA bar — replaces the floating WhatsApp bubble on this page */}
+      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-background/95 backdrop-blur-md border-t border-border/60 px-4 py-3 flex items-center gap-3">
+        <div className="flex-1 min-w-0">
+          <p className="text-[10px] text-muted-foreground font-body uppercase tracking-wider">
+            {property.type === 'sale' ? t('props.filter.sale') : t('props.filter.rent')}
+          </p>
+          <p className="text-lg text-primary font-display tabular-nums truncate">
+            {formatPrice(property.price, property.type)}
+          </p>
+        </div>
+        <Button asChild size="sm" className="font-body shrink-0">
+          <Link to={buildContactUrl('visit')}>{t('detail.cta.visit')}</Link>
+        </Button>
+        <a
+          href={buildWhatsappUrl('info')}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="WhatsApp"
+          className="shrink-0 flex items-center justify-center h-9 w-9 rounded-full bg-[hsl(142,70%,45%)] hover:bg-[hsl(142,70%,40%)] text-white transition-colors"
+        >
+          <MessageCircle className="h-4 w-4" />
+        </a>
+      </div>
+
+      <div className="hidden lg:block">
+        <WhatsAppButton />
+      </div>
     </div>
   );
 };
