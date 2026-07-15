@@ -11,6 +11,19 @@ export const clearProperties = internalMutation({
   },
 });
 
+/** Sets a single property's images by ref — used to attach freshly uploaded storage IDs during development. */
+export const setPropertyImage = internalMutation({
+  args: { ref: v.string(), storageId: v.id('_storage') },
+  handler: async (ctx, { ref, storageId }) => {
+    const doc = await ctx.db
+      .query('properties')
+      .filter((q) => q.eq(q.field('ref'), ref))
+      .unique();
+    if (!doc) throw new Error(`No property with ref ${ref}`);
+    await ctx.db.patch(doc._id, { images: [{ storageId, sortOrder: 0 }] });
+  },
+});
+
 /**
  * One-off seed for demoing the public site against Convex.
  * Run via: npx convex run seed:seedLuxuryProperties '{"imageStorageId":"<id>"}'
