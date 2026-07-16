@@ -11,6 +11,16 @@ export const clearProperties = internalMutation({
   },
 });
 
+/** Wipes all leads — used to clear test submissions during development. */
+export const clearLeads = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    const docs = await ctx.db.query('leads').collect();
+    for (const doc of docs) await ctx.db.delete(doc._id);
+    return docs.length;
+  },
+});
+
 /** Sets a single property's images by ref — used to attach freshly uploaded storage IDs during development. */
 export const setPropertyImage = internalMutation({
   args: { ref: v.string(), storageId: v.id('_storage') },

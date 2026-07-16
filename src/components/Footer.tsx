@@ -20,6 +20,9 @@ const Footer = () => {
             <p className="text-sm text-muted-foreground font-body">
               {t('footer.company')}
             </p>
+            <p className="text-sm text-primary font-display mt-1">
+              {t('footer.tagline')}
+            </p>
           </div>
 
           {/* Islands */}

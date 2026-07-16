@@ -95,11 +95,20 @@ const HomeHero = () => {
       {/* Functional landing — search widget */}
       <section className="relative bg-background py-20 md:py-28 border-b border-border/40">
         <div className="container mx-auto px-4 max-w-3xl text-center">
-          <motion.p
+          <motion.h1
             initial={{ opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.85 }}
+            className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground mb-5"
+          >
+            {t('hero.headline')}
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.85, delay: 0.05 }}
             className="text-muted-foreground font-body text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-10"
           >
             {t('hero.subheadline')}

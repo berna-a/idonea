@@ -15,7 +15,7 @@ const About = () => {
     ? 'Sobre a IDÓNEA'
     : 'About IDÓNEA';
   const subtitle = lang === 'pt'
-    ? 'Advisory imobiliário premium em Cabo Verde.'
+    ? 'Mediação imobiliária de referência em Cabo Verde.'
     : 'Premium real estate advisory in Cape Verde.';
   const body = lang === 'pt'
     ? 'A IDÓNEA é uma empresa de mediação imobiliária focada em rigor, curadoria e acompanhamento completo. Trabalhamos com um número seletivo de imóveis e clientes, garantindo atenção dedicada em cada processo — desde a avaliação inicial até à escritura.'
