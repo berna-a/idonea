@@ -21,8 +21,8 @@ const testimonials = [
     name: 'Marie D.',
     context_pt: 'Investidora internacional',
     context_en: 'International investor',
-    text_pt: 'Investir em Cabo Verde parecia complexo à distância. A Idônea apresentou-me uma seleção criteriosa, acompanhou a negociação e geriu toda a parte legal com rigor. Um serviço discreto e muito profissional.',
-    text_en: 'Investing in Cape Verde seemed complex from abroad. Idônea presented a carefully curated selection, managed the negotiation and handled all legal aspects with rigour. A discreet and highly professional service.',
+    text_pt: 'Investir em Cabo Verde parecia complexo à distância. A IDÓNEA apresentou-me uma seleção criteriosa, acompanhou a negociação e geriu toda a parte legal com rigor. Um serviço discreto e muito profissional.',
+    text_en: 'Investing in Cape Verde seemed complex from abroad. IDÓNEA presented a carefully curated selection, managed the negotiation and handled all legal aspects with rigour. A discreet and highly professional service.',
   },
 ];
 

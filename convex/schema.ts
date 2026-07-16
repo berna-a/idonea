@@ -47,4 +47,17 @@ export default defineSchema({
     .index('by_status', ['status'])
     .index('by_status_featured', ['status', 'is_featured'])
     .index('by_island', ['island']),
+
+  leads: defineTable({
+    name: v.string(),
+    email: v.string(),
+    phone: v.optional(v.string()),
+    interest: v.optional(v.string()),
+    message: v.string(),
+    property_ref: v.optional(v.string()),
+    property_title: v.optional(v.string()),
+    intent: v.optional(v.string()),
+    source: v.string(),
+    status: v.union(v.literal('new'), v.literal('contacted'), v.literal('archived')),
+  }).index('by_status', ['status']),
 });

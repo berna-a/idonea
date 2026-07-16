@@ -1,4 +1,4 @@
-import { query, mutation, QueryCtx } from './_generated/server';
+import { query, QueryCtx } from './_generated/server';
 import { v } from 'convex/values';
 import { Doc } from './_generated/dataModel';
 
@@ -169,13 +169,5 @@ export const getByIdForSeo = query({
       images,
       updatedAt: doc._creationTime,
     };
-  },
-});
-
-/** Generates a short-lived URL the client can POST an image file to (Convex Storage). */
-export const generateUploadUrl = mutation({
-  args: {},
-  handler: async (ctx) => {
-    return await ctx.storage.generateUploadUrl();
   },
 });

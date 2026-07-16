@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useMutation } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 import { useLanguage } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -35,7 +37,9 @@ const ContactSection = () => {
     };
   }, [searchParams]);
 
-  const [form, setForm] = useState({ name: '', email: '', phone: '', interest: '', message: '' });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', interest: '', message: '', website: '' });
+  const [submitting, setSubmitting] = useState(false);
+  const createLead = useMutation(api.leads.create);
 
   useEffect(() => {
     if (!propertyCtx) return;
@@ -60,15 +64,34 @@ const ContactSection = () => {
     setForm(f => ({ ...f, message: '', interest: '' }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = contactSchema.safeParse(form);
     if (!result.success) {
       toast.error('Por favor preencha todos os campos obrigatórios.');
       return;
     }
-    toast.success('Mensagem enviada com sucesso!');
-    setForm({ name: '', email: '', phone: '', interest: '', message: '' });
+    setSubmitting(true);
+    try {
+      await createLead({
+        name: result.data.name,
+        email: result.data.email,
+        phone: result.data.phone || undefined,
+        interest: result.data.interest || undefined,
+        message: result.data.message,
+        property_ref: propertyCtx?.ref,
+        property_title: propertyCtx?.title || undefined,
+        intent: propertyCtx?.intent,
+        source: propertyCtx ? 'property-enquiry' : 'contact-form',
+        honeypot: form.website,
+      });
+      toast.success('Mensagem enviada. Respondemos em menos de 24 horas.');
+      setForm({ name: '', email: '', phone: '', interest: '', message: '', website: '' });
+    } catch {
+      toast.error('Não foi possível enviar. Tente novamente ou fale connosco por WhatsApp.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const whatsappUrl = useMemo(() => {
@@ -129,6 +152,17 @@ const ContactSection = () => {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Honeypot: hidden from users, bots fill it → we drop the submission server-side */}
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                value={form.website}
+                onChange={(e) => setForm({ ...form, website: e.target.value })}
+                className="hidden"
+                aria-hidden="true"
+              />
               <Input
                 placeholder={t('contact.name')}
                 value={form.name}
@@ -173,8 +207,8 @@ const ContactSection = () => {
                 maxLength={2000}
                 required
               />
-              <Button type="submit" size="lg" className="w-full font-body">
-                {t('contact.send')}
+              <Button type="submit" size="lg" className="w-full font-body" disabled={submitting}>
+                {submitting ? 'A enviar…' : t('contact.send')}
               </Button>
             </form>
           </motion.div>

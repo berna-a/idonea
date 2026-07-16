@@ -144,7 +144,7 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Footer
     'footer.rights': 'Todos os direitos reservados.',
-    'footer.company': 'Idônea Mediação Imobiliária',
+    'footer.company': 'IDÓNEA Mediação Imobiliária',
 
     // Properties page
     'props.title': 'Imóveis Disponíveis',
@@ -346,7 +346,7 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Footer
     'footer.rights': 'All rights reserved.',
-    'footer.company': 'Idônea Mediação Imobiliária',
+    'footer.company': 'IDÓNEA Mediação Imobiliária',
 
     // Properties page
     'props.title': 'Available Properties',
@@ -419,8 +419,26 @@ const translations: Record<Language, Record<string, string>> = {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+const LANG_KEY = 'idonea-lang';
+
+const readStoredLang = (): Language => {
+  if (typeof window === 'undefined') return 'pt';
+  const saved = window.localStorage.getItem(LANG_KEY);
+  if (saved === 'pt' || saved === 'en') return saved;
+  return window.navigator.language?.toLowerCase().startsWith('en') ? 'en' : 'pt';
+};
+
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [lang, setLang] = useState<Language>('pt');
+  const [lang, setLangState] = useState<Language>(readStoredLang);
+
+  const setLang = (l: Language) => {
+    setLangState(l);
+    try {
+      window.localStorage.setItem(LANG_KEY, l);
+    } catch {
+      /* storage may be unavailable (private mode) — ignore */
+    }
+  };
 
   const t = (key: string): string => {
     return translations[lang][key] || key;

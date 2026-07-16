@@ -106,3 +106,12 @@ export const deleteProperty = mutation({
     await ctx.db.delete(id);
   },
 });
+
+/** Auth-gated: short-lived URL the admin UI POSTs an image file to (Convex Storage). */
+export const generateUploadUrl = mutation({
+  args: {},
+  handler: async (ctx) => {
+    await requireAuth(ctx);
+    return ctx.storage.generateUploadUrl();
+  },
+});

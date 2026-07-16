@@ -53,7 +53,7 @@ const AdminPropertyForm = () => {
   const existing = useQuery(api.admin.getByIdAdmin, mode === 'edit' ? { id: id as Id<'properties'> } : 'skip');
   const createProperty = useMutation(api.admin.createProperty);
   const updateProperty = useMutation(api.admin.updateProperty);
-  const generateUploadUrl = useMutation(api.properties.generateUploadUrl);
+  const generateUploadUrl = useMutation(api.admin.generateUploadUrl);
 
   const [loaded, setLoaded] = useState(false);
   const [submitting, setSubmitting] = useState(false);
