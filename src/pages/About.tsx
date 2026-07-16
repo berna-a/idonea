@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ShieldCheck, Gem, Handshake, MessageCircle, Phone } from 'lucide-react';
 import { motion } from 'framer-motion';
+import kharyPhoto from '@/assets/khary-founder.webp';
 
 const WA = 'https://wa.me/2389808947?text=';
 
@@ -79,10 +80,13 @@ const About = () => {
             <p className="text-eyebrow text-center mb-12">{pt ? 'Quem está por trás' : 'Who is behind it'}</p>
             <div className="grid grid-cols-1 md:grid-cols-[minmax(0,240px)_1fr] gap-8 md:gap-12 items-center">
               <div className="flex justify-center md:justify-start">
-                {/* Placeholder monogram — swap for <img src={kharyPhoto} …/> once the photo file is added */}
-                <div className="w-44 h-44 md:w-56 md:h-56 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 ring-1 ring-primary/20 flex items-center justify-center">
-                  <span className="font-display text-6xl text-primary/70">K</span>
-                </div>
+                <img
+                  src={kharyPhoto}
+                  alt="Khary Hopffer Varela"
+                  className="w-44 h-44 md:w-56 md:h-56 rounded-2xl object-cover ring-1 ring-primary/20"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
               <div>
                 <h2 className="font-display text-2xl md:text-3xl text-foreground mb-1">Khary Hopffer Varela</h2>
