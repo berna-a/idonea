@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, Globe, Coins } from 'lucide-react';
+import { Menu, Globe } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n';
-import { useCurrency } from '@/lib/currency';
 import logo from '@/assets/logo.png';
 import { Button } from '@/components/ui/button';
 import HeaderMenu from '@/components/HeaderMenu';
 
 const Header = () => {
   const { lang, setLang, t } = useLanguage();
-  const { currency, setCurrency } = useCurrency();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -35,14 +33,6 @@ const Header = () => {
 
         {/* Utility bar + menu trigger (nav lives in the full-screen HeaderMenu) */}
         <div className="flex items-center gap-2 md:gap-3">
-          <button
-            onClick={() => setCurrency(currency === 'CVE' ? 'EUR' : 'CVE')}
-            className="flex items-center gap-1 sm:gap-1.5 text-sm text-foreground/90 hover:bg-primary/90 hover:text-foreground transition-colors border border-border/60 rounded-md px-2 sm:px-3 py-1.5 sm:py-2"
-            aria-label="Trocar moeda"
-          >
-            <Coins className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-            {currency}
-          </button>
           <button
             onClick={() => setLang(lang === 'pt' ? 'en' : 'pt')}
             className="flex items-center gap-1 sm:gap-1.5 text-sm text-foreground/90 hover:bg-primary/90 hover:text-foreground transition-colors border border-border/60 rounded-md px-2 sm:px-3 py-1.5 sm:py-2"

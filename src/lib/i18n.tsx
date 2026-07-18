@@ -40,6 +40,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.cta': 'Marcar uma Conversa',
     'nav.menu': 'Menu',
     'nav.menu.back': 'Voltar ao site',
+    'nav.currency': 'Moeda',
 
     // Hero
     'hero.eyebrow': 'Mediação Imobiliária · Cabo Verde',
@@ -245,6 +246,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.cta': 'Book a Call',
     'nav.menu': 'Menu',
     'nav.menu.back': 'Back to site',
+    'nav.currency': 'Currency',
 
     // Hero
     'hero.eyebrow': 'Real Estate · Cape Verde',

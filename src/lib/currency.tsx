@@ -1,27 +1,42 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
-type Currency = 'CVE' | 'EUR';
+type Currency = 'CVE' | 'EUR' | 'USD';
 
 /** CVE is pegged to the Euro at a fixed rate (Acordo de Cooperação Cambial, 1998). */
 const CVE_PER_EUR = 110.265;
+/** Approximate — EUR/USD floats. Illustrative only; not a live rate. */
+const USD_PER_EUR = 1.08;
 const STORAGE_KEY = 'idonea-currency';
+
+const CURRENCIES: Currency[] = ['CVE', 'EUR', 'USD'];
 
 const readStored = (): Currency => {
   if (typeof window === 'undefined') return 'CVE';
   const saved = window.localStorage.getItem(STORAGE_KEY);
-  return saved === 'EUR' || saved === 'CVE' ? saved : 'CVE';
+  return (CURRENCIES as string[]).includes(saved ?? '') ? (saved as Currency) : 'CVE';
 };
 
-const num = (value: number, locale: string) =>
-  new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(value);
+const num = (value: number) =>
+  new Intl.NumberFormat('pt-PT', { maximumFractionDigits: 0 }).format(value);
+
+const toCurrency = (priceInCve: number, currency: Currency): number => {
+  if (currency === 'CVE') return priceInCve;
+  const priceInEur = priceInCve / CVE_PER_EUR;
+  return currency === 'EUR' ? priceInEur : priceInEur * USD_PER_EUR;
+};
+
+const SYMBOL: Record<Currency, string> = { CVE: 'CVE', EUR: '€', USD: '$' };
+
+const formatIn = (priceInCve: number, currency: Currency, suffix: string) =>
+  `${num(toCurrency(priceInCve, currency))} ${SYMBOL[currency]}${suffix}`;
 
 interface CurrencyContextType {
   currency: Currency;
   setCurrency: (c: Currency) => void;
-  /** Price in the active currency, with an explicit, legible currency label. */
+  /** Price in the active (primary) currency, with an explicit, legible label. */
   formatPrice: (priceInCve: number, suffix?: string) => string;
-  /** The same price expressed in the other currency, for a small "≈ …" line. */
-  formatEquivalent: (priceInCve: number, suffix?: string) => string;
+  /** The price in the two other currencies, for small "≈ …" lines beneath the primary. */
+  formatEquivalents: (priceInCve: number, suffix?: string) => string[];
 }
 
 const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined);
@@ -38,22 +53,13 @@ export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const formatPrice = (priceInCve: number, suffix = '') => {
-    if (currency === 'EUR') {
-      return `${num(priceInCve / CVE_PER_EUR, 'pt-PT')} €${suffix}`;
-    }
-    return `${num(priceInCve, 'pt-PT')} CVE${suffix}`;
-  };
+  const formatPrice = (priceInCve: number, suffix = '') => formatIn(priceInCve, currency, suffix);
 
-  const formatEquivalent = (priceInCve: number, suffix = '') => {
-    if (currency === 'EUR') {
-      return `≈ ${num(priceInCve, 'pt-PT')} CVE${suffix}`;
-    }
-    return `≈ ${num(priceInCve / CVE_PER_EUR, 'pt-PT')} €${suffix}`;
-  };
+  const formatEquivalents = (priceInCve: number, suffix = '') =>
+    CURRENCIES.filter((c) => c !== currency).map((c) => `≈ ${formatIn(priceInCve, c, suffix)}`);
 
   return (
-    <CurrencyContext.Provider value={{ currency, setCurrency, formatPrice, formatEquivalent }}>
+    <CurrencyContext.Provider value={{ currency, setCurrency, formatPrice, formatEquivalents }}>
       {children}
     </CurrencyContext.Provider>
   );

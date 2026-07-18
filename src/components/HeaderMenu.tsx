@@ -4,8 +4,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useLenis } from 'lenis/react';
 import { X } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n';
+import { useCurrency } from '@/lib/currency';
 import { islandsContent } from '@/lib/islandsContent';
 import heroBg from '@/assets/hero-bg.webp';
+
+const CURRENCIES = ['CVE', 'EUR', 'USD'] as const;
 
 interface HeaderMenuProps {
   open: boolean;
@@ -33,6 +36,7 @@ const linkVariants = {
  */
 const HeaderMenu = ({ open, onClose }: HeaderMenuProps) => {
   const { lang, t } = useLanguage();
+  const { currency, setCurrency } = useCurrency();
   const lenis = useLenis();
 
   useEffect(() => {
@@ -111,6 +115,27 @@ const HeaderMenu = ({ open, onClose }: HeaderMenuProps) => {
                   >
                     {lang === 'pt' ? island.dbName : island.name_en}
                   </Link>
+                ))}
+              </motion.div>
+            </div>
+
+            <div className="overflow-hidden mt-6 md:mt-8">
+              <motion.div variants={linkVariants} className="flex flex-wrap items-center gap-3">
+                <span className="text-xs tracking-[0.3em] uppercase text-muted-foreground font-body mr-1">
+                  {t('nav.currency')}
+                </span>
+                {CURRENCIES.map((c) => (
+                  <button
+                    key={c}
+                    onClick={() => setCurrency(c)}
+                    className={`text-sm font-body px-3 py-1.5 rounded-full border transition-colors ${
+                      currency === c
+                        ? 'border-primary bg-primary/10 text-primary'
+                        : 'border-border/60 text-foreground/70 hover:border-primary/40 hover:text-primary'
+                    }`}
+                  >
+                    {c}
+                  </button>
                 ))}
               </motion.div>
             </div>

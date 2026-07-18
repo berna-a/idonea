@@ -22,7 +22,7 @@ import {
 const PropertyDetail = () => {
   const { id } = useParams();
   const { t } = useLanguage();
-  const { formatPrice: formatCurrency, formatEquivalent } = useCurrency();
+  const { formatPrice: formatCurrency, formatEquivalents } = useCurrency();
 
   const propertyResult = useQuery(
     api.properties.getById,
@@ -358,9 +358,11 @@ const PropertyDetail = () => {
                   <p className="text-3xl text-primary font-display tabular-nums leading-tight">
                     {formatPrice(property.price, property.type)}
                   </p>
-                  <p className="text-sm text-muted-foreground font-body tabular-nums mt-1">
-                    {formatEquivalent(property.price, property.type === 'rent' ? t('props.price.month') : '')}
-                  </p>
+                  <div className="text-sm text-muted-foreground font-body tabular-nums mt-1 space-y-0.5">
+                    {formatEquivalents(property.price, property.type === 'rent' ? t('props.price.month') : '').map((line) => (
+                      <p key={line}>{line}</p>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="hidden lg:block h-px bg-border/50" />
