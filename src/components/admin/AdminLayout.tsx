@@ -2,7 +2,7 @@ import { useAuthActions } from '@convex-dev/auth/react';
 import { Button } from '@/components/ui/button';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { Building2, LayoutDashboard } from 'lucide-react';
-import logo from '@/assets/logo.png';
+import logo from '@/assets/logo.svg';
 
 const navItems = [
   { label: 'Painel', path: '/admin', icon: LayoutDashboard },

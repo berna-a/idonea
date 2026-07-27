@@ -3,7 +3,7 @@ import { Instagram, Linkedin, Facebook, Mail, Phone } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n';
 import { islandsContent } from '@/lib/islandsContent';
 import { guidesContent } from '@/lib/guidesContent';
-import logo from '@/assets/logo.png';
+import logo from '@/assets/logo.svg';
 
 const Footer = () => {
   const { t, lang } = useLanguage();

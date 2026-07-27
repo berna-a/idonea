@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, Globe } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n';
-import logo from '@/assets/logo.png';
+import logo from '@/assets/logo.svg';
 import { Button } from '@/components/ui/button';
 import HeaderMenu from '@/components/HeaderMenu';
 
