@@ -10,23 +10,58 @@ interface LanguageContextType {
 
 const translations: Record<Language, Record<string, string>> = {
   pt: {
+    // SEO
+    'seo.home.title': 'Mediação Imobiliária em Cabo Verde',
+    'seo.home.description': 'Curadoria imobiliária em Cabo Verde com acompanhamento dedicado — para compradores locais, diáspora e investidores internacionais. Do primeiro contacto à escritura.',
+    'seo.properties.title': 'Imóveis à Venda e Arrendamento',
+    'seo.properties.description': 'Portefólio selecionado de imóveis em Cabo Verde — apartamentos, moradias, terrenos e espaços comerciais, para venda, arrendamento ou investimento.',
+    'seo.investment.title': 'Investir em Cabo Verde',
+    'seo.investment.description': 'Oportunidades de investimento imobiliário em Cabo Verde para a diáspora e investidores internacionais, com acompanhamento completo à distância.',
+    'seo.diaspora.title': 'Para a Diáspora Cabo-verdiana',
+    'seo.diaspora.description': 'Compre em Cabo Verde a partir de qualquer lugar do mundo — video-tours, shortlist personalizada e apoio documental completo.',
+    'seo.sell.title': 'Vender o seu Imóvel',
+    'seo.sell.description': 'Venda o seu imóvel em Cabo Verde com a IDÓNEA — avaliação, marketing e negociação conduzidos com rigor e transparência.',
+    'seo.about.title': 'Sobre Nós',
+    'seo.about.description': 'Conheça a IDÓNEA — mediação imobiliária seletiva, transparente e dedicada em Cabo Verde.',
+    'seo.contact.title': 'Contacto',
+    'seo.contact.description': 'Fale com a equipa IDÓNEA. Resposta em menos de 24 horas.',
+    'seo.notfound.title': 'Página Não Encontrada',
+    'seo.notfound.description': 'A página que procura não existe ou foi movida.',
+
     // Nav
     'nav.home': 'Início',
     'nav.properties': 'Imóveis',
+    'nav.islands': 'Ilhas',
     'nav.investment': 'Investir',
     'nav.diaspora': 'Para a Diáspora',
     'nav.sell': 'Venda o seu Imóvel',
     'nav.about': 'Sobre',
     'nav.contact': 'Contacto',
-    'nav.cta': 'Agendar Consultoria',
+    'nav.cta': 'Marcar uma Conversa',
+    'nav.menu': 'Menu',
+    'nav.menu.back': 'Voltar ao site',
+    'nav.currency': 'Moeda',
 
     // Hero
-    'hero.eyebrow': 'Advisory Imobiliário em Cabo Verde',
-    'hero.headline': 'Comprar, vender ou investir com total confiança.',
-    'hero.subheadline': 'Curadoria imobiliária com acompanhamento dedicado em cada passo. Do primeiro contacto à escritura.',
-    'hero.cta.properties': 'Ver Imóveis',
-    'hero.cta.consultation': 'Agendar Consultoria',
-    'hero.cta.sell': 'Quero Vender',
+    'hero.eyebrow': 'Mediação Imobiliária · Cabo Verde',
+    'hero.headline': 'Menos imóveis. Mais certeza.',
+    'hero.subheadline': 'Em Cabo Verde, apresentamos apenas o que verificámos e vale o seu tempo. E ficamos ao seu lado do primeiro contacto à escritura.',
+    'hero.cta.properties': 'Ver o Portefólio',
+    'hero.cta.consultation': 'Marcar uma Conversa',
+    'hero.cta.sell': 'Vender com a IDÓNEA',
+
+    // Trust bar
+    'trust.1': 'Cada imóvel verificado juridicamente',
+    'trust.2': 'Resposta em menos de 24 horas',
+    'trust.3': 'À distância, como se cá estivesse',
+    'trust.4': 'Ao seu lado até à escritura',
+
+    // Hero search
+    'hero.search.island': 'Ilha',
+    'hero.search.island.all': 'Todas as ilhas',
+    'hero.search.type': 'Negócio',
+    'hero.search.type.all': 'Comprar ou arrendar',
+    'hero.search.submit': 'Pesquisar Imóveis',
 
     // Differentiation
     'diff.title': 'Porque a IDÓNEA.',
@@ -58,29 +93,29 @@ const translations: Record<Language, Record<string, string>> = {
     'invest.title': 'Invista no seu país.',
     'invest.subtitle': 'Para emigrantes cabo-verdianos e investidores internacionais.',
     'invest.desc': 'Está na diáspora e quer construir algo em Cabo Verde? Encontramos o imóvel certo e tratamos de tudo à distância, com o mesmo cuidado que teria se estivesse cá. Apoiamos também investidores internacionais que procuram oportunidades no mercado cabo-verdiano.',
-    'invest.cta': 'Saber Mais',
+    'invest.cta': 'Ver Como Funciona',
 
     // Featured
-    'featured.title': 'Portefólio Selecionado',
-    'featured.subtitle': 'Cada imóvel no nosso portefólio é escolhido com critério. Apresentamos apenas oportunidades que merecem a sua atenção.',
-    'featured.viewAll': 'Ver Todos os Imóveis',
+    'featured.title': 'Escolhidos um a um.',
+    'featured.subtitle': 'Não trabalhamos por volume. Cada imóvel desta página foi visitado, verificado — e comparado com todos os que recusámos. Se está aqui, é porque merece estar.',
+    'featured.viewAll': 'Ver o Portefólio Completo',
     'featured.bedrooms': 'quartos',
     'featured.bathrooms': 'casas de banho',
 
     // Diaspora
     'diaspora.eyebrow': 'Para a Diáspora',
-    'diaspora.title': 'Comprar em Cabo Verde, mesmo à distância.',
-    'diaspora.subtitle': 'Investir no seu país a partir do estrangeiro exige mais do que encontrar um bom imóvel. Exige processo, clareza e alguém local em quem confiar. Estamos cá por si.',
-    'diaspora.point.1.title': 'Acompanhamento à distância',
-    'diaspora.point.1.desc': 'Gerimos cada etapa no terreno, com comunicação regular e transparente.',
-    'diaspora.point.2.title': 'Video-tours e shortlist personalizada',
-    'diaspora.point.2.desc': 'Enviamos visitas em vídeo e uma seleção criteriosa, alinhada com o seu perfil.',
-    'diaspora.point.3.title': 'Apoio documental completo',
-    'diaspora.point.3.desc': 'Tratamos da documentação e articulamos com parceiros locais de confiança.',
-    'diaspora.point.4.title': 'Comunicação clara até ao fecho',
-    'diaspora.point.4.desc': 'Informamos em cada momento. Sem surpresas, sem dúvidas pendentes.',
+    'diaspora.title': 'A distância não adia o regresso.',
+    'diaspora.subtitle': 'Quem vive fora sabe: a casa em Cabo Verde não é um negócio. É a promessa feita à família, o lugar onde a vida volta a caber. Tratamos de tudo no terreno — visitas em vídeo, documentos, escritura — e mantemo-lo dentro de cada decisão, como se cá estivesse. A sua parte é escolher. A nossa é garantir que escolhe bem.',
+    'diaspora.point.1.title': 'Os seus olhos no terreno',
+    'diaspora.point.1.desc': 'Visitamos, verificamos e reportamos. Recebe tudo em vídeo, em detalhe, sem filtros.',
+    'diaspora.point.2.title': 'Video-tours ao vivo',
+    'diaspora.point.2.desc': 'Percorre cada divisão connosco, em directo, e pergunta tudo na hora.',
+    'diaspora.point.3.title': 'Documentos e procuração tratados',
+    'diaspora.point.3.desc': 'Do NIF à escritura, tratamos da papelada com juristas locais de confiança.',
+    'diaspora.point.4.title': 'Sem surpresas até à escritura',
+    'diaspora.point.4.desc': 'Sabe sempre em que ponto está o processo. Sempre.',
     'diaspora.cta': 'Comprar à Distância',
-    'diaspora.image.caption': 'O seu investimento em Cabo Verde, com acompanhamento real.',
+    'diaspora.image.caption': 'Da primeira conversa à escritura, sem precisar de viajar.',
 
     'social.title': 'O que dizem os nossos clientes.',
     'social.subtitle': 'Experiências reais de quem confiou na IDÓNEA para comprar, vender ou investir em Cabo Verde.',
@@ -98,19 +133,20 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.interest.sell': 'Vender',
     'contact.message': 'Mensagem',
     'contact.send': 'Enviar Mensagem',
-    'contact.whatsapp': 'Falar por WhatsApp',
+    'contact.whatsapp': 'Falar no WhatsApp',
     'contact.or': 'ou',
 
     // Closing CTA
-    'closing.title': 'Pronto para dar o próximo passo?',
-    'closing.subtitle': 'Comprar, vender ou investir em Cabo Verde com mais clareza, critério e confiança. Estamos disponíveis para o acompanhar.',
-    'closing.cta.consultation': 'Agendar Consultoria',
+    'closing.title': 'Falemos do que procura.',
+    'closing.subtitle': 'Uma conversa sem compromisso. Saímos os dois a saber se fazemos sentido um para o outro.',
+    'closing.cta.consultation': 'Marcar uma Conversa',
     'closing.cta.whatsapp': 'Falar no WhatsApp',
-    'closing.cta.properties': 'Ver Imóveis',
+    'closing.cta.properties': 'Ver o Portefólio',
 
     // Footer
     'footer.rights': 'Todos os direitos reservados.',
-    'footer.company': 'Idônea Mediação Imobiliária',
+    'footer.company': 'IDÓNEA Mediação Imobiliária',
+    'footer.tagline': 'O nome é a promessa.',
 
     // Properties page
     'props.title': 'Imóveis Disponíveis',
@@ -124,6 +160,12 @@ const translations: Record<Language, Record<string, string>> = {
     'props.filter.island': 'Ilha',
     'props.filter.type': 'Tipologia',
     'props.filter.price': 'Preço',
+    'props.sort.label': 'Ordenar',
+    'props.sort.newest': 'Mais recentes',
+    'props.sort.priceAsc': 'Preço: menor para maior',
+    'props.sort.priceDesc': 'Preço: maior para menor',
+    'props.view.list': 'Lista',
+    'props.view.map': 'Mapa',
     'props.filter.business': 'Negócio',
     'props.filter.goal': 'Objetivo',
     'props.filter.clear': 'Limpar',
@@ -134,7 +176,7 @@ const translations: Record<Language, Record<string, string>> = {
     'props.type.land': 'Terreno',
     'props.type.commercial': 'Comercial',
     'props.contact': 'Contactar',
-    'props.details': 'Ver Detalhes',
+    'props.details': 'Ver Imóvel',
     'props.back': 'Voltar',
     'props.specs': 'Características',
     'props.location': 'Localização',
@@ -160,8 +202,9 @@ const translations: Record<Language, Record<string, string>> = {
     'detail.tag.personal': 'Uso Próprio',
     'detail.tag.second-home': 'Segunda Residência',
     'detail.tag.rental': 'Arrendamento',
-    'detail.cta.visit': 'Agendar Visita',
+    'detail.cta.visit': 'Marcar Visita',
     'detail.cta.info': 'Pedir Informação',
+    'detail.cta.dossier': 'Pedir o Dossier Completo',
     'detail.cta.response': 'Resposta em menos de 24 horas.',
     'detail.cta.advisor': 'Acompanhamento direto da equipa IDÓNEA.',
     'detail.process.title': 'Acompanhamento IDÓNEA',
@@ -173,23 +216,58 @@ const translations: Record<Language, Record<string, string>> = {
     'detail.process.5': 'Fecho seguro',
   },
   en: {
+    // SEO
+    'seo.home.title': 'Real Estate Advisory in Cape Verde',
+    'seo.home.description': 'Curated real estate in Cape Verde with dedicated support — for local buyers, diaspora and international investors. From first contact to completion.',
+    'seo.properties.title': 'Properties for Sale and Rent',
+    'seo.properties.description': 'A selected portfolio of properties in Cape Verde — apartments, houses, land and commercial spaces, for sale, rent or investment.',
+    'seo.investment.title': 'Invest in Cape Verde',
+    'seo.investment.description': 'Real estate investment opportunities in Cape Verde for the diaspora and international investors, with full remote support.',
+    'seo.diaspora.title': 'For the Cape Verdean Diaspora',
+    'seo.diaspora.description': 'Buy in Cape Verde from anywhere in the world — video tours, curated shortlists and full documentation support.',
+    'seo.sell.title': 'Sell Your Property',
+    'seo.sell.description': 'Sell your property in Cape Verde with IDÓNEA — valuation, marketing and negotiation handled with rigour and transparency.',
+    'seo.about.title': 'About Us',
+    'seo.about.description': 'Meet IDÓNEA — selective, transparent and dedicated real estate advisory in Cape Verde.',
+    'seo.contact.title': 'Contact',
+    'seo.contact.description': 'Get in touch with the IDÓNEA team. Response within 24 hours.',
+    'seo.notfound.title': 'Page Not Found',
+    'seo.notfound.description': 'The page you are looking for does not exist or has been moved.',
+
     // Nav
     'nav.home': 'Home',
     'nav.properties': 'Properties',
+    'nav.islands': 'Islands',
     'nav.investment': 'Invest',
     'nav.diaspora': 'For the Diaspora',
     'nav.sell': 'Sell Your Property',
     'nav.about': 'About',
     'nav.contact': 'Contact',
-    'nav.cta': 'Book a Consultation',
+    'nav.cta': 'Book a Call',
+    'nav.menu': 'Menu',
+    'nav.menu.back': 'Back to site',
+    'nav.currency': 'Currency',
 
     // Hero
-    'hero.eyebrow': 'Real Estate Advisory in Cape Verde',
-    'hero.headline': 'Buy, sell or invest with complete confidence.',
-    'hero.subheadline': 'Curated real estate with dedicated support at every step. From first contact to completion.',
-    'hero.cta.properties': 'View Properties',
-    'hero.cta.consultation': 'Book a Consultation',
-    'hero.cta.sell': 'Sell My Property',
+    'hero.eyebrow': 'Real Estate · Cape Verde',
+    'hero.headline': 'Fewer homes. More certainty.',
+    'hero.subheadline': 'In Cape Verde, we show only what we have verified and that is worth your time. And we stay by your side from first contact to completion.',
+    'hero.cta.properties': 'View the Portfolio',
+    'hero.cta.consultation': 'Book a Call',
+    'hero.cta.sell': 'Sell with IDÓNEA',
+
+    // Trust bar
+    'trust.1': 'Every property legally verified',
+    'trust.2': 'Response within 24 hours',
+    'trust.3': 'From afar, as if you were here',
+    'trust.4': 'By your side to completion',
+
+    // Hero search
+    'hero.search.island': 'Island',
+    'hero.search.island.all': 'All islands',
+    'hero.search.type': 'Business',
+    'hero.search.type.all': 'Buy or rent',
+    'hero.search.submit': 'Search Properties',
 
     // Differentiation
     'diff.title': 'Why IDÓNEA.',
@@ -221,29 +299,29 @@ const translations: Record<Language, Record<string, string>> = {
     'invest.title': 'Invest in Cape Verde.',
     'invest.subtitle': 'A growing market with real opportunity.',
     'invest.desc': 'Cape Verde offers a stable economy, growing tourism and a favourable investment climate. We help international buyers navigate the local market, find the right property and handle everything remotely.',
-    'invest.cta': 'Learn More',
+    'invest.cta': 'See How It Works',
 
     // Featured
-    'featured.title': 'Selected Portfolio',
-    'featured.subtitle': 'Every property in our portfolio is chosen with care. We present only opportunities that deserve your attention.',
-    'featured.viewAll': 'View All Properties',
+    'featured.title': 'Chosen one by one.',
+    'featured.subtitle': 'We do not work by volume. Every property on this page was visited, verified — and weighed against all the ones we turned down. If it is here, it earned its place.',
+    'featured.viewAll': 'View the Full Portfolio',
     'featured.bedrooms': 'bedrooms',
     'featured.bathrooms': 'bathrooms',
 
     // Diaspora
     'diaspora.eyebrow': 'For the Diaspora',
-    'diaspora.title': 'Buy in Cape Verde, from anywhere.',
-    'diaspora.subtitle': 'Investing in your country from abroad requires more than finding the right property. It requires process, clarity and someone local you can trust. We are here for you.',
-    'diaspora.point.1.title': 'Remote support',
-    'diaspora.point.1.desc': 'We manage every step on the ground, with regular and transparent communication.',
-    'diaspora.point.2.title': 'Video tours and curated shortlist',
-    'diaspora.point.2.desc': 'We send video viewings and a carefully selected shortlist, aligned with your profile.',
-    'diaspora.point.3.title': 'Full documentation support',
-    'diaspora.point.3.desc': 'We handle paperwork and coordinate with trusted local partners.',
-    'diaspora.point.4.title': 'Clear communication to completion',
-    'diaspora.point.4.desc': 'We keep you informed at every stage. No surprises, no loose ends.',
+    'diaspora.title': 'Distance doesn\'t delay the homecoming.',
+    'diaspora.subtitle': 'Those who live abroad know: a home in Cape Verde isn\'t a deal. It is the promise made to family, the place where life fits again. We handle everything on the ground — video viewings, documents, the deed — and keep you inside every decision, as if you were here. Your part is to choose. Ours is to make sure you choose well.',
+    'diaspora.point.1.title': 'Your eyes on the ground',
+    'diaspora.point.1.desc': 'We visit, verify and report. You get it all on video, in detail, unfiltered.',
+    'diaspora.point.2.title': 'Live video tours',
+    'diaspora.point.2.desc': 'Walk through every room with us, live, and ask anything on the spot.',
+    'diaspora.point.3.title': 'Documents and power of attorney handled',
+    'diaspora.point.3.desc': 'From the NIF to the deed, we handle the paperwork with trusted local lawyers.',
+    'diaspora.point.4.title': 'No surprises before the deed',
+    'diaspora.point.4.desc': 'You always know where the process stands. Always.',
     'diaspora.cta': 'Buy Remotely',
-    'diaspora.image.caption': 'Your investment in Cape Verde, with real support.',
+    'diaspora.image.caption': 'From the first conversation to the deed, without having to travel.',
     'social.title': 'What our clients say.',
     'social.subtitle': 'Real experiences from those who trusted IDÓNEA to buy, sell or invest in Cape Verde.',
 
@@ -263,15 +341,16 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.whatsapp': 'Chat on WhatsApp',
     'contact.or': 'or',
     // Closing CTA
-    'closing.title': 'Ready to take the next step?',
-    'closing.subtitle': 'Buy, sell or invest in Cape Verde with more clarity, care and confidence. We are here to support you.',
-    'closing.cta.consultation': 'Book a Consultation',
+    'closing.title': 'Let\'s talk about what you\'re looking for.',
+    'closing.subtitle': 'A conversation with no commitment. We both leave knowing whether we are the right fit.',
+    'closing.cta.consultation': 'Book a Call',
     'closing.cta.whatsapp': 'Chat on WhatsApp',
-    'closing.cta.properties': 'View Properties',
+    'closing.cta.properties': 'View the Portfolio',
 
     // Footer
     'footer.rights': 'All rights reserved.',
-    'footer.company': 'Idônea Mediação Imobiliária',
+    'footer.company': 'IDÓNEA Mediação Imobiliária',
+    'footer.tagline': 'The name is the promise.',
 
     // Properties page
     'props.title': 'Available Properties',
@@ -285,6 +364,12 @@ const translations: Record<Language, Record<string, string>> = {
     'props.filter.island': 'Island',
     'props.filter.type': 'Type',
     'props.filter.price': 'Price',
+    'props.sort.label': 'Sort',
+    'props.sort.newest': 'Newest',
+    'props.sort.priceAsc': 'Price: low to high',
+    'props.sort.priceDesc': 'Price: high to low',
+    'props.view.list': 'List',
+    'props.view.map': 'Map',
     'props.filter.business': 'Business',
     'props.filter.goal': 'Goal',
     'props.filter.clear': 'Clear',
@@ -295,7 +380,7 @@ const translations: Record<Language, Record<string, string>> = {
     'props.type.land': 'Land',
     'props.type.commercial': 'Commercial',
     'props.contact': 'Contact',
-    'props.details': 'View Details',
+    'props.details': 'View Property',
     'props.back': 'Back',
     'props.specs': 'Specifications',
     'props.location': 'Location',
@@ -323,6 +408,7 @@ const translations: Record<Language, Record<string, string>> = {
     'detail.tag.rental': 'Rental',
     'detail.cta.visit': 'Book a Viewing',
     'detail.cta.info': 'Request Information',
+    'detail.cta.dossier': 'Request Full Dossier',
     'detail.cta.response': 'Response within 24 hours.',
     'detail.cta.advisor': 'Direct support from the IDÓNEA team.',
     'detail.process.title': 'IDÓNEA Support',
@@ -337,8 +423,26 @@ const translations: Record<Language, Record<string, string>> = {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+const LANG_KEY = 'idonea-lang';
+
+const readStoredLang = (): Language => {
+  if (typeof window === 'undefined') return 'pt';
+  const saved = window.localStorage.getItem(LANG_KEY);
+  if (saved === 'pt' || saved === 'en') return saved;
+  return window.navigator.language?.toLowerCase().startsWith('en') ? 'en' : 'pt';
+};
+
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [lang, setLang] = useState<Language>('pt');
+  const [lang, setLangState] = useState<Language>(readStoredLang);
+
+  const setLang = (l: Language) => {
+    setLangState(l);
+    try {
+      window.localStorage.setItem(LANG_KEY, l);
+    } catch {
+      /* storage may be unavailable (private mode) — ignore */
+    }
+  };
 
   const t = (key: string): string => {
     return translations[lang][key] || key;

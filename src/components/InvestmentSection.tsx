@@ -10,10 +10,10 @@ const InvestmentSection = () => {
     <section id="investimento" className="py-20 bg-secondary">
       <div className="container mx-auto px-4">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.85 }}
           className="max-w-3xl mx-auto text-center"
         >
           <TrendingUp className="h-12 w-12 text-primary mx-auto mb-6" />

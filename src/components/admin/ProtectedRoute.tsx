@@ -1,10 +1,10 @@
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { useConvexAuth } from 'convex/react';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, isAdmin, loading } = useAuth();
+  const { isAuthenticated, isLoading } = useConvexAuth();
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
@@ -12,7 +12,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
-  if (!user || !isAdmin) {
+  if (!isAuthenticated) {
     return <Navigate to="/admin/login" replace />;
   }
 

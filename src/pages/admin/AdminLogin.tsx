@@ -1,36 +1,37 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useAuthActions } from '@convex-dev/auth/react';
+import { useConvexAuth } from 'convex/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import logo from '@/assets/logo.png';
+import logo from '@/assets/logo.svg';
 
 const AdminLogin = () => {
+  const { signIn } = useAuthActions();
+  const { isAuthenticated } = useConvexAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, user, isAdmin } = useAuth();
-  const navigate = useNavigate();
 
-  if (user && isAdmin) {
-    navigate('/admin');
-    return null;
+  if (isAuthenticated) {
+    return <Navigate to="/admin" replace />;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
-
-    const { error } = await signIn(email, password);
-    if (error) {
-      setError('Credenciais inválidas');
-    } else {
+    try {
+      await signIn('password', { email, password, flow: 'signIn' });
       navigate('/admin');
+    } catch {
+      setError('Credenciais inválidas.');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -65,9 +66,7 @@ const AdminLogin = () => {
             />
           </div>
 
-          {error && (
-            <p className="text-sm text-red-400">{error}</p>
-          )}
+          {error && <p className="text-sm text-red-400">{error}</p>}
 
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? 'A entrar...' : 'Entrar'}

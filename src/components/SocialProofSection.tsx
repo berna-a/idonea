@@ -21,8 +21,8 @@ const testimonials = [
     name: 'Marie D.',
     context_pt: 'Investidora internacional',
     context_en: 'International investor',
-    text_pt: 'Investir em Cabo Verde parecia complexo à distância. A Idônea apresentou-me uma seleção criteriosa, acompanhou a negociação e geriu toda a parte legal com rigor. Um serviço discreto e muito profissional.',
-    text_en: 'Investing in Cape Verde seemed complex from abroad. Idônea presented a carefully curated selection, managed the negotiation and handled all legal aspects with rigour. A discreet and highly professional service.',
+    text_pt: 'Investir em Cabo Verde parecia complexo à distância. A IDÓNEA apresentou-me uma seleção criteriosa, acompanhou a negociação e geriu toda a parte legal com rigor. Um serviço discreto e muito profissional.',
+    text_en: 'Investing in Cape Verde seemed complex from abroad. IDÓNEA presented a carefully curated selection, managed the negotiation and handled all legal aspects with rigour. A discreet and highly professional service.',
   },
 ];
 
@@ -33,10 +33,10 @@ const SocialProofSection = () => {
     <section className="py-24 bg-secondary">
       <div className="container mx-auto px-4 max-w-5xl">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.75 }}
           className="text-center mb-16"
         >
           <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4">
@@ -51,10 +51,10 @@ const SocialProofSection = () => {
           {testimonials.map((item, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.12, duration: 0.5 }}
+              transition={{ delay: i * 0.12, duration: 0.75 }}
               className="relative bg-card/50 border border-border/60 rounded-xl p-8 md:p-10"
             >
               <Quote className="absolute top-6 right-8 w-8 h-8 text-primary/15" />

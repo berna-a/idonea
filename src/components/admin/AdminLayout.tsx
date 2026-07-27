@@ -1,17 +1,16 @@
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuthActions } from '@convex-dev/auth/react';
 import { Button } from '@/components/ui/button';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { Building2, LayoutDashboard, Image } from 'lucide-react';
-import logo from '@/assets/logo.png';
+import { Building2, LayoutDashboard } from 'lucide-react';
+import logo from '@/assets/logo.svg';
 
 const navItems = [
   { label: 'Painel', path: '/admin', icon: LayoutDashboard },
   { label: 'Imóveis', path: '/admin/properties', icon: Building2 },
-  { label: 'Imagens', path: '/admin/images', icon: Image, disabled: true },
 ];
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
-  const { user, signOut } = useAuth();
+  const { signOut } = useAuthActions();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -36,15 +35,12 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
               return (
                 <Link
                   key={item.path}
-                  to={item.disabled ? '#' : item.path}
+                  to={item.path}
                   className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${
-                    item.disabled
-                      ? 'text-muted-foreground/40 cursor-not-allowed'
-                      : isActive
-                        ? 'bg-secondary text-foreground'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
+                    isActive
+                      ? 'bg-secondary text-foreground'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
                   }`}
-                  onClick={item.disabled ? (e) => e.preventDefault() : undefined}
                 >
                   <item.icon className="h-4 w-4" />
                   {item.label}
@@ -53,10 +49,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
             })}
           </nav>
         </div>
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-muted-foreground hidden sm:inline">{user?.email}</span>
-          <Button variant="outline" size="sm" onClick={handleSignOut}>Sair</Button>
-        </div>
+        <Button variant="outline" size="sm" onClick={handleSignOut}>Sair</Button>
       </header>
       <main>{children}</main>
     </div>

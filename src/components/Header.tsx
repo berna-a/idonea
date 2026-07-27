@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Menu, Globe } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n';
-import logo from '@/assets/logo.png';
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
+import logo from '@/assets/logo.svg';
 import { Button } from '@/components/ui/button';
+import HeaderMenu from '@/components/HeaderMenu';
 
 const Header = () => {
   const { lang, setLang, t } = useLanguage();
-  const location = useLocation();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -18,22 +17,6 @@ const Header = () => {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
-  const navLinks = [
-    { label: t('nav.properties'), href: '/properties' },
-    { label: t('nav.investment'), href: '/investment' },
-    { label: t('nav.sell'), href: '/sell' },
-    { label: t('nav.about'), href: '/about' },
-  ];
-
-  const isActive = (href: string) => {
-    if (href === '/') return location.pathname === '/';
-    return location.pathname.startsWith(href);
-  };
-
-  const handleNavClick = () => {
-    setOpen(false);
-  };
 
   return (
     <header
@@ -48,72 +31,30 @@ const Header = () => {
           <img src={logo} alt="Idónea" className="h-[46px] w-auto object-contain" />
         </Link>
 
-        {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-12">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              to={link.href}
-              className={`relative text-base font-body text-foreground/90 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-px after:bg-primary after:transition-all after:duration-300 ${
-                isActive(link.href)
-                  ? 'after:w-full'
-                  : 'after:w-0 hover:after:w-full'
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+        {/* Utility bar + menu trigger (nav lives in the full-screen HeaderMenu) */}
+        <div className="flex items-center gap-2 md:gap-3">
           <button
             onClick={() => setLang(lang === 'pt' ? 'en' : 'pt')}
-            className="flex items-center gap-1.5 text-base text-foreground/90 hover:bg-primary/90 hover:text-foreground transition-colors border border-border/60 rounded-md px-3 py-2"
+            className="flex items-center gap-1 sm:gap-1.5 text-sm text-foreground/90 hover:bg-primary/90 hover:text-foreground transition-colors border border-border/60 rounded-md px-2 sm:px-3 py-1.5 sm:py-2"
           >
-            <Globe className="h-4 w-4" />
+            <Globe className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             {lang === 'pt' ? 'EN' : 'PT'}
           </button>
-        </nav>
-
-        {/* Mobile Nav */}
-        <div className="flex lg:hidden items-center gap-3">
+          <Button asChild size="sm" className="hidden md:inline-flex font-body">
+            <Link to="/contact">{t('nav.cta')}</Link>
+          </Button>
           <button
-            onClick={() => setLang(lang === 'pt' ? 'en' : 'pt')}
-            className="flex items-center gap-1 text-sm text-foreground/90 hover:bg-primary/90 transition-colors border border-border/60 rounded-md px-2 py-1"
+            onClick={() => setOpen(true)}
+            className="flex items-center gap-2 text-foreground/90 hover:text-primary transition-colors"
+            aria-label={t('nav.menu')}
           >
-            <Globe className="h-3.5 w-3.5" />
-            {lang === 'pt' ? 'EN' : 'PT'}
+            <span className="hidden md:inline text-sm font-body tracking-wide">{t('nav.menu')}</span>
+            <Menu className="h-6 w-6" strokeWidth={1.5} />
           </button>
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <button className="text-foreground">
-                <Menu className="h-6 w-6" />
-              </button>
-            </SheetTrigger>
-            <SheetContent side="right" className="bg-background border-border">
-              <SheetTitle className="text-foreground sr-only">Menu</SheetTitle>
-              <nav className="flex flex-col gap-5 mt-8">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    to={link.href}
-                    onClick={handleNavClick}
-                    className={`text-base font-body transition-colors ${
-                      isActive(link.href)
-                        ? 'text-primary'
-                        : 'text-foreground/90 hover:text-primary'
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-                <Button asChild className="font-body mt-4 w-full">
-                  <Link to="/contact" onClick={handleNavClick}>
-                    {t('nav.cta')}
-                  </Link>
-                </Button>
-              </nav>
-            </SheetContent>
-          </Sheet>
         </div>
       </div>
+
+      <HeaderMenu open={open} onClose={() => setOpen(false)} />
     </header>
   );
 };

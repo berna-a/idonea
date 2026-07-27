@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useMutation } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 import { useLanguage } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -30,17 +32,21 @@ const ContactSection = () => {
       title: searchParams.get('title') ?? '',
       location: searchParams.get('location') ?? '',
       type: searchParams.get('type') as 'sale' | 'rent' | null,
-      intent: (searchParams.get('intent') as 'visit' | 'info') ?? 'info',
+      intent: (searchParams.get('intent') as 'visit' | 'info' | 'dossier') ?? 'info',
       url: searchParams.get('url') ?? '',
     };
   }, [searchParams]);
 
-  const [form, setForm] = useState({ name: '', email: '', phone: '', interest: '', message: '' });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', interest: '', message: '', website: '' });
+  const [submitting, setSubmitting] = useState(false);
+  const createLead = useMutation(api.leads.create);
 
   useEffect(() => {
     if (!propertyCtx) return;
     const intentText = propertyCtx.intent === 'visit'
       ? `Gostaria de agendar uma visita ao imóvel ${propertyCtx.ref} — ${propertyCtx.title}.`
+      : propertyCtx.intent === 'dossier'
+      ? `Gostaria de receber o dossier completo do imóvel ${propertyCtx.ref} — ${propertyCtx.title} (documentação, custos de compra e estimativa de rendimento).`
       : `Gostaria de receber mais informação sobre o imóvel ${propertyCtx.ref} — ${propertyCtx.title}.`;
     const locationLine = propertyCtx.location ? `\nLocalização: ${propertyCtx.location}` : '';
     setForm(f => ({
@@ -58,15 +64,34 @@ const ContactSection = () => {
     setForm(f => ({ ...f, message: '', interest: '' }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = contactSchema.safeParse(form);
     if (!result.success) {
       toast.error('Por favor preencha todos os campos obrigatórios.');
       return;
     }
-    toast.success('Mensagem enviada com sucesso!');
-    setForm({ name: '', email: '', phone: '', interest: '', message: '' });
+    setSubmitting(true);
+    try {
+      await createLead({
+        name: result.data.name,
+        email: result.data.email,
+        phone: result.data.phone || undefined,
+        interest: result.data.interest || undefined,
+        message: result.data.message,
+        property_ref: propertyCtx?.ref,
+        property_title: propertyCtx?.title || undefined,
+        intent: propertyCtx?.intent,
+        source: propertyCtx ? 'property-enquiry' : 'contact-form',
+        honeypot: form.website,
+      });
+      toast.success('Mensagem enviada. Respondemos em menos de 24 horas.');
+      setForm({ name: '', email: '', phone: '', interest: '', message: '', website: '' });
+    } catch {
+      toast.error('Não foi possível enviar. Tente novamente ou fale connosco por WhatsApp.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const whatsappUrl = useMemo(() => {
@@ -76,6 +101,8 @@ const ContactSection = () => {
       'Olá IDÓNEA,',
       propertyCtx.intent === 'visit'
         ? `gostaria de agendar uma visita ao imóvel ${propertyCtx.ref} — ${propertyCtx.title}`
+        : propertyCtx.intent === 'dossier'
+        ? `gostaria de receber o dossier do imóvel ${propertyCtx.ref} — ${propertyCtx.title}`
         : `gostaria de receber mais informação sobre o imóvel ${propertyCtx.ref} — ${propertyCtx.title}`,
       propertyCtx.location ? `(${propertyCtx.location})` : '',
       propertyCtx.url,
@@ -89,10 +116,10 @@ const ContactSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
           {/* Form */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -12 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.85 }}
           >
             <h2 className="font-display text-3xl md:text-4xl text-foreground mb-2">
               {t('contact.title')}
@@ -105,8 +132,8 @@ const ContactSection = () => {
                   <Home className="h-4 w-4 text-primary" strokeWidth={1.75} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[11px] font-body uppercase tracking-[0.2em] text-primary/80 mb-1">
-                    {propertyCtx.intent === 'visit' ? 'Pedido de visita' : 'Pedido de informação'} · {propertyCtx.ref}
+                  <p className="text-eyebrow mb-1">
+                    {propertyCtx.intent === 'visit' ? 'Pedido de visita' : propertyCtx.intent === 'dossier' ? 'Pedido de dossier' : 'Pedido de informação'} · {propertyCtx.ref}
                   </p>
                   <p className="font-display text-foreground font-semibold truncate">{propertyCtx.title}</p>
                   {propertyCtx.location && (
@@ -125,6 +152,17 @@ const ContactSection = () => {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Honeypot: hidden from users, bots fill it → we drop the submission server-side */}
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                value={form.website}
+                onChange={(e) => setForm({ ...form, website: e.target.value })}
+                className="hidden"
+                aria-hidden="true"
+              />
               <Input
                 placeholder={t('contact.name')}
                 value={form.name}
@@ -169,18 +207,18 @@ const ContactSection = () => {
                 maxLength={2000}
                 required
               />
-              <Button type="submit" size="lg" className="w-full font-body">
-                {t('contact.send')}
+              <Button type="submit" size="lg" className="w-full font-body" disabled={submitting}>
+                {submitting ? 'A enviar…' : t('contact.send')}
               </Button>
             </form>
           </motion.div>
 
           {/* Info */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 12 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.85 }}
             className="flex flex-col justify-center gap-8"
           >
             <div>

@@ -30,6 +30,7 @@ export interface Property {
   bedrooms: number;
   bathrooms: number;
   area: number;
+  coordinates: { lat: number; lng: number } | null;
   image: string;
   images: string[];
   featured: boolean;
