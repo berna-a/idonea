@@ -24,7 +24,7 @@ const translations: Record<Language, Record<string, string>> = {
     'seo.about.title': 'Sobre Nós',
     'seo.about.description': 'Conheça a IDÓNEA — mediação imobiliária seletiva, transparente e dedicada em Cabo Verde.',
     'seo.contact.title': 'Contacto',
-    'seo.contact.description': 'Fale com a equipa IDÓNEA. Resposta em menos de 24 horas.',
+    'seo.contact.description': 'Fale com a equipa IDÓNEA. Resposta no mesmo dia útil.',
     'seo.notfound.title': 'Página Não Encontrada',
     'seo.notfound.description': 'A página que procura não existe ou foi movida.',
 
@@ -51,8 +51,8 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.cta.sell': 'Vender com a IDÓNEA',
 
     // Trust bar
-    'trust.1': 'Cada imóvel verificado juridicamente',
-    'trust.2': 'Resposta em menos de 24 horas',
+    'trust.1': 'Documentação conferida antes de publicar',
+    'trust.2': 'Resposta no mesmo dia útil',
     'trust.3': 'À distância, como se cá estivesse',
     'trust.4': 'Ao seu lado até à escritura',
 
@@ -117,12 +117,9 @@ const translations: Record<Language, Record<string, string>> = {
     'diaspora.cta': 'Comprar à Distância',
     'diaspora.image.caption': 'Da primeira conversa à escritura, sem precisar de viajar.',
 
-    'social.title': 'O que dizem os nossos clientes.',
-    'social.subtitle': 'Experiências reais de quem confiou na IDÓNEA para comprar, vender ou investir em Cabo Verde.',
-
     // Contact
     'contact.title': 'Entre em contacto.',
-    'contact.subtitle': 'Resposta em menos de 24 horas.',
+    'contact.subtitle': 'Resposta no mesmo dia útil.',
     'contact.name': 'Nome',
     'contact.email': 'Email',
     'contact.phone': 'Telefone',
@@ -205,7 +202,7 @@ const translations: Record<Language, Record<string, string>> = {
     'detail.cta.visit': 'Marcar Visita',
     'detail.cta.info': 'Pedir Informação',
     'detail.cta.dossier': 'Pedir o Dossier Completo',
-    'detail.cta.response': 'Resposta em menos de 24 horas.',
+    'detail.cta.response': 'Resposta no mesmo dia útil.',
     'detail.cta.advisor': 'Acompanhamento direto da equipa IDÓNEA.',
     'detail.process.title': 'Acompanhamento IDÓNEA',
     'detail.process.subtitle': 'Do primeiro contacto à escritura, conduzimos o processo consigo.',
@@ -230,7 +227,7 @@ const translations: Record<Language, Record<string, string>> = {
     'seo.about.title': 'About Us',
     'seo.about.description': 'Meet IDÓNEA — selective, transparent and dedicated real estate advisory in Cape Verde.',
     'seo.contact.title': 'Contact',
-    'seo.contact.description': 'Get in touch with the IDÓNEA team. Response within 24 hours.',
+    'seo.contact.description': 'Get in touch with the IDÓNEA team. Response the same working day.',
     'seo.notfound.title': 'Page Not Found',
     'seo.notfound.description': 'The page you are looking for does not exist or has been moved.',
 
@@ -257,8 +254,8 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.cta.sell': 'Sell with IDÓNEA',
 
     // Trust bar
-    'trust.1': 'Every property legally verified',
-    'trust.2': 'Response within 24 hours',
+    'trust.1': 'Documentation checked before listing',
+    'trust.2': 'Response the same working day',
     'trust.3': 'From afar, as if you were here',
     'trust.4': 'By your side to completion',
 
@@ -322,12 +319,10 @@ const translations: Record<Language, Record<string, string>> = {
     'diaspora.point.4.desc': 'You always know where the process stands. Always.',
     'diaspora.cta': 'Buy Remotely',
     'diaspora.image.caption': 'From the first conversation to the deed, without having to travel.',
-    'social.title': 'What our clients say.',
-    'social.subtitle': 'Real experiences from those who trusted IDÓNEA to buy, sell or invest in Cape Verde.',
 
     // Contact
     'contact.title': 'Get in touch.',
-    'contact.subtitle': 'Response within 24 hours.',
+    'contact.subtitle': 'Response the same working day.',
     'contact.name': 'Name',
     'contact.email': 'Email',
     'contact.phone': 'Phone',
@@ -409,7 +404,7 @@ const translations: Record<Language, Record<string, string>> = {
     'detail.cta.visit': 'Book a Viewing',
     'detail.cta.info': 'Request Information',
     'detail.cta.dossier': 'Request Full Dossier',
-    'detail.cta.response': 'Response within 24 hours.',
+    'detail.cta.response': 'Response the same working day.',
     'detail.cta.advisor': 'Direct support from the IDÓNEA team.',
     'detail.process.title': 'IDÓNEA Support',
     'detail.process.subtitle': 'From first contact to completion, we guide the process with you.',

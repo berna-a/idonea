@@ -16,11 +16,11 @@ const About = () => {
   const pt = lang === 'pt';
 
   const principles = pt ? [
-    { icon: ShieldCheck, title: 'Rigor', desc: 'Cada imóvel é verificado juridicamente antes de chegar a si. Sem atalhos.' },
+    { icon: ShieldCheck, title: 'Rigor', desc: 'Conferimos a documentação antes de publicar, e mostramos-lhe os papéis antes de assinar.' },
     { icon: Gem, title: 'Curadoria', desc: 'Não trabalhamos por volume. Apresentamos apenas o que genuinamente corresponde.' },
     { icon: Handshake, title: 'Acompanhamento', desc: 'Do primeiro contacto à escritura, estamos ao seu lado em cada etapa.' },
   ] : [
-    { icon: ShieldCheck, title: 'Rigour', desc: 'Every property is legally verified before it reaches you. No shortcuts.' },
+    { icon: ShieldCheck, title: 'Rigour', desc: 'We check the documentation before listing, and show you the papers before you sign.' },
     { icon: Gem, title: 'Curation', desc: 'We don\'t work by volume. We present only what genuinely fits.' },
     { icon: Handshake, title: 'Support', desc: 'From first contact to the deed, we are by your side at every step.' },
   ];

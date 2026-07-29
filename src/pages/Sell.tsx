@@ -105,7 +105,7 @@ const Sell = () => {
                     {pt ? 'Pedido recebido.' : 'Request received.'}
                   </h2>
                   <p className="text-muted-foreground font-body text-sm">
-                    {pt ? 'Entramos em contacto em menos de 24 horas com os próximos passos.' : 'We will be in touch within 24 hours with the next steps.'}
+                    {pt ? 'Entramos em contacto no mesmo dia útil com os próximos passos.' : 'We will be in touch the same working day with the next steps.'}
                   </p>
                 </div>
               ) : (
@@ -114,7 +114,7 @@ const Sell = () => {
                     {pt ? 'Peça uma avaliação gratuita' : 'Request a free valuation'}
                   </h2>
                   <p className="text-muted-foreground font-body text-sm mb-6">
-                    {pt ? 'Sem compromisso. Resposta em menos de 24 horas.' : 'No commitment. Response within 24 hours.'}
+                    {pt ? 'Sem compromisso. Resposta no mesmo dia útil.' : 'No commitment. Response the same working day.'}
                   </p>
                   <form onSubmit={handleSubmit} className="space-y-3">
                     <input

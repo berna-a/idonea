@@ -9,7 +9,6 @@ import HowItWorksSection from '@/components/HowItWorksSection';
 import InvestmentSection from '@/components/InvestmentSection';
 import HomeVault from '@/components/HomeVault';
 import DiasporaSection from '@/components/DiasporaSection';
-import SocialProofSection from '@/components/SocialProofSection';
 import ContactSection from '@/components/ContactSection';
 import ClosingCTA from '@/components/ClosingCTA';
 import Footer from '@/components/Footer';
@@ -30,7 +29,6 @@ const Index = () => {
           <InvestmentSection />
           <HomeVault />
           <DiasporaSection />
-          <SocialProofSection />
           <ContactSection />
           <ClosingCTA />
         </main>

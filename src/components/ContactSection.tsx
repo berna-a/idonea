@@ -85,7 +85,7 @@ const ContactSection = () => {
         source: propertyCtx ? 'property-enquiry' : 'contact-form',
         honeypot: form.website,
       });
-      toast.success('Mensagem enviada. Respondemos em menos de 24 horas.');
+      toast.success('Mensagem enviada. Respondemos no mesmo dia útil.');
       setForm({ name: '', email: '', phone: '', interest: '', message: '', website: '' });
     } catch {
       toast.error('Não foi possível enviar. Tente novamente ou fale connosco por WhatsApp.');
